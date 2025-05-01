@@ -23,8 +23,7 @@ class ProfileController extends Controller
             $user = $profile['message']['user'];
             return view('profile', compact('user'));
         }
-        return back()->withErrors(['message' => 'Erreur lors de la récupération du profil']);
-    }
+        return redirect()->route('home')->withErrors(['message' => 'Erreur lors de la récupération du profil']);    }
 
    
 }

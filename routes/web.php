@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\ProfileController;
 
 Route::get('/', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('do.login');
 Route::get('/home', [AuthController::class, 'home'])->name('home');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/profil', [AuthController::class, 'profile'])->name('profile');
+Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile.show');

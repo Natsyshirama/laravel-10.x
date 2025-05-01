@@ -40,7 +40,7 @@ class AuthController extends Controller
     }
     public function logout()
     {
-        Http::post(env('FRAPPE_API_BASE') . '/erpnext.auth.logout');
+        $response = Http::post(config('frappe.api_base') . '/erpnext.auth.logout');     
         Session::flush();
         return redirect()->route('login');
     }

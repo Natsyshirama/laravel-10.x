@@ -13,6 +13,6 @@ return [
     |
     */
 
-    'api_base' => env('FRAPPE_API_BASE', 'http://localhost:8000/api/method'),
+    'api_base' => env('FRAPPE_API_BASE', 'http://erpnext.localhost:8000/api/method'),
 
 ];

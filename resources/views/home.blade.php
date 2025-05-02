@@ -1,20 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Accueil</title>
+    <title>Dashboard</title>
 </head>
 <body>
-@if($errors->any())
-    <div class="alert alert-danger">
-        {{ $errors->first() }}
-    </div>
-@endif
+    <a href="{{ route('profile') }}">Mon Profil</a>
+    <h2>Bienvenue, {{ $userName }}</h2>
 
-    <h1>Bienvenue, {{ $user }}</h1>
-    <a href="{{ route('profile.show') }}">Voir mon profil</a>
-    <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit">Se déconnecter</button>
-    </form>
+    <p>Ceci est votre tableau de bord.</p>
+
+    <a href="{{ route('logout') }}">Se déconnecter</a>
 </body>
 </html>

@@ -1,23 +1,46 @@
 <?php
 
 namespace App\Services;
+
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Config;
 
 class UserAPI
 {
-    protected $base;
+    protected $baseUrl;
 
     public function __construct()
     {
-        // Utilise config() plutôt que env()
-        $this->base = rtrim(config('frappe.api_base'), '/');
+        $this->baseUrl = env('FRAPPE_URL', 'http://erpnext.localhost:8000/');
     }
 
-    public function getProfile()
-{
-    $url = "{$this->base}/erpnext.user.getProfile";
-    return Http::get($url)->json();
-}
+    public function getLoggedUserId()
+    {
+        $sid = Session::get('sid');
 
+        $response = Http::withHeaders([
+            'Cookie' => "sid={$sid}",
+        ])->get("{$this->baseUrl}/api/method/frappe.auth.get_logged_user");
+
+        if ($response->successful()) {
+            return $response->json()['message'];
+        }
+
+        return null;
+    }
+
+    public function getUserProfile($userId)
+    {
+        $sid = Session::get('sid');
+
+        $response = Http::withHeaders([
+            'Cookie' => "sid={$sid}",
+        ])->get("{$this->baseUrl}/api/resource/User/{$userId}");
+
+        if ($response->successful()) {
+            return $response->json()['data'];
+        }
+
+        return null;
+    }
 }

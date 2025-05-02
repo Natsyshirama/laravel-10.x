@@ -1,33 +1,56 @@
 <?php
+
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;        
-use Illuminate\Support\Facades\Config;  
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class FrappeAPI
 {
-    protected $base;
+    protected string $base;
 
     public function __construct()
     {
-        // Utilise config() plutôt que env()
-        $this->base = rtrim(config('frappe.api_base'), '/');
+        // Utilise config() si tu veux lire depuis un fichier de config, sinon env() ici est OK
+        $this->base = rtrim(env('FRAPPE_URL', 'http://erpnext.localhost:8000'), '/');
     }
-    public function post(string $method, array $payload)
+
+    /**
+     * Envoie une requête POST à l’API Frappe
+     */
+    public function post(string $method, array $payload): array
     {
         $url = "{$this->base}/{$method}";
         $response = Http::post($url, $payload);
-    
-        logger()->debug("Réponse brute ERPNext : " . $response->body());
-        logger()->debug("Content-Type : " . $response->header('Content-Type'));
-    
+
+        Log::debug("Réponse brute ERPNext (POST {$method}) : " . $response->body());
+        Log::debug("Content-Type : " . $response->header('Content-Type'));
+
         return $response->json();
     }
-    
 
-    public function get(string $method, array $query = [])
-    {
-        $url = "{$this->base}/{$method}";
-        return Http::get($url, $query)->json();
+    /**
+     * Envoie une requête GET à l’API Frappe avec le SID stocké en session
+     */
+    public function get(string $method, array $query = []): array
+{
+    $url = "{$this->base}/{$method}";
+    $sid = Session::get('sid');
+
+    $response = Http::withHeaders([
+        'Cookie' => "sid={$sid}",
+    ])->get($url, $query);
+
+    if ($response->successful()) {
+        return $response->json() ?? []; // au cas où json() retourne null
     }
+
+    // Log pour debug
+    logger()->error("Erreur HTTP lors de l'appel à Frappe : " . $response->status());
+    logger()->error("Réponse : " . $response->body());
+
+    return [];
+}
+
 }

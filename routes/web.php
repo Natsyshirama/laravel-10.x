@@ -11,12 +11,12 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
-use App\Http\Controllers\AuthController;
+*/use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\ProfileController;
 
 Route::get('/', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('do.login');
-Route::get('/home', [AuthController::class, 'home'])->name('home');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile.show');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
+Route::get('/get-logged-user', [AuthController::class, 'getLoggedUser'])->name('user.logged');
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile');

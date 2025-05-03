@@ -24,6 +24,8 @@ Route::get('/get-logged-user', [AuthController::class, 'getLoggedUser'])->name('
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 
 //Devis Fournisseur
+Route::get('/devis/filtre', [DevisController::class, 'filtre'])->name('devis.filtre');
+
 Route::get('/devis', [DevisController::class, 'index'])->name('devis.index');
 
 Route::prefix('devis')->group(function () {

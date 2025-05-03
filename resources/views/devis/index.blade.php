@@ -1,16 +1,10 @@
-<form method="GET" action="{{ route('devis.index') }}">
-    <label for="supplier">Choisir un fournisseur :</label>
-    <select name="supplier" id="supplier">
-        <option value="">-- Tous --</option>
-        @foreach($suppliers as $supplier)
-            <option value="{{ $supplier['name'] }}" {{ $selectedSupplier == $supplier['name'] ? 'selected' : '' }}>
-                {{ $supplier['name'] }}
-            </option>
-        @endforeach
-    </select>
-    <button type="submit">Filtrer</button>
-</form>
 
+<div class="container">
+    <h1 class="mb-4">Liste des Devis </h1>
+
+    <a href="{{ route('devis.filtre') }}" class="btn btn-outline-primary mb-3">Filtrer par fournisseur</a>
+
+    @if (count($commandes) > 0)
 <table>
     <thead>
         <tr>
@@ -43,3 +37,9 @@
         @endforelse
     </tbody>
 </table>
+@else
+        <div class="alert alert-info">
+            Aucune devis  trouvée.
+        </div>
+    @endif
+    </div>

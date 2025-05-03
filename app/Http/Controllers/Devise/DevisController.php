@@ -18,7 +18,18 @@ class DevisController extends Controller
         $this->devisApi = $devisApi;
         $this->fournisseurApi = $fournisseurApi;
     }
-
+    public function filtre()
+    {
+        try {
+            $suppliers = $this->fournisseurApi->getAllFournisseurs();
+            return view('devis.filtre', [
+                'suppliers' => $suppliers
+            ]);
+        } catch (\Exception $e) {
+            Session::forget('sid');
+            return redirect()->route('login')->withErrors(['message' => $e->getMessage()]);
+        }
+    }
     public function index(Request $request)
     {
         try {

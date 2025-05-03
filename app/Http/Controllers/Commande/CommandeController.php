@@ -20,7 +20,7 @@ class CommandeController extends Controller
     {
         try {
             $suppliers = $this->fournisseurApi->getAllFournisseurs();
-            return view('commandes.filter', [
+            return view('commandes.filtre', [
                 'suppliers' => $suppliers
             ]);
         } catch (\Exception $e) {

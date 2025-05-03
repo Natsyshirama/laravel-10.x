@@ -1,6 +1,4 @@
-@extends('layouts.app')
 
-@section('content')
 <div class="container">
     <h1 class="mb-4">Liste des Commandes d'Achat</h1>
 
@@ -39,8 +37,10 @@
             <tbody>
                 @foreach ($commandes as $commande)
                     <tr>
-                        <td>{{ $commande['name'] }}</td>
-                        <td>{{ $commande['supplier'] ?? $commande['supplier_name']  }}</td>
+                        <td>
+                        <a href="{{ route('commandes.show', ['name' => $commande['name']]) }}">
+                        {{ $commande['name'] }}</a></td>
+                    <td>{{ $commande['supplier'] ?? $commande['supplier_name']  }}</td>
                         <td>{{ $commande['status'] }}</td>
                         <td>{{ $commande['transaction_date'] }}</td>
                         <td>{{ number_format($commande['grand_total'], 2) }}{{ $commande['currency'] }}</td>
@@ -54,4 +54,3 @@
         </div>
     @endif
 </div>
-@endsection

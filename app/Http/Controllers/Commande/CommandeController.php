@@ -41,4 +41,17 @@ class CommandeController extends Controller
             return redirect()->route('login')->withErrors(['message' => $e->getMessage()]);
         }
     }
+    public function show($name)
+    {
+        try {
+            $details = $this->commandeApi->getCommandeAchatDetails($name);
+
+            return view('commandes.show', [
+                'commande' => $details
+            ]);
+        } catch (\Exception $e) {
+            Session::forget('sid');
+            return redirect()->route('login')->withErrors(['message' => $e->getMessage()]);
+        }
+    }
 }

@@ -39,4 +39,22 @@ class CommandeAchatAPI
 
         return $response->json('data');
     }
+    public function getCommandeAchatDetails($name)
+    {
+        $sid = Session::get('sid');
+
+        if (!$sid) {
+            throw new \Exception('Non connecté');
+        }
+
+        $response = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid
+        ])->get($this->baseUrl . '/api/resource/Purchase Order/' . $name);
+
+        if (!$response->successful()) {
+            throw new \Exception("Erreur API : " . $response->body());
+        }
+
+        return $response->json('data');
+    }
 }

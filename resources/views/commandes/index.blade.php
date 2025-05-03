@@ -1,26 +1,7 @@
-
 <div class="container">
     <h1 class="mb-4">Liste des Commandes d'Achat</h1>
 
-    {{-- Formulaire de filtre par fournisseur --}}
-    <form method="GET" action="{{ route('commandes.index') }}" class="mb-4">
-        <div class="form-group row">
-            <label for="supplier" class="col-sm-2 col-form-label">Fournisseur</label>
-            <div class="col-sm-6">
-                <select name="supplier" id="supplier" class="form-control">
-                    <option value="">-- Tous les fournisseurs --</option>
-                    @foreach ($suppliers as $supplier)
-                        <option value="{{ $supplier['name'] }}" {{ $selectedSupplier == $supplier['name'] ? 'selected' : '' }}>
-                            {{ $supplier['supplier_name'] ?? $supplier['name'] }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-sm-2">
-                <button type="submit" class="btn btn-primary">Filtrer</button>
-            </div>
-        </div>
-    </form>
+    <a href="{{ route('commandes.filtre') }}" class="btn btn-outline-primary mb-3">Filtrer par fournisseur</a>
 
     {{-- Tableau des commandes d'achat --}}
     @if (count($commandes) > 0)
@@ -38,12 +19,14 @@
                 @foreach ($commandes as $commande)
                     <tr>
                         <td>
-                        <a href="{{ route('commandes.show', ['name' => $commande['name']]) }}">
-                        {{ $commande['name'] }}</a></td>
-                    <td>{{ $commande['supplier'] ?? $commande['supplier_name']  }}</td>
+                            <a href="{{ route('commandes.show', ['name' => $commande['name']]) }}">
+                                {{ $commande['name'] }}
+                            </a>
+                        </td>
+                        <td>{{ $commande['supplier'] ?? $commande['supplier_name'] }}</td>
                         <td>{{ $commande['status'] }}</td>
                         <td>{{ $commande['transaction_date'] }}</td>
-                        <td>{{ number_format($commande['grand_total'], 2) }}{{ $commande['currency'] }}</td>
+                        <td>{{ number_format($commande['grand_total'], 2) }} {{ $commande['currency'] }}</td>
                     </tr>
                 @endforeach
             </tbody>

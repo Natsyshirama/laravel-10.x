@@ -35,5 +35,6 @@ Route::put('/devis/{name}/update-rate', [DevisController::class, 'updateItemRate
     ->name('devis.update-rate');
 
 //Commande Achat
+Route::get('/commandes/filtre', [CommandeController::class, 'filtre'])->name('commandes.filtre');
 Route::get('/commandes', [CommandeController::class, 'index'])->name('commandes.index');
 Route::get('/commandes/{name}', [CommandeController::class, 'show'])->name('commandes.show');

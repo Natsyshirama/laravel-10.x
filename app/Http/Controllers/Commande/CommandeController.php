@@ -16,7 +16,19 @@ class CommandeController extends Controller
         $this->commandeApi = $commandeApi;
         $this->fournisseurApi = $fournisseurApi;
     }
-
+    public function filtre()
+    {
+        try {
+            $suppliers = $this->fournisseurApi->getAllFournisseurs();
+            return view('commandes.filter', [
+                'suppliers' => $suppliers
+            ]);
+        } catch (\Exception $e) {
+            Session::forget('sid');
+            return redirect()->route('login')->withErrors(['message' => $e->getMessage()]);
+        }
+    }
+    
     public function index(Request $request)
     {
         try {

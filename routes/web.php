@@ -17,6 +17,8 @@ use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Devise\DevisController;
 use App\Http\Controllers\Commande\CommandeController;
 use App\Http\Controllers\Facture\FactureAchatController;
+use App\Http\Controllers\Dashboard\DashboardController;
+
 ///
 Route::get('/', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
@@ -47,3 +49,6 @@ Route::get('/commandes/{name}', [CommandeController::class, 'show'])->name('comm
 //facture achat
 Route::get('/factures/achat', [\App\Http\Controllers\Facture\FactureAchatController::class, 'index'])->name('factures.achat.index');
 Route::get('/factures/achat/{name}', [\App\Http\Controllers\Facture\FactureAchatController::class, 'show'])->name('factures.achat.show');
+
+//dashboard
+Route::get('/dashboard/achats', [DashboardController::class, 'achatsGlobal'])->name('dashboard.achats');

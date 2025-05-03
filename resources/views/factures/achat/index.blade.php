@@ -1,51 +1,110 @@
+@extends('home')
 
-<div class="container">
-    <h1 class="mb-4">Liste des Factures d'Achat</h1>
-    <form method="GET" action="{{ route('factures.achat.index') }}" class="mb-4">
-        <div class="form-row align-items-end">
-            <div class="form-group col-md-4">
-                <label for="type">Filtrer par :</label>
-                <select name="type" id="type" class="form-control">
-                    <option value="">-- Tous --</option>
-                    <option value="payer" {{ $selectType == 'payer' ? 'select' : '' }}>Payé</option>
-                    <option value="non_payer" {{ $selectType == 'non_payer' ? 'select' : '' }}>Non Payé</option>
-                    <option value="enretard" {{ $selectType == 'enretard' ? 'select' : '' }}>enretard</option>
+@section('title', 'Factures d\'Achat')
 
-                </select>
-            </div>
-            <div class="form-group col-md-2">
-                <button type="submit" class="btn btn-primary">Filtrer</button>
+@section('content')
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="card-title">
+                <i class="fas fa-file-invoice-dollar"></i> Factures d'Achat
+            </h2>
+            <div>
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nouvelle facture
+                </button>
             </div>
         </div>
-    </form>
-    @if(count($factures) > 0)
-        <table class="table table-bordered">
-            <thead class="thead-light">
-                <tr>
-                    <th>N° Facture</th>
-                    <th>Fournisseur</th>
-                    <th>Statut</th>
-                    <th>Date</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($factures as $facture)
-                    <tr>
-                        <td>
-                    <a href="{{ route('factures.achat.show', ['name' => $facture['name']]) }}">
-                            {{ $facture['name'] }}
-                        </a>        
-                    </td>
-                        <td>{{ $facture['supplier'] }}</td>
-                        <td>{{ $facture['status'] }}</td>
-                        <td>{{ $facture['posting_date'] }}</td>
-                        <td>{{ number_format($facture['grand_total'], 2) }} {{ $facture['currency'] }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @else
-        <div class="alert alert-info">Aucune facture trouvée.</div>
-    @endif
+    </div>
+
+    <div class="card-body">
+        <form method="GET" action="{{ route('factures.achat.index') }}" class="mb-4">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label for="type" class="form-label">Statut de paiement</label>
+                    <select name="type" id="type" class="form-control select2-status">
+                        <option value="">-- Tous les statuts --</option>
+                        <option value="payer" {{ $selectType == 'payer' ? 'selected' : '' }}>Payé</option>
+                        <option value="non_payer" {{ $selectType == 'non_payer' ? 'selected' : '' }}>Non Payé</option>
+                        <option value="enretard" {{ $selectType == 'enretard' ? 'selected' : '' }}>En retard</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-filter"></i> Filtrer
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        @if(count($factures) > 0)
+            <div class="table-responsive">
+                <table class="data-table table-hover">
+                    <thead>
+                        <tr>
+                            <th>N° Facture</th>
+                            <th>Fournisseur</th>
+                            <th>Statut</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($factures as $facture)
+                            <tr>
+                                <td class="font-weight-bold">
+                                    <a href="{{ route('factures.achat.show', ['name' => $facture['name']]) }}" class="text-primary">
+                                        {{ $facture['name'] }}
+                                    </a>
+                                </td>
+                                <td>{{ $facture['supplier'] }}</td>
+                                <td>
+                                    <span class="badge 
+                                        @if($facture['status'] == 'Payé') bg-success
+                                        @elseif($facture['status'] == 'En retard') bg-danger
+                                        @else bg-warning
+                                        @endif">
+                                        {{ $facture['status'] }}
+                                    </span>
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($facture['posting_date'])->format('d/m/Y') }}</td>
+                                <td class="font-weight-bold">{{ number_format($facture['grand_total'], 2) }} {{ $facture['currency'] }}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ route('factures.achat.show', ['name' => $facture['name']]) }}" class="btn btn-info" title="Voir">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <button class="btn btn-secondary" title="Imprimer">
+                                            <i class="fas fa-print"></i>
+                                        </button>
+                                        @if($facture['status'] != 'Payé')
+                                        <button class="btn btn-success" title="Marquer comme payé">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> Aucune facture trouvée
+            </div>
+        @endif
+    </div>
 </div>
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('.select2-status').select2({
+            minimumResultsForSearch: Infinity
+        });
+    });
+</script>
+@endpush
+@endsection

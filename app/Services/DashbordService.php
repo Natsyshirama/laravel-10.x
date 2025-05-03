@@ -29,6 +29,8 @@ class DashbordService
         $commandes = Http::withHeaders($headers)
             ->get($this->baseUrl . '/api/resource/Purchase Order?fields=["name","grand_total"]&limit_page_length=1000');
     
+
+        
         if (!$devis->successful() || !$commandes->successful()) {
             throw new \Exception("Erreur de récupération des données.");
         }

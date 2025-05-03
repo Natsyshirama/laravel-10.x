@@ -1,6 +1,7 @@
 
 <div class="container">
     <h1 class="mb-4">Liste des Devis </h1>
+   
 
     <a href="{{ route('devis.filtre') }}" class="btn btn-outline-primary mb-3">Filtrer par fournisseur</a>
 

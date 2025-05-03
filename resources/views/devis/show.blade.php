@@ -20,7 +20,6 @@
     <thead>
         <tr>
             <th>Item</th>
-            <th>Description</th>
             <th>Qte</th>
             <th>Prix Unitaire</th>
             <th>UOM</th>
@@ -29,22 +28,32 @@
     </thead>
     <tbody>
         @foreach ($devis['items'] as $item)
-            <tr>
-                <td>{{ $item['item_code'] }}</td>
-                <td>{{ $item['description'] }}</td>
-                <td>{{ $item['qty'] }}</td>
-                <td>{{ $item['rate'] }}</td>
-                <td>{{ $item['uom'] }}</td>
-                <td>
-                    <form action="{{ route('devis.update-rate', ['name' => $devis['name']]) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <input type="hidden" name="item_code" value="{{ $item['item_code'] }}">
-                        <input type="number" step="0.01" name="new_rate" value="{{ $item['rate'] }}" style="width: 80px;">
-                        <button type="submit" class="btn btn-sm btn-primary">Mettre à jour</button>
-                    </form>
-                </td>
-            </tr>
+        <form action="{{ route('devis.update-item', ['name' => $devis['name']]) }}" method="POST">
+    @csrf
+    @method('PUT')
+    <input type="hidden" name="item_code_originale" value="{{ $item['item_code'] }}">
+
+    <tr>
+   
+    <td>
+    <select name="item_code">
+    @foreach ($itemsList as $itemli)
+        <option value="{{ $itemli['name'] }}" {{ $itemli['name'] == $item['item_code'] ? 'selected' : '' }}>
+            {{ $itemli['item_name'] }} ({{ $itemli['name'] }})
+        </option>
+    @endforeach
+</select>
+
+    </td>
+        <td><input type="number" name="qty" value="{{ $item['qty'] }}" step="0.01"></td>
+        <td><input type="number" name="rate" value="{{ $item['rate'] }}" step="0.01"></td>
+        <td><input type="text" name="uom" value="{{ $item['uom'] }}"></td>
+        <td>
+            <button type="submit" class="btn btn-sm btn-success">Mettre à jour</button>
+        </td>
+    </tr>
+</form>
+
         @endforeach
     </tbody>
 </table>

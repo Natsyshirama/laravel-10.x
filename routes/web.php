@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Devise\DevisController;
-
+use App\Http\Controllers\Commande\CommandeController;
 Route::get('/', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -33,3 +33,6 @@ Route::prefix('devis')->group(function () {
 
 Route::put('/devis/{name}/update-rate', [DevisController::class, 'updateItemRate'])
     ->name('devis.update-rate');
+
+//Commande Achat
+Route::get('/commandes', [CommandeController::class, 'index'])->name('commandes.index');

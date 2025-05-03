@@ -31,3 +31,5 @@ Route::prefix('devis')->group(function () {
     Route::put('/{name}', [DevisController::class, 'update'])->name('devis.update');
 });
 
+Route::put('/devis/{name}/update-rate', [DevisController::class, 'updateItemRate'])
+    ->name('devis.update-rate');

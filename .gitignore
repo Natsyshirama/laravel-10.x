@@ -17,3 +17,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/app/Http/Controllers/Commandes/CommandesController.php
+/app/Services/Commandes/CommandesService.php         

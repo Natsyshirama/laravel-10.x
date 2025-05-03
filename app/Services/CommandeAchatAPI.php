@@ -1,20 +1,17 @@
 <?php
-
 namespace App\Services;
-
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 
-class DevisSuppAPI
+class CommandeAchatAPI
 {
     protected $baseUrl;
-
     public function __construct()
     {
         $this->baseUrl = env('FRAPPE_URL', 'http://erpnext.localhost:8000/');
     }
 
-    public function getQuotations(array $extraParams = [])
+    public function getCommandesAchat(array $extraParams = [])
     {
         $sid = Session::get('sid');
 
@@ -24,8 +21,8 @@ class DevisSuppAPI
 
         $fields = [
             "name", "supplier", "supplier_name", "company",
-            "status", "transaction_date", "valid_till",
-            "grand_total", "currency"
+            "status", "transaction_date", "grand_total",
+            "currency"
         ];
 
         $params = array_merge([
@@ -34,7 +31,7 @@ class DevisSuppAPI
 
         $response = Http::withHeaders([
             'Cookie' => 'sid=' . $sid
-        ])->get($this->baseUrl . '/api/resource/Supplier Quotation', $params);
+        ])->get($this->baseUrl . '/api/resource/Purchase Order', $params);
 
         if (!$response->successful()) {
             throw new \Exception("Erreur API : " . $response->body());
@@ -42,25 +39,4 @@ class DevisSuppAPI
 
         return $response->json('data');
     }
-
-    public function getQuotationDetails($name)
-    {
-        $sid = Session::get('sid');
-
-        if (!$sid) {
-            throw new \Exception('Non connecté');
-        }
-
-        $response = Http::withHeaders([
-            'Cookie' => 'sid=' . $sid
-        ])->get($this->baseUrl . '/api/resource/Supplier Quotation/' . $name);
-
-        if (!$response->successful()) {
-            throw new \Exception("Erreur API : " . $response->body());
-        }
-
-        return $response->json('data');
-    }
-
- 
 }

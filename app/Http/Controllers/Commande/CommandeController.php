@@ -1,21 +1,19 @@
 <?php
-
-namespace App\Http\Controllers\Devise;
-
+namespace App\Http\Controllers\Commande;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\DevisSuppAPI;
+use App\Services\CommandeAchatAPI;
 use App\Services\FournisseurAPI;
 use Illuminate\Support\Facades\Session;
 
-class DevisController extends Controller
+class CommandeController extends Controller
 {
-    protected $devisApi;
+    protected $commandeApi;
     protected $fournisseurApi;
 
-    public function __construct(DevisSuppAPI $devisApi, FournisseurAPI $fournisseurApi)
+    public function __construct(CommandeAchatAPI $commandeApi, FournisseurAPI $fournisseurApi)
     {
-        $this->devisApi = $devisApi;
+        $this->commandeApi = $commandeApi;
         $this->fournisseurApi = $fournisseurApi;
     }
 
@@ -31,10 +29,10 @@ class DevisController extends Controller
                 $filters['filters'] = json_encode([['supplier', '=', $selectedSupplier]]);
             }
 
-            $devis = $this->devisApi->getQuotations($filters);
+            $commandes = $this->commandeApi->getCommandesAchat($filters);
 
-            return view('devis.index', [
-                'devis' => $devis,
+            return view('commandes.index', [
+                'commandes' => $commandes,
                 'suppliers' => $suppliers,
                 'selectedSupplier' => $selectedSupplier
             ]);
@@ -43,17 +41,4 @@ class DevisController extends Controller
             return redirect()->route('login')->withErrors(['message' => $e->getMessage()]);
         }
     }
-    public function show($name)
-{
-    try {
-        $details = $this->devisApi->getQuotationDetails($name);
-
-        return view('devis.show', [
-            'devis' => $details
-        ]);
-    } catch (\Exception $e) {
-        Session::forget('sid');
-        return redirect()->route('login')->withErrors(['message' => $e->getMessage()]);
-    }
-}
 }

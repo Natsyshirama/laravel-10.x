@@ -1,7 +1,25 @@
 <div class="container">
     <h1 class="mb-4">Liste des Commandes d'Achat</h1>
 
-    <a href="{{ route('commandes.filtre') }}" class="btn btn-outline-primary mb-3">Filtrer par fournisseur</a>
+    {{-- Formulaire de filtre par type (facturé / reçu) --}}
+    <form method="GET" action="{{ route('commandes.index') }}" class="mb-4">
+        <div class="form-row align-items-end">
+            <div class="form-group col-md-4">
+                <label for="type">Filtrer par :</label>
+                <select name="type" id="type" class="form-control">
+                    <option value="">-- Tous --</option>
+                    <option value="paye" {{ $selectedType == 'paye' ? 'selected' : '' }}>Entièrement facturé</option>
+                    <option value="non_paye" {{ $selectedType == 'non_paye' ? 'selected' : '' }}>Non facturé</option>
+                    <option value="non_recu" {{ $selectedType == 'non_recu' ? 'selected' : '' }}>Non reçu</option>
+                    <option value="recu" {{ $selectedType == 'recu' ? 'selected' : '' }}>Entièrement reçu</option>
+                    <option value="paye_recu" {{ $selectedType == 'paye_recu' ? 'selected' : '' }}>Partiellement payé et reçu</option>
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+                <button type="submit" class="btn btn-primary">Filtrer</button>
+            </div>
+        </div>
+    </form>
 
     {{-- Tableau des commandes d'achat --}}
     @if (count($commandes) > 0)

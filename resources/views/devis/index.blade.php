@@ -4,7 +4,7 @@
 
     <a href="{{ route('devis.filtre') }}" class="btn btn-outline-primary mb-3">Filtrer par fournisseur</a>
 
-    @if (count($commandes) > 0)
+    @if (count($devis) > 0)
 <table>
     <thead>
         <tr>

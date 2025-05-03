@@ -32,27 +32,36 @@ class CommandeController extends Controller
     public function index(Request $request)
     {
         try {
-            $selectedSupplier = $request->input('supplier');
-
-            $suppliers = $this->fournisseurApi->getAllFournisseurs();
-
+            $selectedType = $request->input('type'); // 'facture' ou 'recu'
+    
             $filters = [];
-            if ($selectedSupplier) {
-                $filters['filters'] = json_encode([['supplier', '=', $selectedSupplier]]);
+    
+            if ($selectedType === 'paye') {
+                $filters['filters'] = json_encode([['per_billed', '=', 100]]);
+            } elseif ($selectedType === 'recu') {
+                $filters['filters'] = json_encode([['per_received', '=', 100]]);
+            } elseif ($selectedType === 'non_recu') {
+                $filters['filters'] = json_encode([['per_received', '<', 100]]);
+            }elseif ($selectedType === 'non_paye') {
+                $filters['filters'] = json_encode([['per_billed', '<', 100]]);
+            } elseif ($selectedType === 'paye_recu') {
+                $filters['filters'] = json_encode([
+                    ['per_billed', '=', 100],
+                    ['per_received', '=', 100]
+                ]);
             }
-
             $commandes = $this->commandeApi->getCommandesAchat($filters);
-
+    
             return view('commandes.index', [
                 'commandes' => $commandes,
-                'suppliers' => $suppliers,
-                'selectedSupplier' => $selectedSupplier
+                'selectedType' => $selectedType
             ]);
         } catch (\Exception $e) {
             Session::forget('sid');
             return redirect()->route('login')->withErrors(['message' => $e->getMessage()]);
         }
     }
+    
     public function show($name)
     {
         try {

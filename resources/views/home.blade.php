@@ -26,7 +26,7 @@
                     <i class="fas fa-truck"></i> Commandes
                 </a>
                 <a href="{{ route('factures.achat.index') }}" class="nav-item">
-                    <i class="fas fa-file-invoice"></i> Factures
+                    <i class="fas fa-file-invoice"></i> Mode comptabilite
                 </a>
                 <a href="{{ route('profile') }}" class="nav-item">
                     <i class="fas fa-user"></i> Mon Profil

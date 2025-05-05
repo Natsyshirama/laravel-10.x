@@ -49,6 +49,8 @@ Route::get('/commandes/{name}', [CommandeController::class, 'show'])->name('comm
 //facture achat
 Route::get('/factures/achat', [\App\Http\Controllers\Facture\FactureAchatController::class, 'index'])->name('factures.achat.index');
 Route::get('/factures/achat/{name}', [\App\Http\Controllers\Facture\FactureAchatController::class, 'show'])->name('factures.achat.show');
+Route::post('/factures-achat/{name}/validate', [FactureAchatController::class, 'validateFacture'])->name('factures.achat.validate');
+Route::post('/factures-achat/{name}/pay', [FactureAchatController::class, 'payFacture'])->name('factures.achat.pay');
 
 //dashboard
 Route::get('/dashboard/achats', [DashboardController::class, 'achatsGlobal'])->name('dashboard.achats');

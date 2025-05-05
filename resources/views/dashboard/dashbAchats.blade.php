@@ -67,6 +67,26 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="stat-card bg-warning-light">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart text-warning"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Factures Achats</h3>
+                        <div class="stat-values">
+                            <div class="stat-item">
+                                <span class="label">Nombre total :</span>
+                                <span class="value">{{ $stats['facture_count'] }}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="label">Total montants :</span>
+                                <span class="value">{{ number_format($stats['facture_total'], 2) }} €</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Graphique supplémentaire -->

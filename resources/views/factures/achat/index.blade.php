@@ -75,14 +75,25 @@
                                         <a href="{{ route('factures.achat.show', ['name' => $facture['name']]) }}" class="btn btn-info" title="Voir">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <button class="btn btn-secondary" title="Imprimer">
-                                            <i class="fas fa-print"></i>
-                                        </button>
-                                        @if($facture['status'] != 'Payé')
-                                        <button class="btn btn-success" title="Marquer comme payé">
-                                            <i class="fas fa-check"></i>
-                                        </button>
+                                       
+                                    @if($facture['status'] != 'Paid' && $facture['status'] != 'Cancelled')
+                                        @if($facture['status'] == 'Draft')
+                                            <form method="POST" action="{{ route('factures.achat.validate', $facture['name']) }}">
+                                            @csrf
+                                                <button type="submit" class="btn btn-warning" title="Valider la facture">
+                                                            <i class="fas fa-check-circle"></i> Valider
+                                                </button>
+                                            </form>
+                                        @else
+                                            <form method="POST" action="{{ route('factures.achat.pay', $facture['name']) }}">
+                                            @csrf
+                                                <button class="btn btn-success" title="Marquer comme payé">
+                                                    <i class="fas fa-money-check-alt"></i> Payer
+                                                </button>
+                                            </form>
                                         @endif
+                                    @endif
+
                                     </div>
                                 </td>
                             </tr>

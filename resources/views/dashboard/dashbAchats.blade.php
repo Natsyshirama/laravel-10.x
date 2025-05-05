@@ -68,7 +68,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="stat-card bg-warning-light">
+                <div class="stat-card bg-warningk-light">
                     <div class="stat-icon">
                         <i class="fas fa-shopping-cart text-warning"></i>
                     </div>
@@ -187,6 +187,9 @@
     
     .bg-warning-light {
         background-color: rgba(248, 150, 30, 0.1);
+    }
+    .bg-warning-light {
+        background-color: rgba(241, 248, 30, 0.27);
     }
 </style>
 @endsection

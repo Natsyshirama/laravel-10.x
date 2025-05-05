@@ -57,6 +57,7 @@ class FactureAchatAPI
 
         return $response->json('data');
     }
+
     public function validerFacture($name)
     {
         $sid = Session::get('sid');
@@ -140,6 +141,7 @@ class FactureAchatAPI
                 $this->getCompanyCurrency($facture['company'])
             );
         }
+        
     
         // Création du Payment Entry
         $response = Http::withHeaders([
@@ -152,19 +154,40 @@ class FactureAchatAPI
         }
     
         // ... reste du code inchangé ...
-        //validation Payment entry =Payer
-        // $paymentEntry = $response->json('data');
+        //validation Payment entry = Payer
+    //      $paymentEntry = $response->json('data');
 
-        // // Validation du Payment Entry
-        // $submitResponse = Http::withHeaders([
-        //     'Cookie' => 'sid=' . $sid
-        // ])->post($this->baseUrl . '/api/resource/Payment Entry/' . $paymentEntry['name'] . '/submit');
+    //     $submitResponse = Http::withHeaders([
+    //         'Cookie' => 'sid=' . $sid,
+    //         'Accept' => 'application/json',
+    //         'Content-Type' => 'application/json'
+    //     ])->post($this->baseUrl . '/api/method/frappe.client.submit', [
+    //         'doc' => $paymentEntry,
+    //     ]);
+    //     if (!$submitResponse->successful()) {
+    //         throw new \Exception("Erreur lors de la validation du paiement : " . $submitResponse->body());
+    //   }
+        //Validation Facture =Paid
+        //$factureValider = $facture->json('data');
+        // $facturSubmitResponse = Http::withHeaders([
+        //     'Cookie' => 'sid=' . $sid,
+        //     'Accept' => 'application/json',
+        //     'Content-Type' => 'application/json'
+        // ])->post($this->baseUrl . '/api/method/frappe.client.submit', [
+        //     'doc' => $factureValider,
+        // ]);
     
-        // if (!$submitResponse->successful()) {
-        //     throw new \Exception("Erreur lors de la validation du paiement : " . $submitResponse->body());
-        // }
+        
+    //     if (!$facturSubmitResponse->successful()) {
+    //         throw new \Exception("Erreur lors de la validation du paiement : " . $submitResponse->body());
+    //   }    
+        // return[
+        //     'payment_entry'=$response->json('data'),
+        //     'valid_payment'= $submitResponse->json('data'),
+        //     'valid_facture' =$facturSubmitResponse->json('data'),
+        // ]
+        return $response->json('data');
     
-        // return $submitResponse->json('data');
     }
     
     // Ajoutez ces nouvelles méthodes à votre service

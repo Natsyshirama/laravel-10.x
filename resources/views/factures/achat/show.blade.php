@@ -11,7 +11,7 @@
             </h2>
             <div class="btn-group">
                 <button class="btn btn-secondary">
-                    <i class="fas fa-print"></i> Imprimer
+                    <i class="fas fa-print"></i> export
                 </button>
                 @if($facture['status'] != 'Payé')
                 <button class="btn btn-success">

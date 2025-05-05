@@ -65,7 +65,7 @@ class AuthController extends Controller
                     Session::put('user_full_name', $data['full_name'] ?? $request->usr);
                     $cookie = cookie('sid', $sid, 120); // 120 minutes
 
-                    return redirect()->route('dashboard')->with('success', 'Connexion réussie')
+                    return redirect()->route('dashboard.achats')->with('success', 'Connexion réussie')
                                                         ->cookie($cookie);          
                 }
                 

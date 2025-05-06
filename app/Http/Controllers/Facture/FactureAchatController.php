@@ -75,14 +75,14 @@ class FactureAchatController extends Controller
 public function payFacture($factureName)
 {
     try {
-        // Vérifie que la facture existe et est valide
+        // verif si valide fact
         $facture = $this->factureAchatApi->getFacturesAchatDetails($factureName);
 
         if ($facture['docstatus'] == 0) {
             return redirect()->back()->withErrors(['message' => "La facture est en brouillon. Veuillez la valider avant de la payer."]);
         }
 
-        // Effectue le paiement et le valide
+        //payer la facture
         $payment = $this->factureAchatApi->payFacture($factureName);
 
         return redirect()->route('factures.achat.index')->with('success', "Le paiement a été effectué avec succès pour la facture {$factureName}.");

@@ -1,36 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
     <title>Connexion</title>
+    <link rel="stylesheet" href="{{ asset('css/loginstyl.css') }}">
 </head>
 <body>
-    <h2>Connexion</h2>
+    <div class="login-container">
+        <h2>Connexion</h2>
 
-    @if ($errors->any())
-        <div style="color:red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+        @if ($errors->any())
+            <div class="error-message">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-    @if (session('success'))
-        <div style="color:green;">
-            {{ session('success') }}
-        </div>
-    @endif
+        @if (session('success'))
+            <div class="success-message">
+                {{ session('success') }}
+            </div>
+        @endif
 
-    <form method="POST" action="{{ route('login.submit') }}">
-        @csrf
-        <label>Nom d'utilisateur:</label><br>
-        <input type="text" name="usr" value="{{ old('usr') }}"><br><br>
+        <form method="POST" action="{{ route('login.submit') }}">
+            @csrf
+            <label>Nom d'utilisateur:</label>
+            <input type="text" name="usr" value="{{ old('usr') }}">
 
-        <label>Mot de passe:</label><br>
-        <input type="password" name="pwd"><br><br>
+            <label>Mot de passe:</label>
+            <input type="password" name="pwd">
 
-        <button type="submit">Se connecter</button>
-    </form>
+            <button type="submit">Se connecter</button>
+        </form>
+    </div>
 </body>
 </html>

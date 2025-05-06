@@ -10,18 +10,40 @@
                 <i class="fas fa-file-invoice"></i> Facture : {{ $facture['name'] }}
             </h2>
             <div class="btn-group">
-                <button class="btn btn-secondary">
-                    <i class="fas fa-print"></i> export
+    <!-- Bouton Export PDF -->
+    <a href="{{ route('factures.achat.export.single.pdf', $facture['name']) }}" 
+       class="btn btn-danger" title="Export PDF">
+        <i class="fas fa-file-pdf"></i> PDF
+    </a>
+    
+    <!-- Bouton Export CSV -->
+    <a href="{{ route('factures.achat.export.single.csv', $facture['name']) }}" 
+       class="btn btn-success" title="Export CSV">
+        <i class="fas fa-file-csv"></i> CSV
+    </a>
+
+    @if($facture['status'] != 'Paid' && $facture['status'] != 'Cancelled')
+       @if($facture['status'] == 'Draft')
+            <form method="POST" action="{{ route('factures.achat.validate', $facture['name']) }}">
+    @csrf
+                <button type="submit" class="btn btn-warning" title="Valider la facture">
+                        i class="fas fa-check-circle"></i> Valider
                 </button>
-                @if($facture['status'] != 'Payé')
-                <button class="btn btn-success">
-                    <i class="fas fa-check"></i> Marquer comme payé
+            </form>
+       @else
+            <form method="POST" action="{{ route('factures.achat.pay', $facture['name']) }}">
+        @csrf
+                <button class="btn btn-success" title="Marquer comme payé">
+                     <i class="fas fa-money-check-alt"></i> Payer
                 </button>
-                @endif
-                <a href="{{ route('factures.achat.index') }}" class="btn btn-light">
-                    <i class="fas fa-arrow-left"></i> Retour
-                </a>
-            </div>
+        </form>
+        @endif
+    @endif
+    
+    <a href="{{ route('factures.achat.index') }}" class="btn btn-light">
+        <i class="fas fa-arrow-left"></i> Retour
+    </a>
+</div>
         </div>
     </div>
 
@@ -126,6 +148,11 @@
 </div>
 
 <style>
+    .info-section { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th { background-color: #f2f2f2; text-align: left; padding: 5px; }
+    td { padding: 5px; border-bottom: 1px solid #ddd; }
     .info-card {
         background:rgb(255, 255, 255);
         border-radius: 8px;
@@ -162,5 +189,6 @@
     .table-items td, .table-items th {
         vertical-align: middle;
     }
+    
 </style>
 @endsection

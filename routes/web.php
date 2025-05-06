@@ -18,6 +18,8 @@ use App\Http\Controllers\Devise\DevisController;
 use App\Http\Controllers\Commande\CommandeController;
 use App\Http\Controllers\Facture\FactureAchatController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Export\ExportController;
+use PHPUnit\Util\Exporter;
 
 ///
 Route::get('/', [AuthController::class, 'showLogin'])->name('login');
@@ -54,3 +56,8 @@ Route::post('/factures-achat/{name}/pay', [FactureAchatController::class, 'payFa
 
 //dashboard
 Route::get('/dashboard/achats', [DashboardController::class, 'achatsGlobal'])->name('dashboard.achats');
+
+
+//export
+Route::get('/factures-achat/{name}/export/pdf', [ExportController::class, 'exportSinglePdf'])->name('factures.achat.export.single.pdf');
+Route::get('/factures-achat/{name}/export/csv', [ExportController::class, 'exportSingleCsv'])->name('factures.achat.export.single.csv');

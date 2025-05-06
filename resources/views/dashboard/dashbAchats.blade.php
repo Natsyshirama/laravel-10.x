@@ -188,8 +188,8 @@
     .bg-warning-light {
         background-color: rgba(248, 150, 30, 0.1);
     }
-    .bg-warning-light {
-        background-color: rgba(241, 248, 30, 0.27);
+    .bg-warningk-light {
+        background-color: rgba(241, 249, 0, 0.38);
     }
 </style>
 @endsection

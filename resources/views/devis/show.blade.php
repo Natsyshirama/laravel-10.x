@@ -108,9 +108,11 @@
                                 <input type="text" name="uom" value="{{ $item['uom'] }}" class="form-control">
                             </td>
                             <td class="text-center">
+                            @if ($devis['status'] === 'Draft')
                                 <button type="submit" class="btn btn-sm btn-success">
                                     <i class="fas fa-save"></i> Mettre à jour
                                 </button>
+                            @endif
                             </td>
                         </tr>
                     </form>

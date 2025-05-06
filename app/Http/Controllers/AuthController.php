@@ -79,27 +79,24 @@ class AuthController extends Controller
         }
     }
     
-    /**
-     * Déconnecter l'utilisateur
-     */
+    
     public function logout()
     {
-        // Vérification de l'authentification
         if (!$this->checkAuth()) {
             return redirect()->route('login');
         }
         
         try {
-            // Si SID est stocké en session
+            
             if (Session::has('sid')) {
                 $sid = Session::get('sid');
                 
-                // Appel à l'API de déconnexion
+               
                 $response = Http::withHeaders([
                     'Cookie' => 'sid=' . $sid
                 ])->get($this->baseUrl . '/api/method/logout');
                 
-                // Supprimer les données de session
+                
                 Session::forget('sid');
                 Session::forget('user_full_name');
             }
@@ -111,9 +108,6 @@ class AuthController extends Controller
         }
     }
     
-    /**
-     * Récupérer l'utilisateur connecté actuel
-     */
     public function getLoggedUser()
     {
         if (!$this->checkAuth()) {
@@ -123,7 +117,6 @@ class AuthController extends Controller
         try {
             $sid = Session::get('sid');
             
-            // Appel à l'API pour obtenir l'utilisateur connecté
             $response = Http::withHeaders([
                 'Cookie' => 'sid=' . $sid
             ])->get($this->baseUrl . '/api/method/frappe.auth.get_logged_user');
@@ -133,7 +126,6 @@ class AuthController extends Controller
                 return view('user.logged', compact('sid', 'user'));
             }
             
-            // Si problème d'authentification, supprimer la session
             Session::forget('sid');
             Session::forget('user_full_name');
             
@@ -148,9 +140,7 @@ class AuthController extends Controller
     }
     }
     
-    /**
-     * Dashboard après connexion
-     */
+   
     public function dashboard()
     {
         if (!$this->checkAuth()) {

@@ -68,6 +68,8 @@ class CommandeAchatAPI
 
         return $response->json('data');
     }
+
+    
     public function getCommandeAchatDetails($name)
     {
         $sid = Session::get('sid');

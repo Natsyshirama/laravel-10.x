@@ -89,6 +89,7 @@ class FactureAchatAPI
     
         return $submitResponse->json('message') ?? $submitResponse->json('data');
     }
+
     
     public function payFacture($factureName)
     {

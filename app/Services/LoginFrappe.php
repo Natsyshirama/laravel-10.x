@@ -47,5 +47,6 @@ public function login(string $email, string $password)
         'success' => false,
         'message' => 'Identifiants invalides ou SID introuvable',
     ];
+
 }
 }

@@ -2,16 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Devise\DevisController;
@@ -34,13 +25,16 @@ Route::get('/devis/filtre', [DevisController::class, 'filtre'])->name('devis.fil
 
 Route::get('/devis', [DevisController::class, 'index'])->name('devis.index');
 
-Route::prefix('devis')->group(function () {
-    Route::get('/{name}', [DevisController::class, 'show'])->name('devis.show');
-});
-Route::put('/devis/{name}/update-item', [DevisController::class, 'updateItem'])->name('devis.update-item');
 
-Route::put('/devis/{name}/update-rate', [DevisController::class, 'updateItemRate'])
-    ->name('devis.update-rate');
+    Route::get('devis/{name}', [DevisController::class, 'show'])->name('devis.show');
+
+// web.php
+Route::get('/devis/createForm', [DevisController::class, 'createForm'])
+     ->name('deviscreateForm');
+Route::post('/devis/{name}/update-and-submit', [DevisController::class, 'updateAndSubmit'])
+->name('devis.update-and-submit');
+
+
 
 //Commande Achat
 Route::get('/commandes/filtre', [CommandeController::class, 'filtre'])->name('commandes.filtre');

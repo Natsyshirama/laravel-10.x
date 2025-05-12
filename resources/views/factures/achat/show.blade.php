@@ -27,7 +27,7 @@
             <form method="POST" action="{{ route('factures.achat.validate', $facture['name']) }}">
     @csrf
                 <button type="submit" class="btn btn-warning" title="Valider la facture">
-                        i class="fas fa-check-circle"></i> Valider
+                        <i class="fas fa-check-circle"></i> Valider
                 </button>
             </form>
        @else

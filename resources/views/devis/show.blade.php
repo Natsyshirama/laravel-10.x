@@ -19,6 +19,13 @@
     </div>
 
     <div class="card-body">
+        
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
+
         @if ($errors->any())
         <div class="alert alert-danger">
             <h5><i class="fas fa-exclamation-triangle"></i> Erreur :</h5>
@@ -36,7 +43,7 @@
                     <h5>Informations générales</h5>
                     <div class="info-item">
                         <span class="info-label">Fournisseur :</span>
-                        <span class="info-value">{{ $devis['supplier'] }}</span>
+                        <span class="info-value">{{ $devis['supplier_name'] }}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Date :</span>
@@ -45,11 +52,10 @@
                     <div class="info-item">
                         <span class="info-label">Statut :</span>
                         <span class="info-value badge 
-                            @if($devis['status'] == 'Validé') bg-success
-                            @elseif($devis['status'] == 'En attente') bg-warning
-                            @else bg-secondary
+                            @if($devis['docstatus'] == 1) bg-success
+                            @else bg-warning
                             @endif">
-                            {{ $devis['status'] }}
+                            {{ $devis['docstatus'] == 1 ? 'Soumis' : 'Brouillon' }}
                         </span>
                     </div>
                 </div>
@@ -70,56 +76,58 @@
             </div>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-bordered items-table">
-                <thead class="bg-light">
-                    <tr>
-                        <th width="40%">Article</th>
-                        <th width="15%">Quantité</th>
-                        <th width="15%">Prix Unitaire</th>
-                        <th width="10%">UOM</th>
-                        <th width="20%">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($devis['items'] as $item)
-                    <form action="{{ route('devis.update-item', ['name' => $devis['name']]) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <input type="hidden" name="item_code_originale" value="{{ $item['item_code'] }}">
-
+        <form action="{{ route('devis.update-and-submit', ['name' => $devis['name']]) }}" method="POST">
+            @csrf
+            <div class="table-responsive">
+                <table class="table table-bordered items-table">
+                    <thead class="bg-light">
                         <tr>
-                            <td>
-                                <select name="item_code" class="form-control select2-item">
-                                    @foreach ($itemsList as $itemli)
-                                        <option value="{{ $itemli['name'] }}" {{ $itemli['name'] == $item['item_code'] ? 'selected' : '' }}>
-                                            {{ $itemli['item_name'] }} ({{ $itemli['name'] }})
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <input type="number" name="qty" value="{{ $item['qty'] }}" step="0.01" class="form-control">
-                            </td>
-                            <td>
-                                <input type="number" name="rate" value="{{ $item['rate'] }}" step="0.01" class="form-control">
-                            </td>
-                            <td>
-                                <input type="text" name="uom" value="{{ $item['uom'] }}" class="form-control">
-                            </td>
-                            <td class="text-center">
-                            @if ($devis['status'] === 'Draft')
-                                <button type="submit" class="btn btn-sm btn-success">
-                                    <i class="fas fa-save"></i> Mettre à jour
-                                </button>
-                            @endif
-                            </td>
+                            <th width="40%">Article</th>
+                            <th width="15%">Quantité</th>
+                            <th width="15%">Prix Unitaire</th>
+                            <th width="15%">Montant</th>
+                            <th width="15%">UOM</th>
                         </tr>
-                    </form>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        @foreach ($devis['items'] as $index => $item)
+                            <tr>
+                                <td>
+                                    <select name="items[{{ $index }}][item_code]" class="form-control select2-item">
+                                        @foreach ($itemsList as $itemli)
+                                            <option value="{{ $itemli['name'] }}" {{ $itemli['name'] == $item['item_code'] ? 'selected' : '' }}>
+                                                {{ $itemli['item_name'] }} ({{ $itemli['name'] }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <input type="hidden" name="items[{{ $index }}][item_code_originale]" value="{{ $item['item_code'] }}">
+                                </td>
+                                <td>
+                                    <input type="number" name="items[{{ $index }}][qty]" value="{{ $item['qty'] }}" step="0.01" class="form-control">
+                                </td>
+                                <td>
+                                    <input type="number" name="items[{{ $index }}][rate]" value="{{ $item['rate'] }}" step="0.01" class="form-control">
+                                </td>
+                                <td>
+                                    {{ number_format($item['qty'] * $item['rate'], 2) }}
+                                </td>
+                                <td>
+                                    <input type="text" name="items[{{ $index }}][uom]" value="{{ $item['uom'] }}" class="form-control">
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            @if ($devis['docstatus'] == 0)
+            <div class="card-footer text-center">
+                <button type="submit" class="btn btn-success" onclick="return confirm('Êtes-vous sûr de vouloir mettre à jour et soumettre ce devis?')">
+                    <i class="fas fa-check-circle"></i> Mettre à jour et Soumettre
+                </button>
+            </div>
+            @endif
+        </form>
     </div>
 </div>
 
@@ -150,6 +158,10 @@
     .items-table input {
         min-width: 80px;
     }
+    
+    .select2-container {
+        width: 100% !important;
+    }
 </style>
 @endpush
 
@@ -160,6 +172,15 @@
         $('.select2-item').select2({
             width: '100%',
             dropdownParent: $('.items-table')
+        });
+        
+        // Recalcul du montant quand la quantité ou le prix change
+        $('table.items-table').on('change', 'input[name*="[qty]"], input[name*="[rate]"]', function() {
+            const row = $(this).closest('tr');
+            const qty = parseFloat(row.find('input[name*="[qty]"]').val()) || 0;
+            const rate = parseFloat(row.find('input[name*="[rate]"]').val()) || 0;
+            const amount = qty * rate;
+            row.find('td:eq(3)').text(amount.toFixed(2));
         });
     });
 </script>

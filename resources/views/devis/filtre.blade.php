@@ -9,6 +9,7 @@
     </div>
     
     <div class="card-body">
+        
         <form method="GET" action="{{ route('devis.index') }}">
             <div class="form-group">
                 <label for="supplier" class="form-label">Fournisseur</label>

@@ -9,11 +9,7 @@
             <h2 class="card-title">
                 <i class="fas fa-file-invoice-dollar"></i> Factures d'Achat
             </h2>
-            <div>
-                <button class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Nouvelle facture
-                </button>
-            </div>
+            
         </div>
     </div>
 

@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Services\DevisSuppAPI;
 use App\Services\FournisseurAPI;
 use App\Services\ArticleAPI;
-use App\Services\SupplierQuotationService;
 use Illuminate\Support\Facades\Session;
 
 class DevisController extends Controller
@@ -15,11 +14,8 @@ class DevisController extends Controller
     protected $devisApi;
     protected $fournisseurApi;
     protected $itemApi;
-    protected $newService;
-
-    public function __construct(SupplierQuotationService $newService,DevisSuppAPI $devisApi, FournisseurAPI $fournisseurApi, ArticleAPI $itemApi)
+    public function __construct(DevisSuppAPI $devisApi, FournisseurAPI $fournisseurApi, ArticleAPI $itemApi)
 {
-    $this->newService = $newService;
     $this->devisApi = $devisApi;
     $this->fournisseurApi = $fournisseurApi;
     $this->itemApi = $itemApi;
@@ -32,7 +28,8 @@ class DevisController extends Controller
                 'suppliers' => $suppliers
             ]);
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+            Session::forget('sid');
+            return redirect()->route('login')->withErrors(['message' => $e->getMessage()]);
         }
     }
     public function index(Request $request)
@@ -55,7 +52,8 @@ class DevisController extends Controller
                 'selectedSupplier' => $selectedSupplier
             ]);
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+            Session::forget('sid');
+            return redirect()->route('login')->withErrors(['message' => $e->getMessage()]);
         }
     }
     public function show($name)
@@ -69,39 +67,23 @@ class DevisController extends Controller
             'itemsList' => $itemsList,
         ]);
     } catch (\Exception $e) {
-        return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+        Session::forget('sid');
+        return redirect()->route('login')->withErrors(['message' => $e->getMessage()]);
     }
 }
 
-public function createForm()
+
+public function updateItem(Request $request, $name)
 {
     try {
-        $suppliers = $this->newService->getAllFournisseurs();
-        $items = $this->newService->getAllItem();
-        $warehouses = $this->newService->getAllWarehouse();
-        
-        return view('devis.createForm', [
-            'suppliers' => $suppliers,
-            'items' => $items,
-            'warehouses' => $warehouses
-        ]);
-    } catch (\Exception $e) {
-        return redirect()->route('devis.index')
-               ->withErrors(['message' => 'Erreur de récupération des données: ' . $e->getMessage()]);
-    }
-}
-public function updateAndSubmit(Request $request, $name)
-{
-    try {
-        $items = $request->input('items');
-        $this->devisApi->updateAndSubmitItems($name, $items);
-        
-        return redirect()->back()->with('success', 'Devis mis à jour et soumis avec succès!');
+        $updatedData = $request->only(['item_code', 'description', 'qty', 'rate', 'uom']);
+        $updatedData['item_code_originale'] = $request->input('item_code_originale'); 
+        $this->devisApi->updateItemDetails($name, $updatedData);
+
+        return redirect()->back()->with('success', 'Item mis à jour avec succès.');
     } catch (\Exception $e) {
         return redirect()->back()->withErrors(['message' => $e->getMessage()]);
     }
 }
-
-
 
 }

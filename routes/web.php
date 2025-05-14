@@ -29,8 +29,9 @@ Route::get('/devis', [DevisController::class, 'index'])->name('devis.index');
     Route::get('devis/{name}', [DevisController::class, 'show'])->name('devis.show');
 
 // web.php
-Route::get('/devis/createForm', [DevisController::class, 'createForm'])
-     ->name('deviscreateForm');
+Route::get('/createFormulaire', [DevisController::class, 'createFormulaire'])
+     ->name('devis.createForm');
+Route::post('/devis', [DevisController::class, 'store'])->name('devis.store');
 Route::post('/devis/{name}/update-and-submit', [DevisController::class, 'updateAndSubmit'])
 ->name('devis.update-and-submit');
 

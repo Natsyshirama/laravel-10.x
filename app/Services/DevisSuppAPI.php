@@ -107,15 +107,6 @@ class DevisSuppAPI
         ])->put($this->baseUrl . '/api/resource/Supplier Quotation/' . $quotationName, [
             'items' => $quotation['items']
         ]);
-        $data =[];
-        $payload = [
-            'supplier' => $data['supplier'],
-            'transaction_date' => $data['transaction_date'],
-            'valid_till' => $data['valid_till'],
-            'items' => $data['items'],
-            'doctype' => 'Supplier Quotation',
-            'docstatus' => 0
-        ];
     
         
         if (!$updateResponse->successful()) {

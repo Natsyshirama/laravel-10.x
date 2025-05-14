@@ -73,14 +73,14 @@ class DevisController extends Controller
     }
 }
 
-public function createForm()
+public function createFormulaire()
 {
     try {
         $suppliers = $this->newService->getAllFournisseurs();
         $items = $this->newService->getAllItem();
         $warehouses = $this->newService->getAllWarehouse();
         
-        return view('devis.createForm', [
+        return view('devis.addDevis', [
             'suppliers' => $suppliers,
             'items' => $items,
             'warehouses' => $warehouses
@@ -90,6 +90,7 @@ public function createForm()
                ->withErrors(['message' => 'Erreur de récupération des données: ' . $e->getMessage()]);
     }
 }
+
 public function updateAndSubmit(Request $request, $name)
 {
     try {
@@ -103,5 +104,29 @@ public function updateAndSubmit(Request $request, $name)
 }
 
 
+public function store(Request $request)
+{
+    try {
+        $validated = $request->validate([
+            'supplier' => 'required',
+            'transaction_date' => 'required|date',
+            'valid_till' => 'required|date',
+            'items' => 'required|array|min:1',
+            'items.*.item_code' => 'required',
+            'items.*.qty' => 'required|numeric|min:0.01',
+            'items.*.rate' => 'required|numeric|min:0',
+        ]);
+
+        $response = $this->newService->createSupplierQuotation($request->all());
+
+        return redirect()->route('devis.show', $response['data']['name'])
+               ->with('success', 'Devis créé avec succès!');
+
+    } catch (\Exception $e) {
+        return redirect()->back()
+               ->withInput()
+               ->withErrors(['message' => $e->getMessage()]);
+    }
+}
 
 }

@@ -67,6 +67,43 @@ class SupplierQuotationService{
         return $response->json('data');
     }
 
-
+    public function createSupplierQuotation(array $data)
+    {
+        $sid = Session::get('sid');
+        if (!$sid) {
+            throw new \Exception('Non connecté');
+        }
+    
+        // Formatage des items
+        $items = [];
+        foreach ($data['items'] as $item) {
+            $items[] = [
+                'item_code' => $item['item_code'],
+                'qty' => $item['qty'],
+                'rate' => $item['rate'],
+                'warehouse' => 'All Warehouse - EM',
+                'uom' => $item['uom'] ?? 'Unit'
+            ];
+        }
+    
+        $payload = [
+            'supplier' => $data['supplier'],
+            'transaction_date' => $data['transaction_date'],
+            'valid_till' => $data['valid_till'],
+            'items' => $items,
+            'doctype' => 'Supplier Quotation'
+        ];
+    
+        $response = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid,
+            'Accept' => 'application/json'
+        ])->post($this->baseUrl . '/api/resource/Supplier Quotation', $payload);
+    
+        if (!$response->successful()) {
+            throw new \Exception("Erreur API: " . $response->body());
+        }
+    
+        return $response->json();
+    }
     
 }

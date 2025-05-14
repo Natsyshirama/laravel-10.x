@@ -162,6 +162,13 @@
     .select2-container {
         width: 100% !important;
     }
+    .alert alert-danger{
+        color:rgb(255, 0, 0);
+
+    }.alert alert-success{
+        color:rgb(0, 254, 97);
+
+    }
 </style>
 @endpush
 

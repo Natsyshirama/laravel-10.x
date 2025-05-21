@@ -24,8 +24,8 @@ class ClientAPI{
         }
         $reponse =Http::withHeaders([
             'Cookie' => 'sid=' . $sid
-        ])->get($this->baseUrl . '/apii/resource/Customer',[
-            'fields' => json_encode(['name', 'cstomer_group', 'territory'])
+        ])->get($this->baseUrl . '/api/resource/Customer',[
+            'fields' => json_encode(['name', 'customer_group', 'territory'])
         ]);
         if (!$reponse->successful()) {
             throw new \Exception("Erreur API Fournisseur : " . $reponse->body());

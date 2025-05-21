@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Devise\DevisController;
 use App\Http\Controllers\Commande\CommandeController;
@@ -56,3 +57,7 @@ Route::get('/dashboard/achats', [DashboardController::class, 'achatsGlobal'])->n
 //export
 Route::get('/factures-achat/{name}/export/pdf', [ExportController::class, 'exportSinglePdf'])->name('factures.achat.export.single.pdf');
 Route::get('/factures-achat/{name}/export/csv', [ExportController::class, 'exportSingleCsv'])->name('factures.achat.export.single.csv');
+
+
+//CLient
+Route::get('/clients', [ClientController::class, 'index'])->name('client.index');

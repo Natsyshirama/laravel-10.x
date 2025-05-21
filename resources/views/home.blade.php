@@ -31,6 +31,9 @@
                 <a href="{{ route('profile') }}" class="nav-item">
                     <i class="fas fa-user"></i> Mon Profil
                 </a>
+                <a href="{{ route('client.index') }}" class="nav-item">
+                    <i class="fas fa-truck"></i>Clients
+                </a>
             </nav>
         </aside>
 

@@ -32,7 +32,7 @@
                     <i class="fas fa-user"></i> Mon Profil
                 </a>
                 <a href="{{ route('client.index') }}" class="nav-item">
-                    <i class="fas fa-truck"></i>Clients
+                    <i class="fas fa-handshake"></i>Clients
                 </a>
             </nav>
         </aside>

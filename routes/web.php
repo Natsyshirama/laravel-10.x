@@ -61,3 +61,4 @@ Route::get('/factures-achat/{name}/export/csv', [ExportController::class, 'expor
 
 //CLient
 Route::get('/clients', [ClientController::class, 'index'])->name('client.index');
+Route::get('/clients/{name}', [ClientController::class, 'show'])->name('client.show');

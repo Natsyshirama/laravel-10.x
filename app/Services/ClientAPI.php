@@ -25,7 +25,7 @@ class ClientAPI{
         $reponse =Http::withHeaders([
             'Cookie' => 'sid=' . $sid
         ])->get($this->baseUrl . '/api/resource/Customer',[
-            'fields' => json_encode(['name', 'customer_group', 'territory'])
+            'fields' => json_encode(['name', 'customer_group', 'territory','disabled'])
         ]);
         if (!$reponse->successful()) {
             throw new \Exception("Erreur API Fournisseur : " . $reponse->body());
@@ -46,5 +46,8 @@ class ClientAPI{
             throw new \Exception("Erreur API Fournisseur : " . $reponse->body());
         }
         return $reponse->json('data');
+    }
+    public function desactiverClient($name){
+        
     }
 }

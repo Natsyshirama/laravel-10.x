@@ -27,6 +27,7 @@
                         <tr>
                             <th>Nom</th>
                             <th>group</th>
+                            <th>Status</th>
                             <th>Pays</th>
                             <th>Actions</th>
                         </tr>
@@ -35,16 +36,16 @@
                         @foreach ($clients as $client)
                             <tr>
                                 <td>
-                                    <a href="#" class="text-primary">
+                                    <a href="{{ route('client.show', ['name'=> $client['name']]) }}" class="text-primary">
                                         {{ $client['name'] }}
                                     </a>
                                 </td>
                                 <td>{{ $client['customer_group']}}</td>
-                                
+                                <td>  {{ $client['disabled'] == 0 ? 'Activer' : 'Desactiver' }}</td>
                                 <td>{{ $client['territory'] }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="#" class="btn btn-sm btn-info">
+                                        <a href="{{ route('client.show', ['name'=> $client['name']]) }}" class="btn btn-sm btn-info">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         

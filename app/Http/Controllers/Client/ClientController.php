@@ -26,4 +26,14 @@ class ClientController extends Controller
             return redirect()->back()->withErrors(['message' => $e->getMessage()]);
         }
     }
+    public function show($name){
+        try{
+            $client = $this->clientApi->getClientDetails($name);
+            return view('client.show', [
+                'client' => $client
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+        }
+    }
 }

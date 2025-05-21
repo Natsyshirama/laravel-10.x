@@ -33,4 +33,18 @@ class ClientAPI{
         return $reponse->json('data');
 
     }
+    public function getClientDetails($name){
+        $sid = Session::get('sid');
+
+        if (!$sid) {
+            throw new \Exception('Non connecté');
+        }
+        $reponse =Http::withHeaders([
+            'Cookie' => 'sid=' . $sid
+        ])->get($this->baseUrl . '/api/resource/Customer/' . $name);
+        if (!$reponse->successful()) {
+            throw new \Exception("Erreur API Fournisseur : " . $reponse->body());
+        }
+        return $reponse->json('data');
+    }
 }

@@ -21,15 +21,12 @@ class DashbordService
     
         $headers = ['Cookie' => 'sid=' . $sid];
     
-        // Récupérer les devis
         $devis = Http::withHeaders($headers)
             ->get($this->baseUrl . '/api/resource/Supplier Quotation?fields=["name","grand_total"]&limit_page_length=1000');
     
-        // Récupérer les commandes
         $commandes = Http::withHeaders($headers)
             ->get($this->baseUrl . '/api/resource/Purchase Order?fields=["name","grand_total"]&limit_page_length=1000');
     
-        //recuperer les facture
         $factures = Http::withHeaders($headers)
             ->get($this->baseUrl. '/api/resource/Purchase Invoice?fields=["name","grand_total"]');
         

@@ -4,8 +4,26 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Services\ClientAPI;
 
 class ClientController extends Controller
 {
-    //
+
+    protected $clientApi;
+
+    public function __construct(ClientAPI $clientApi)
+    {
+        $this->clientApi = $clientApi;
+    }
+    public function index(){
+        try{
+            $clients = $this->clientApi->getAllClient();
+            return view('client.index', [
+                'clients' => $clients
+            ]);
+            
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+        }
+    }
 }

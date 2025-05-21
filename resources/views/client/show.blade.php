@@ -8,6 +8,22 @@
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="card-title">Détails du client : {{ $client['name'] }}</h2>
             <div class="btn-group">
+            <div class="btn-group">
+                @if($client['disabled'] == 0)
+                    <form action="{{ route('client.desactiver', $client['name']) }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-ban"></i> Désactiver
+                        </button>
+                    </form>
+                @else
+                    <form action="{{ route('client.activer', $client['name']) }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i> Activer
+                        </button>
+                    </form>
+                @endif
                 <button class="btn btn-secondary">
                     <i class="fas fa-print"></i> Imprimer
                 </button>

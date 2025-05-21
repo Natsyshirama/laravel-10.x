@@ -36,4 +36,23 @@ class ClientController extends Controller
             return redirect()->back()->withErrors(['message' => $e->getMessage()]);
         }
     }
+    public function activerClient($name){
+        try{
+             $this->clientApi->activerClient($name);
+            return redirect()->back()->with('success', 'client reactiver');
+
+
+        }catch (\Exception $e) {
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+        }
+    }
+    public function desactiverClient($name){
+        try{
+            $this->clientApi->desactiverClient($name);
+            return redirect()->back()->with('success', 'client desactiver');
+
+        }catch (\Exception $e) {
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+        }
+    }
 }

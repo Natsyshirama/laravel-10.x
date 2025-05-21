@@ -1,20 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Login ERPNext</title>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="{{ asset('css/loginstyl.css') }}">
 </head>
 <body>
-    <h2>Connexion</h2>
-    @if($errors->any())
-        <p style="color:red;">{{ $errors->first() }}</p>
-    @endif
-    <form method="POST" action="{{ route('do.login') }}">
-        @csrf
-        <label>Email:</label>
-        <input type="email" name="email" required><br>
-        <label>Mot de passe:</label>
-        <input type="password" name="password" required><br>
-        <button type="submit">Se connecter</button>
-    </form>
+    <div class="login-container">
+        <h2>Connexion</h2>
+
+        @if ($errors->any())
+            <div class="error-message">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="success-message">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('login.submit') }}">
+            @csrf
+            <label>Nom d'utilisateur:</label>
+            <input type="text" name="usr" value="{{ old('usr') }}">
+
+            <label>Mot de passe:</label>
+            <input type="password" name="pwd">
+
+            <button type="submit">Se connecter</button>
+        </form>
+    </div>
 </body>
 </html>

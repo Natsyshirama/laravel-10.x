@@ -7,12 +7,10 @@
     <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="card-title">Liste des clients</h2>
-            <a href="#" class="btn btn-outline-primary">
-                <i class="fas fa-filter"></i> Filtrer par fournisseur
-            </a>
+            
         </div>
         <div class="d-flex justify-content-between align-items-center">
-            <h2 class="card-title">New clients</h2>
+           
             <a href="{{route('client.createForm')}}" class="btn btn-outline-primary">
                 <i class="fas fa-filter"></i> New clients
             </a>

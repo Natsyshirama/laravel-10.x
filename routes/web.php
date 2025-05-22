@@ -64,3 +64,5 @@ Route::get('/clients', [ClientController::class, 'index'])->name('client.index')
 Route::get('/clients/{name}', [ClientController::class, 'show'])->name('client.show');
 Route::post('/clients/{name}/activer', [ClientController::class, 'activerClient'])->name('client.activer');
 Route::post('/clients/{name}/desactiver', [ClientController::class, 'desactiverClient'])->name('client.desactiver');
+Route::get('/addclient', [ClientController::class, 'createForm'])->name('client.createForm');
+Route::post('/clients', [ClientController::class, 'addClient'])->name('client.store');

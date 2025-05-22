@@ -124,7 +124,7 @@ class ClientAPI{
         $sid = Session::get('sid');
 
         return[
-            'customer_groupe'=> $this->getCustomerGroup($sid),
+            'customer_groups'=> $this->getCustomerGroup($sid),
             'territory'=> $this->getTerritory($sid),
             'default_price_list'=> $this->getDefaultPriceList($sid),
         ];

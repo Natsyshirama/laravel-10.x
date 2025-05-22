@@ -13,7 +13,7 @@
         </div>
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="card-title">New clients</h2>
-            <a href="#" class="btn btn-outline-primary">
+            <a href="{{route('client.createForm')}}" class="btn btn-outline-primary">
                 <i class="fas fa-filter"></i> New clients
             </a>
         </div>

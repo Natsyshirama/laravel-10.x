@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\QuotationClient\QuotationController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Devise\DevisController;
 use App\Http\Controllers\Commande\CommandeController;
@@ -66,3 +67,6 @@ Route::post('/clients/{name}/activer', [ClientController::class, 'activerClient'
 Route::post('/clients/{name}/desactiver', [ClientController::class, 'desactiverClient'])->name('client.desactiver');
 Route::get('/addclient', [ClientController::class, 'createForm'])->name('client.createForm');
 Route::post('/clients', [ClientController::class, 'addClient'])->name('client.store');
+
+//DevisClient(QuotationClient)
+Route::get('/devis-client', [QuotationController::class, 'index'])->name('devisClient.index');

@@ -34,6 +34,10 @@
                 <a href="{{ route('client.index') }}" class="nav-item">
                     <i class="fas fa-handshake"></i>Clients
                 </a>
+                <a href="{{ route('devisClient.index') }}" class="nav-item">
+                    <i class="fas fa-file-contract"></i>Devis Client
+                </a>
+
             </nav>
         </aside>
 

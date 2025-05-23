@@ -36,5 +36,20 @@ class QuotationAPI{
 
         return $response->json('data');
     }
+    public function getQuotationDetails($name){
+        $sid = Session::get('sid');
 
+        if (!$sid) {
+            throw new \Exception('Non connecté');
+        }
+        $response = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid
+        ])->get($this->baseUrl . '/api/resource/Quotation/' . $name);
+       
+        if (!$response->successful()) {
+            throw new \Exception("Erreur lors de la récupération des factures : " . $response->body());
+        }
+        return $response->json('data');
+
+    }
 }

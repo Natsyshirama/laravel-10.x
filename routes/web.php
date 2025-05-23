@@ -70,3 +70,4 @@ Route::post('/clients', [ClientController::class, 'addClient'])->name('client.st
 
 //DevisClient(QuotationClient)
 Route::get('/devis-client', [QuotationController::class, 'index'])->name('devisClient.index');
+Route::get('/devis-client/{name}', [QuotationController::class, 'show'])->name('devisClient.show');

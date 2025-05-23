@@ -39,4 +39,16 @@ class QuotationController extends Controller
         return redirect()->back()->withErrors(['message' => $e->getMessage()]);
     }
   }
+
+  public function show($name){
+    try{
+      $quotation = $this->quotaApi->getQuotationDetails($name);
+
+      return view('devisClient.show', [
+        'quotation' => $quotation,
+      ]);
+    }catch (\Exception $e) {
+      return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+  }
+  }
 }

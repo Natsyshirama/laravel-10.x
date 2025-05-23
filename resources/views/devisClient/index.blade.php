@@ -50,7 +50,7 @@
                         @foreach($quotations as $quotation)
                             <tr>
                                 <td class="font-weight-bold">
-                                    <a href="#" class="text-primary">
+                                    <a href="{{ route('devisClient.show', ['name' => $quotation['name']]) }}" class="text-primary">
                                         {{ $quotation['name'] }}
                                     </a>
                                 </td>
@@ -68,7 +68,7 @@
                                 <td class="font-weight-bold">{{ number_format($quotation['total'], 2) }} {{ $quotation['currency'] }}</td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                        <a href="#" class="btn btn-info" title="Voir">
+                                        <a href="{{ route('devisClient.show', ['name' => $quotation['name']]) }}" class="btn btn-info" title="Voir">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                        

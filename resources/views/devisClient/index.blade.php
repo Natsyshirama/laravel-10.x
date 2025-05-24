@@ -11,9 +11,32 @@
             </h2>
             
         </div>
+        <div class="card-body">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <h5><i class="fas fa-exclamation-triangle"></i> Erreur :</h5>
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </div>
 
     <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+            <h2 class="card-title">New Devis</h2>
+            <a href="{{ route('devisClient.create') }}" class="btn btn-outline-primary">
+                <i class="fas fa-filter"></i> New Devis
+            </a>
+        </div>
         <form method="GET" action="{{ route('devisClient.index') }}" class="mb-4">
             <div class="row g-3 align-items-end">
                 <div class="col-md-4">

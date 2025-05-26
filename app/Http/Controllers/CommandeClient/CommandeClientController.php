@@ -3,9 +3,54 @@
 namespace App\Http\Controllers\CommandeClient;
 
 use App\Http\Controllers\Controller;
+use App\Services\CommandeAchatAPI;
 use Illuminate\Http\Request;
+use App\Services\CommandeClientAPI;
+use function Laravel\Prompts\select;
 
 class CommandeClientController extends Controller
 {
-    //
+
+    protected $commandApi;
+
+    public function __construct(CommandeClientAPI $commandApi)
+    {
+        $this->commandApi = $commandApi;
+    }
+
+    public function index(Request $request){
+        try{
+            $selectStatus = $request->input('status');
+
+            $filtre = [];
+            if($selectStatus === 'facturee'){
+                $filtre['filters'] = json_encode(['or',[['billing_status', '=', 'Fully Billed'],['per_billed', '>=', 100]]]);
+            }elseif($selectStatus === 'livree'){
+                $filtre['filters'] = json_encode(['or',[['delivery_status', '=', 'Fully Delivered'],['per_delivered', '>=', 100]]]);
+            }elseif($selectStatus === 'livree et facturee'){
+                $filtre['filters'] =json_encode([['status', '=', 'To Deliver ans Bill']]);
+            }
+            $commandeClients = $this->commandApi->getAllCommande($filtre);
+
+            return view('commandeClient.index', [
+                'commandeClients' => $commandeClients,
+                'selectStatus' => $selectStatus
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+        }
+    }
+
+
+  public function show($name){
+    try{
+      $commande = $this->commandApi->getCommandeClientDetails($name);
+
+      return view('commandeClient.show', [
+        'commande' => $commande,
+      ]);
+    }catch (\Exception $e) {
+      return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+    }
+  }
 }

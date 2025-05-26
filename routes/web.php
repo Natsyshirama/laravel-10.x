@@ -9,6 +9,7 @@ use App\Http\Controllers\QuotationClient\QuotationController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Devise\DevisController;
 use App\Http\Controllers\Commande\CommandeController;
+use App\Http\Controllers\CommandeClient\CommandeClientController;
 use App\Http\Controllers\Facture\FactureAchatController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Export\ExportController;
@@ -74,3 +75,9 @@ Route::get('/devis-client/{name}', [QuotationController::class, 'show'])->name('
 Route::get('/adddevis', [QuotationController::class, 'create'])->name('devisClient.create');
 Route::post('/devis-client', [QuotationController::class, 'store'])->name('devisClient.store');
 Route::post('/devis-client/{name}/validate', [QuotationController::class, 'validerQuotation'])->name('devisClient.validate');
+
+
+//CommandeClient
+
+Route::get('/commande-client',[CommandeClientController::class,'index'])->name('comdClient.index');
+Route::get('/commande-client/{name}', [CommandeClientController::class, 'show'])->name('comdClient.show');

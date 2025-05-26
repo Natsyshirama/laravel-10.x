@@ -11,7 +11,6 @@
             </h2>
             <div class="btn-group">
     <!-- Bouton Export PDF -->
-    @if($quotation['status'] != 'Ordered')
     @if($quotation['status'] == 'Draft')
             <form method="POST" action="{{ route('devisClient.validate', $quotation['name']) }}">
     @csrf
@@ -26,7 +25,7 @@
                 <i class="fas fa-check"></i> Commander
             </button>
         </form>
-        @endif
+        
             <a href="{{ route('devisClient.index') }}" class="btn btn-light">
         <i class="fas fa-arrow-left"></i> Retour
     </a>

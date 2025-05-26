@@ -96,4 +96,13 @@ class QuotationController extends Controller
               ->with('error', $e->getMessage()); 
       }
   }
+
+  public function validerQuotation($name){
+    try{
+      $this->quotaApi->validerQuotation($name);
+      return redirect()->back()->with('success', 'Devis validé avec succès.');
+    } catch (\Exception $e) {
+      return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+    }
+  }
 }

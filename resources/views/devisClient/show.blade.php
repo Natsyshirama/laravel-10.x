@@ -12,8 +12,15 @@
             <div class="btn-group">
     <!-- Bouton Export PDF -->
     
-    
-    <a href="{{ route('devisClient.index') }}" class="btn btn-light">
+    @if($quotation['status'] == 'Draft')
+            <form method="POST" action="{{ route('devisClient.validate', $quotation['name']) }}">
+    @csrf
+                <button type="submit" class="btn btn-warning" title="Valider le Devis">
+                        <i class="fas fa-check-circle"></i> Valider
+                </button>
+            </form>
+            @endif
+            <a href="{{ route('devisClient.index') }}" class="btn btn-light">
         <i class="fas fa-arrow-left"></i> Retour
     </a>
 </div>

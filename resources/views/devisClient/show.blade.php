@@ -11,7 +11,7 @@
             </h2>
             <div class="btn-group">
     <!-- Bouton Export PDF -->
-    
+    @if($quotation['status'] != 'Ordered')
     @if($quotation['status'] == 'Draft')
             <form method="POST" action="{{ route('devisClient.validate', $quotation['name']) }}">
     @csrf
@@ -20,6 +20,13 @@
                 </button>
             </form>
             @endif
+            <form action="{{ route('devisClient.commander', $quotation['name']) }}" method="POST" class="d-inline">
+            @csrf
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-check"></i> Commander
+            </button>
+        </form>
+        @endif
             <a href="{{ route('devisClient.index') }}" class="btn btn-light">
         <i class="fas fa-arrow-left"></i> Retour
     </a>
@@ -63,6 +70,11 @@
                             <span class="info-label">Date :</span>
                             <span class="info-value">
                                 {{ \Carbon\Carbon::parse($quotation['transaction_date'])->format('d/m/Y') }}
+                               
+                            </span>
+                            <span class="info-label">Date Vallid:</span>
+                            <span class="info-value">
+                                {{ \Carbon\Carbon::parse($quotation['valid_till'])->format('d/m/Y') }}
                                
                             </span>
                         </div>

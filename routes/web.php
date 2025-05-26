@@ -75,7 +75,7 @@ Route::get('/devis-client/{name}', [QuotationController::class, 'show'])->name('
 Route::get('/adddevis', [QuotationController::class, 'create'])->name('devisClient.create');
 Route::post('/devis-client', [QuotationController::class, 'store'])->name('devisClient.store');
 Route::post('/devis-client/{name}/validate', [QuotationController::class, 'validerQuotation'])->name('devisClient.validate');
-
+Route::post('/devis-client/{name}/convert-to-order', [QuotationController::class, 'commander'])->name('devisClient.commander');
 
 //CommandeClient
 

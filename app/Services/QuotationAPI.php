@@ -103,7 +103,7 @@ class QuotationAPI{
             'selling_price_list' => $data['selling_price_list'] ?? 'Standard Selling',            
             'items' => $this->formatItems($data['items'] ?? []),
             'doctype' => 'Quotation',
-            'currency' => $data['currency'] ?? 'USD',
+            'currency' => $data['currency'] ?? 'EUR',
             'company' => $data['company'] ?? 'E mark'
         ];
     } 
@@ -187,4 +187,59 @@ class QuotationAPI{
         return $submitResponse->json('message') ?? $submitResponse->json('data');
     
     }
+
+    public function convertirCommande($quotationName)
+    {
+        $sid = Session::get('sid');
+        if (!$sid) {
+            throw new \Exception('Non connecté');
+        }
+    
+        try {
+            // Récupération des détails du devis
+            $quotation = $this->getQuotationDetails($quotationName);
+    
+            // Données pour la commande
+            $donneCommande = [
+                'doctype' => 'Sales Order',
+                'quotation' => $quotationName,
+                'customer' => $quotation['customer_name'],
+                'transaction_date' => now()->format('Y-m-d'),
+                'delivery_date' => now()->addDays(30)->format('Y-m-d'),
+                'items' => array_map(function ($item) {
+                    return [
+                        'item_code' => $item['item_code'],
+                        'qty' => $item['qty'],
+                        'rate' => $item['rate']
+                    ];
+                }, $quotation['items'])
+            ];
+    
+            // Création de la commande via l'API Frappe
+            $response = Http::withHeaders([
+                'Cookie' => 'sid=' . $sid,
+                'Content-Type' => 'application/json'
+            ])->post($this->baseUrl . '/api/resource/Sales Order', [
+                'data' => $donneCommande
+            ]);
+    
+            if (!$response->successful()) {
+                throw new \Exception("Erreur API: " . $response->body());
+            }
+    
+            $orderData = $response->json('data');
+    
+            // Pas de mise à jour du devis — Frappe gère le statut "Ordered" automatiquement
+    
+            return $orderData;
+    
+        } catch (\Exception $e) {
+            Log::error('Erreur conversion devis en commande', [
+                'error' => $e->getMessage(),
+                'quotation' => $quotationName
+            ]);
+            throw $e;
+        }
+    }
+    
 }

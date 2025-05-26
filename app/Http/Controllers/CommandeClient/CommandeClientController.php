@@ -24,11 +24,11 @@ class CommandeClientController extends Controller
 
             $filtre = [];
             if($selectStatus === 'facturee'){
-                $filtre['filters'] = json_encode(['or',[['billing_status', '=', 'Fully Billed'],['per_billed', '>=', 100]]]);
+                $filtre['filters'] = json_encode([['status', '=', 'To Bill']]);
             }elseif($selectStatus === 'livree'){
-                $filtre['filters'] = json_encode(['or',[['delivery_status', '=', 'Fully Delivered'],['per_delivered', '>=', 100]]]);
+                $filtre['filters'] = json_encode([['status', '=', 'To Deliver']]);
             }elseif($selectStatus === 'livree et facturee'){
-                $filtre['filters'] =json_encode([['status', '=', 'To Deliver ans Bill']]);
+                $filtre['filters'] =json_encode([['status', '=', 'Completed']]);
             }
             $commandeClients = $this->commandApi->getAllCommande($filtre);
 

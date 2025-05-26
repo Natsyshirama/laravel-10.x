@@ -105,4 +105,15 @@ class QuotationController extends Controller
       return redirect()->back()->withErrors(['message' => $e->getMessage()]);
     }
   }
+
+  public function commander($name){
+    try{
+      $commande= $this->quotaApi->convertirCommande($name);
+      return redirect()
+      ->route('comdClient.show', $commande['name']) // Assurez-vous d'avoir cette route
+      ->with('success', 'Devis converti en commande avec succès!');
+    }catch (\Exception $e) {
+      return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+    }
+  }
 }

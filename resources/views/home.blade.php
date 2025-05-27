@@ -16,34 +16,35 @@
                 <h2>ERP PRO</h2>
             </div>
             <nav class="sidebar-nav">
-                <a href="{{ route('dashboard.achats') }}" class="nav-item">
-                    <i class="fas fa-dashboard"></i> Dashboard
-                </a>
-                <a href="{{ route('devis.filtre') }}" class="nav-item">
-                    <i class="fas fa-file-contract"></i> Devis
-                </a>
-                <a href="{{ route('commandes.filtre') }}" class="nav-item">
-                    <i class="fas fa-truck"></i> Commandes
-                </a>
-                <a href="{{ route('factures.achat.index') }}" class="nav-item">
-                    <i class="fas fa-file-invoice"></i> Mode comptabilite
-                </a>
-                <a href="{{ route('profile') }}" class="nav-item">
-                    <i class="fas fa-user"></i> Mon Profil
-                </a>
-                <a href="{{ route('client.index') }}" class="nav-item">
-                    <i class="fas fa-handshake"></i>Clients
-                </a>
-                <a href="{{ route('devisClient.index') }}" class="nav-item">
-                    <i class="fas fa-file-contract"></i>Devis Client
-                </a>
-                <a href="{{ route('comdClient.index') }}" class="nav-item">
-                    <i class="fas fa-truck"></i> Commandes Client
-                </a>
-                <a href="{{ route('livraison.index') }}" class="nav-item">
-                    <i class="fas fa-truck"></i>  Bon de livraison
-                </a>
-            </nav>
+    <a href="{{ route('dashboard.achats') }}" class="nav-item">
+        <i class="fas fa-chart-line"></i> Dashboard
+    </a>
+    <a href="{{ route('devis.filtre') }}" class="nav-item">
+        <i class="fas fa-file-signature"></i> Devis
+    </a>
+    <a href="{{ route('commandes.filtre') }}" class="nav-item">
+        <i class="fas fa-shopping-cart"></i> Commandes
+    </a>
+    <a href="{{ route('factures.achat.index') }}" class="nav-item">
+        <i class="fas fa-file-invoice-dollar"></i> Mode comptabilité
+    </a>
+    <a href="{{ route('profile') }}" class="nav-item">
+        <i class="fas fa-user-circle"></i> Mon Profil
+    </a>
+    <a href="{{ route('client.index') }}" class="nav-item">
+        <i class="fas fa-users"></i> Clients
+    </a>
+    <a href="{{ route('devisClient.index') }}" class="nav-item">
+        <i class="fas fa-file-alt"></i> Devis Client
+    </a>
+    <a href="{{ route('comdClient.index') }}" class="nav-item">
+        <i class="fas fa-box-open"></i> Commandes Client
+    </a>
+    <a href="{{ route('livraison.index') }}" class="nav-item">
+        <i class="fas fa-truck-loading"></i> Bon de livraison
+    </a>
+</nav>
+
         </aside>
 
         <!-- Header -->

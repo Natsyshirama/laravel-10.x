@@ -81,3 +81,4 @@ Route::post('/devis-client/{name}/convert-to-order', [QuotationController::class
 
 Route::get('/commande-client',[CommandeClientController::class,'index'])->name('comdClient.index');
 Route::get('/commande-client/{name}', [CommandeClientController::class, 'show'])->name('comdClient.show');
+Route::post('/commande-client/{name}/validate', [CommandeClientController::class, 'validerCommande'])->name('comdClient.valider');

@@ -53,4 +53,14 @@ class CommandeClientController extends Controller
       return redirect()->back()->withErrors(['message' => $e->getMessage()]);
     }
   }
+
+  public function validerCommande($name){
+    try{
+      $this->commandApi->validerCommande($name);
+      return redirect()->back()->with('success', 'Devis validé avec succès.');
+
+    }catch (\Exception $e) {
+      return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+    }
+  }
 }

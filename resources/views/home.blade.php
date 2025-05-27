@@ -40,6 +40,9 @@
                 <a href="{{ route('comdClient.index') }}" class="nav-item">
                     <i class="fas fa-truck"></i> Commandes Client
                 </a>
+                <a href="{{ route('livraison.index') }}" class="nav-item">
+                    <i class="fas fa-truck"></i>  Bon de livraison
+                </a>
             </nav>
         </aside>
 

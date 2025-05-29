@@ -11,7 +11,14 @@
             </h2>
             <div class="btn-group">
     <!-- Bouton Export PDF -->
-    
+    @if($commande['status'] == 'Draft')
+            <form method="POST" action="{{ route('comdClient.valider', $commande['name']) }}">
+    @csrf
+                <button type="submit" class="btn btn-warning" title="Valider le Devis">
+                        <i class="fas fa-check-circle"></i> Valider
+                </button>
+            </form>
+            @endif
     
             <a href="{{ route('comdClient.index') }}" class="btn btn-light">
         <i class="fas fa-arrow-left"></i> Retour

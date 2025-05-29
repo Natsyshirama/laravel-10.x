@@ -53,4 +53,38 @@ class CommandeClientAPI{
         }
         return $response->json('data');
     }
+
+    public function validerCommande($name){
+        $sid = Session::get('sid');
+    
+        if (!$sid) {
+            throw new \Exception('Non connecté');
+        }
+
+        //alaina alou ilay validena
+
+        $docResponse = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid,
+            'Accept' => 'application/json'
+            ])->get($this->baseUrl . '/api/resource/Sales Order/' . $name);
+        
+        if(!$docResponse->successful()){
+            throw new \Exception("Erreur lors de la recuperation du commande" . $docResponse->body());
+        }
+
+        //validena ref azo
+
+        $validResponse =Http::withHeaders([
+             'Cookie' => 'sid=' . $sid,
+            'Accept' => 'application/json'
+        ])->post($this->baseUrl . '/api/method/frappe.client.submit', [
+            'doc' => $docResponse->json('data')
+        ]);
+        if (!$validResponse->successful()) {
+            throw new \Exception("Erreur lors de la validation : " . $validResponse->body());
+        }
+
+        return $validResponse->json('message') ?? $validResponse->json('data');
+
+    }
 }

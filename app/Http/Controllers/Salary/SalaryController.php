@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Services\SalaireAPI;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 class SalaryController extends Controller
 {
     protected $salaryApi;
@@ -51,4 +53,28 @@ class SalaryController extends Controller
             return redirect()->back()->withErrors(['message' => $e->getMessage()]);
         }
     }
+    public function exportSinglePdf( Request $request)
+{
+    $name = $request->input('name');
+    if (!$name) {
+        return redirect()->back()->withErrors(['message' => 'Le nom de l\'employé est requis']);
+    }
+    try {
+        $fichePaie = $this->salaryApi->getFichePaieDetails($name);
+
+        $pdf = Pdf::loadView('salary.fichePaieDetails', [
+            'fichePaie' => $fichePaie
+        ]);
+
+        return $pdf->download('Fiche_Paie_'.$name.'_'.date('YmdHis').'.pdf');
+        
+    } catch (\Exception $e) {
+        Log::error('Erreur lors de la récupération des listes de fiche de paie', [
+            'error' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+    }
+}
 }

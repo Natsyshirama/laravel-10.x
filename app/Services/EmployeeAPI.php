@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Services;
+
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
+
+class EmployeeAPI{
+
+    protected $baseUrl;
+
+    public function __construct()
+    {
+        $this->baseUrl = env('FRAPPE_URL', 'http://erpnext.localhost:8000/');
+    }
+
+    public function getEmployees(array $filtre = []){
+        $sid = Session::get('sid');
+        if (!$sid) {
+            throw new \Exception('Non connecté');
+        }
+        $fields = [
+            "name", "first_name", "department","designation","company"        ];
+    
+        $parametre = array_merge([
+            'fields'=> json_encode($fields)
+        ], $filtre);
+    
+    try{
+        $reponse = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid
+        ])->get($this->baseUrl . '/api/resource/Employee', $parametre);
+        if (!$reponse->successful()) {
+            throw new \Exception("Erreur API : " . $reponse->body());
+        }
+        return $reponse->json('data');
+        
+    }catch (\Exception $e) {
+        Log::error('Erreur création devis', [
+            'error' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        throw $e;
+    }
+}
+}

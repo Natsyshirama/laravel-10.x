@@ -19,7 +19,7 @@
     <a href="{{ route('dashboard.achats') }}" class="nav-item">
         <i class="fas fa-chart-line"></i> Dashboard
     </a>
-    <a href="{{ route('devis.filtre') }}" class="nav-item">
+    <!-- <a href="{{ route('devis.filtre') }}" class="nav-item">
         <i class="fas fa-file-signature"></i> Devis
     </a>
     <a href="{{ route('commandes.filtre') }}" class="nav-item">
@@ -42,7 +42,7 @@
     </a>
     <a href="{{ route('livraison.index') }}" class="nav-item">
         <i class="fas fa-truck-loading"></i> Bon de livraison
-    </a>
+    </a> -->
 </nav>
 
         </aside>

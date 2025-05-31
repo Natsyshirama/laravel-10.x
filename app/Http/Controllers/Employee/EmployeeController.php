@@ -5,15 +5,20 @@ namespace App\Http\Controllers\Employee;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\EmployeeAPI;
+use App\Services\SalaireAPI;
+
+
 use Illuminate\Support\Facades\Log;
 class EmployeeController extends Controller
 {
     //
 
     protected $employeeApi;
-    public function __construct(EmployeeAPI $employeeApi)
+    protected $salaryApi;
+    public function __construct(EmployeeAPI $employeeApi, SalaireAPI $salaryApi)
     {
         $this->employeeApi = $employeeApi;
+        $this->salaryApi = $salaryApi;
     }
 
 
@@ -35,6 +40,23 @@ class EmployeeController extends Controller
             ]);
         } catch (\Exception $e) {
             Log::error('Erreur lors de la récupération des employés', [
+                'error' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+        }
+    }   
+    public function show($name){
+        try {
+            $employee = $this->employeeApi->getEmployeeDetails($name);
+            $salary = $this->salaryApi->getInfoSalaryEmployee($name);
+            return view('employee.show', [
+                'employee' => $employee,
+                'salary' => $salary
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Erreur lors de la récupération des détails de l\'employé', [
                 'error' => $e->getMessage(),
                 'code' => $e->getCode(),
                 'trace' => $e->getTraceAsString()

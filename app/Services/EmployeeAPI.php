@@ -73,5 +73,33 @@ class EmployeeAPI{
         ]);
         throw $e;
     }
+   
+}
+
+public function getEmployeeDetails($name){
+    $sid = Session::get('sid');
+    if (!$sid) {
+        throw new \Exception('Non connecté');
+    }
+
+    try{
+        $response = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid
+        ])->get($this->baseUrl . '/api/resource/Employee/' . $name);
+
+        if (!$response->successful()) {
+            throw new \Exception("Erreur API : " . $response->body());
+        }
+
+        return $response->json('data');
+
+    }catch (\Exception $e) {
+        Log::error('Erreur lors de la récupération des détails de l\'employé', [
+            'error' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        throw $e;
+    }
 }
 }

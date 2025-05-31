@@ -93,3 +93,4 @@ Route::get('/livraison/{name}', [LivraisonController::class, 'show'])->name('liv
 //Employee
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employee.index');
+Route::get('/employees/{name}', [EmployeeController::class, 'show'])->name('employee.show');

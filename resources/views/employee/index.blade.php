@@ -78,6 +78,9 @@
                                         {{ $employee['department'] }}
                                     </a>
                                 </td>
+                                <td>
+                        <a href="{{ route('employee.show', $employee['name']) }}" class="btn btn-primary btn-sm">Voir</a>
+                    </td>
                             </tr>
                         @endforeach
                     </tbody>

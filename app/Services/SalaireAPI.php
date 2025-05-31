@@ -87,5 +87,30 @@ class SalaireAPI{
         throw $e;
     }
  }
- 
+ public function getFichePaieDetails($name)
+{
+    $sid = Session::get('sid');
+    if (!$sid) {
+        throw new \Exception('Non connecté');
+    }
+    try{
+        $response = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid
+        ])->get($this->baseUrl . '/api/resource/Salary Slip/' . $name);
+        
+        if ($response->successful()) {
+            return $response->json('data');
+        } else {
+            Log::error('Erreur API Frappe', ['response' => $response->body()]);
+            throw new \Exception("Erreur lors de la récupération des détails de la fiche de paie : " . $response->body());
+        }
+    } catch (\Exception $e) {
+        Log::error('Erreur lors de la récupération des détails de la fiche de paie', [
+            'error' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        throw $e;
+    }
+} 
 }

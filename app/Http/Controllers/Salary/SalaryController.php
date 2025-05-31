@@ -13,8 +13,12 @@ class SalaryController extends Controller
     {
         $this->salaryApi = $salaryApi;
     }
-    public function index($name)
+    public function index(Request $request)
     {
+        $name = $request->input('name');
+        if (!$name) {
+            return redirect()->back()->withErrors(['message' => 'Le nom de l\'employé est requis']);
+        }
         try {
             
             $slips = $this->salaryApi->getListeFichePaieEmployee($name);
@@ -22,6 +26,23 @@ class SalaryController extends Controller
                 'slips' => $slips
             ]);
         } catch (\Exception $e) {
+            Log::error('Erreur lors de la récupération des listes de fiche de paie', [
+                'error' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+        }
+    }
+
+    public function show(Request $request){
+        $name = $request->input('name');
+        try{
+            $fichePaie = $this->salaryApi->getFichePaieDetails($name);
+            return view('salary.fichePaieDetails', [
+                'fichePaie' => $fichePaie
+            ]);
+        }catch (\Exception $e) {
             Log::error('Erreur lors de la récupération des listes de fiche de paie', [
                 'error' => $e->getMessage(),
                 'code' => $e->getCode(),

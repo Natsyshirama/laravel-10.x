@@ -5,8 +5,17 @@
 @section('content')
 <div class="container">
     <h1 class="mb-4">Fiche Employé : {{ $employee['employee_name'] }}</h1>
-    <a href="{{ route('fiche-paie.index', $employee['name']) }}" class="btn btn-primary btn-sm">fiche paie</a>
+    <form method="GET" action="{{ route('fiche-paie.index') }}">
+            <div class="form-group">
+                <input type="hidden" name="name" value="{{ $employee['name'] }}">
+            </div>
 
+            <div class="form-footer">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Fiche de paie
+                </button>
+            </div>
+        </form>
     <div class="card mb-4">
         <div class="card-header">Informations personnelles</div>
         <div class="card-body">

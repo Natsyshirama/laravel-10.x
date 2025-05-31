@@ -95,4 +95,5 @@ Route::get('/livraison/{name}', [LivraisonController::class, 'show'])->name('liv
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employee.index');
 Route::get('/employees/{name}', [EmployeeController::class, 'show'])->name('employee.show');
-Route::get('/employees/{name}/fiche-paie', [SalaryController::class, 'index'])->name('fiche-paie.index');
+Route::get('/fiche-paie', [SalaryController::class, 'index'])->name('fiche-paie.index');
+Route::get('/fiche-paie/view', [SalaryController::class, 'show'])->name('fichePaie.show');

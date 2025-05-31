@@ -65,9 +65,8 @@
                                     </a>
                                 </td>
                                 <td>
-                        <a href="#" class="btn btn-primary btn-sm">Voir</a>
-                    </td>
-                            </tr>
+                                <a href="{{ route('fichePaie.show', ['name' => $slip['name']]) }}" class="btn btn-primary btn-sm">Voir</a>
+                                </tr>
                         @endforeach
                     </tbody>
                 </table>

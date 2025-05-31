@@ -5,6 +5,7 @@
 @section('content')
 <div class="container">
     <h1 class="mb-4">Fiche Employé : {{ $employee['employee_name'] }}</h1>
+    <a href="{{ route('fiche-paie.index', $employee['name']) }}" class="btn btn-primary btn-sm">fiche paie</a>
 
     <div class="card mb-4">
         <div class="card-header">Informations personnelles</div>

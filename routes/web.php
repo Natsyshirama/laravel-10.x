@@ -15,6 +15,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Export\ExportController;
 use App\Http\Controllers\Livraison\LivraisonController;
    use App\Http\Controllers\Employee\EmployeeController;
+use App\Http\Controllers\Salary\SalaryController;
 use PHPUnit\Util\Exporter;
 
 ///
@@ -94,3 +95,4 @@ Route::get('/livraison/{name}', [LivraisonController::class, 'show'])->name('liv
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employee.index');
 Route::get('/employees/{name}', [EmployeeController::class, 'show'])->name('employee.show');
+Route::get('/employees/{name}/fiche-paie', [SalaryController::class, 'index'])->name('fiche-paie.index');

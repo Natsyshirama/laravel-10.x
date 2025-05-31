@@ -15,13 +15,42 @@ class EmployeeAPI{
         $this->baseUrl = env('FRAPPE_URL', 'http://erpnext.localhost:8000/');
     }
 
+    public function getDepartement(){
+        $sid = Session::get('sid');
+        if (!$sid) {
+            throw new \Exception('Non connecté');
+        }
+
+            try{
+                $response = Http::withHeaders([
+                    'Cookie' => 'sid=' . $sid
+                ])->get($this->baseUrl . '/api/resource/Department', [
+                    'fields' => json_encode(['name'])
+                ]);
+
+                if (!$response->successful()) {
+                    throw new \Exception("Erreur API Fournisseur : " . $response->body());
+                }
+
+                return $response->json('data');
+            }catch (\Exception $e) {
+                Log::error('Erreur lors de la récupération des départements', [
+                    'error' => $e->getMessage(),
+                    'code' => $e->getCode(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+                throw $e;
+            }
+    
+    }
+
     public function getEmployees(array $filtre = []){
         $sid = Session::get('sid');
         if (!$sid) {
             throw new \Exception('Non connecté');
         }
         $fields = [
-            "name", "first_name", "department","designation","company"        ];
+            "name", "first_name", "department","designation","company","status"        ];
     
         $parametre = array_merge([
             'fields'=> json_encode($fields)
@@ -35,7 +64,7 @@ class EmployeeAPI{
             throw new \Exception("Erreur API : " . $reponse->body());
         }
         return $reponse->json('data');
-        
+
     }catch (\Exception $e) {
         Log::error('Erreur création devis', [
             'error' => $e->getMessage(),

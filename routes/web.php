@@ -14,6 +14,7 @@ use App\Http\Controllers\Facture\FactureAchatController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Export\ExportController;
 use App\Http\Controllers\Livraison\LivraisonController;
+   use App\Http\Controllers\Employee\EmployeeController;
 use PHPUnit\Util\Exporter;
 
 ///
@@ -85,6 +86,10 @@ Route::get('/commande-client/{name}', [CommandeClientController::class, 'show'])
 Route::post('/commande-client/{name}/validate', [CommandeClientController::class, 'validerCommande'])->name('comdClient.valider');
 
 
-
+//livraison
 Route::get('/livraison', [LivraisonController::class, 'index'])->name('livraison.index');
 Route::get('/livraison/{name}', [LivraisonController::class, 'show'])->name('livraison.show');
+
+//Employee
+
+Route::get('/employees', [EmployeeController::class, 'index'])->name('employee.index');

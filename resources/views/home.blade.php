@@ -43,6 +43,9 @@
     <a href="{{ route('livraison.index') }}" class="nav-item">
         <i class="fas fa-truck-loading"></i> Bon de livraison
     </a> -->
+    <a href="{{ route('employee.index') }}" class="nav-item">
+        <i class="fas fa-user-tie"></i> employees
+    </a>
 </nav>
 
         </aside>

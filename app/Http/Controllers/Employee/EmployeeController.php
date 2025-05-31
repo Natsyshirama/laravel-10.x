@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Http\Controllers\Employee;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Services\EmployeeAPI;
+use Illuminate\Support\Facades\Log;
+class EmployeeController extends Controller
+{
+    //
+
+    protected $employeeApi;
+    public function __construct(EmployeeAPI $employeeApi)
+    {
+        $this->employeeApi = $employeeApi;
+    }
+
+
+    public function index(Request $request)
+    {
+        
+        try {
+            $departments = $this->employeeApi->getDepartement();
+            $filtre = [];
+            $selectDepartment = $request->input('department');
+            if ($selectDepartment) {
+                $filtre['filters'] = json_encode([['department', '=', $selectDepartment]]);
+            }
+            $employees = $this->employeeApi->getEmployees($filtre);
+            return view('employee.index', [
+                'departments' => $departments,
+                'employees' => $employees,
+                'selectDepartment' => $selectDepartment
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Erreur lors de la récupération des employés', [
+                'error' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+        }
+    }
+}

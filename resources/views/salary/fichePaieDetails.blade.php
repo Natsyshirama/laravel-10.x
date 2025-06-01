@@ -5,6 +5,17 @@
     <div class="card-header">
         <h2 class="card-title"><i class="fas fa-file-invoice-dollar"></i> Détail de la fiche de paie</h2>
     </div>
+    <form method="GET" action="{{ route('fichePaie.export') }}">
+            <div class="form-group">
+                <input type="hidden" name="name" value="{{ $fichePaie['name'] }}">
+            </div>
+
+            <div class="form-footer">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Export PDF
+                </button>
+            </div>
+        </form>
 
     <div class="card-body">
         @if(!empty($fichePaie))

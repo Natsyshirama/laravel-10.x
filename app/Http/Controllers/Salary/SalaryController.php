@@ -53,7 +53,7 @@ class SalaryController extends Controller
             return redirect()->back()->withErrors(['message' => $e->getMessage()]);
         }
     }
-    public function exportSinglePdf( Request $request)
+    public function exportPdf( Request $request)
 {
     $name = $request->input('name');
     if (!$name) {
@@ -66,7 +66,7 @@ class SalaryController extends Controller
             'fichePaie' => $fichePaie
         ]);
 
-        return $pdf->download('Fiche_Paie_'.$name.'_'.date('YmdHis').'.pdf');
+        return $pdf->download('FichePaie_'.'_'.date('YmdHis').'.pdf');
         
     } catch (\Exception $e) {
         Log::error('Erreur lors de la récupération des listes de fiche de paie', [

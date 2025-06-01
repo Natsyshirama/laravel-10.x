@@ -97,3 +97,4 @@ Route::get('/employees', [EmployeeController::class, 'index'])->name('employee.i
 Route::get('/employees/{name}', [EmployeeController::class, 'show'])->name('employee.show');
 Route::get('/fiche-paie', [SalaryController::class, 'index'])->name('fiche-paie.index');
 Route::get('/fiche-paie/view', [SalaryController::class, 'show'])->name('fichePaie.show');
+Route::get('/fiche-paie/view/exportpdf', [SalaryController::class, 'exportPdf'])->name('fichePaie.export');

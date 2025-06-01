@@ -15,7 +15,8 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Export\ExportController;
 use App\Http\Controllers\Livraison\LivraisonController;
    use App\Http\Controllers\Employee\EmployeeController;
-use App\Http\Controllers\Salary\SalaryController;
+   use App\Http\Controllers\Salary\SalaryController;
+   use App\Http\Controllers\Import\ImportController;
 use PHPUnit\Util\Exporter;
 
 ///
@@ -98,3 +99,7 @@ Route::get('/employees/{name}', [EmployeeController::class, 'show'])->name('empl
 Route::get('/fiche-paie', [SalaryController::class, 'index'])->name('fiche-paie.index');
 Route::get('/fiche-paie/view', [SalaryController::class, 'show'])->name('fichePaie.show');
 Route::get('/fiche-paie/view/exportpdf', [SalaryController::class, 'exportPdf'])->name('fichePaie.export');
+
+//import
+Route::get('/import', [ImportController::class, 'index'])->name('import.index');
+Route::post('/import/suppliers', [ImportController::class, 'importSuppliers'])->name('import.suppliers');

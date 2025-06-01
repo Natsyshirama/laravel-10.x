@@ -46,6 +46,9 @@
     <a href="{{ route('employee.index') }}" class="nav-item">
         <i class="fas fa-user-tie"></i> employees
     </a>
+    <a href="{{ route('import.index') }}" class="nav-item">
+        <i class="fas fa-file-import"></i> import Donne
+    </a>
 </nav>
 
         </aside>

@@ -103,3 +103,4 @@ Route::get('/fiche-paie/view/exportpdf', [SalaryController::class, 'exportPdf'])
 //import
 Route::get('/import', [ImportController::class, 'index'])->name('import.index');
 Route::post('/import/suppliers', [ImportController::class, 'importSuppliers'])->name('import.suppliers');
+Route::post('/import/employees', [ImportController::class, 'importEmployees'])->name('import.employees');

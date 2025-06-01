@@ -62,7 +62,7 @@ class SalaryController extends Controller
     try {
         $fichePaie = $this->salaryApi->getFichePaieDetails($name);
 
-        $pdf = Pdf::loadView('salary.fichePaieDetails', [
+        $pdf = Pdf::loadView('salary.exportPdf', [
             'fichePaie' => $fichePaie
         ]);
 

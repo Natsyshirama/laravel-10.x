@@ -74,5 +74,34 @@ class ImportController extends Controller
         throw $e;
     }
     
+    
+}
+
+public function importSalaryStructure(Request $request){
+    $sid = Session::get('sid');
+
+    if (!$sid) {
+        throw new \Exception('Non connecté');
+    }  
+    $file = $request->file('csv_fileSalaryStructure');
+    $csvContent = file_get_contents($file->getRealPath());
+    try{
+        $response = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid,
+            'Content-Type' => 'application/json'
+        ])->post($this->baseUrl . '/api/method/erpnext.importation.page.importdata.importData.import_salary_structure', [
+            'data' => $csvContent
+        ]);
+        return back()->with('status', $response->json());
+
+}catch (\Exception $e) {
+    Log::error('erreur lors import data EMPLOYEE', [
+        'error' => $e->getMessage(),
+        'code' => $e->getCode(),
+        'trace' => $e->getTraceAsString()
+    ]);
+    throw $e;
+}
+
 }
 }

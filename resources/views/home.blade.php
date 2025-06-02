@@ -49,6 +49,9 @@
     <a href="{{ route('import.index') }}" class="nav-item">
         <i class="fas fa-file-import"></i> import Donne
     </a>
+    <a href="{{ route('fichePaie.filtreParMois') }}" class="nav-item">
+        <i class="fas fa-truck-loading"></i> tableau
+    </a>
 </nav>
 
         </aside>

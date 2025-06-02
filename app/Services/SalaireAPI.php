@@ -5,6 +5,8 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class SalaireAPI{
 
@@ -113,4 +115,61 @@ class SalaireAPI{
         throw $e;
     }
 } 
+
+
+public function getSalaryByMonth($mois)
+{
+    $sid = Session::get('sid');
+    if (!$sid) {
+        throw new \Exception("Session non valide (sid manquant)");
+    }
+
+    $startDate = $mois . '-01';
+    $endDate = Carbon::parse($startDate)->endOfMonth()->format('Y-m-d');
+
+    $response = Http::withHeaders([
+        'Cookie' => 'sid=' . $sid
+    ])->get($this->baseUrl . '/api/resource/Salary Slip', [
+        'filters' => json_encode([
+            ['posting_date', '>=', $startDate],
+            ['posting_date', '<=', $endDate],
+            ['docstatus', '=', 1]
+        ]),
+        'fields' => json_encode(['name', 'employee', 'employee_name', 'net_pay']),
+        'limit_page_length' => 1000
+    ]);
+
+    $slips = $response->json('data');
+    $resultats = [];
+    $total_gains = 0;
+    $total_deductions = 0;
+    $total_net = 0;
+
+    foreach ($slips as $slip) {
+        $details = $this->getFichePaieDetails($slip['name']);
+
+        $gains = collect($details['earnings'] ?? [])->sum('amount');
+        $deductions = collect($details['deductions'] ?? [])->sum('amount');
+        $net = $details['net_pay'] ?? 0;
+
+        $resultats[] = [
+            'employee_name' => $slip['employee_name'],
+            'gains' => $gains,
+            'deductions' => $deductions,
+            'net_pay' => $net
+        ];
+
+        $total_gains += $gains;
+        $total_deductions += $deductions;
+        $total_net += $net;
+    }
+
+    return [
+        'mois' => $mois,
+        'resultats' => $resultats,
+        'total_gains' => $total_gains,
+        'total_deductions' => $total_deductions,
+        'total_net' => $total_net
+    ];
+}
 }

@@ -57,7 +57,7 @@ class SalaryController extends Controller
 {
     $name = $request->input('name');
     if (!$name) {
-        return redirect()->back()->withErrors(['message' => 'Le nom de l\'employé est requis']);
+        return redirect()->back()->withErrors(['message' => 'Le nom de fiche de paie est requis']);
     }
     try {
         $fichePaie = $this->salaryApi->getFichePaieDetails($name);
@@ -75,6 +75,27 @@ class SalaryController extends Controller
             'trace' => $e->getTraceAsString()
         ]);
         return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+    }
+}
+public function filtreParMois(Request $request)
+{
+    $mois = $request->input('mois');
+
+    if (!$mois) {
+        return view('salary.tableauSalaire', [
+            'mois' => null,
+            'resultats' => [],
+            'total_gains' => 0,
+            'total_deductions' => 0,
+            'total_net' => 0
+        ]);
+    }
+
+    try {
+        $data = $this->salaryApi->getSalaryByMonth($mois);
+        return view('salary.tableauSalaire', $data);
+    } catch (\Exception $e) {
+        return back()->withErrors(['message' => $e->getMessage()]);
     }
 }
 }

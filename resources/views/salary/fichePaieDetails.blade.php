@@ -23,7 +23,7 @@
                 <div class="col-md-6">
                     <p><strong>Nom Fiche :</strong> {{ $fichePaie['name'] }}</p>
                     <p><strong>Employé :</strong> {{ $fichePaie['employee'] }} - {{ $fichePaie['employee_name'] }}</p>
-                    <p><strong>Département :</strong> {{ $fichePaie['department'] }}</p>
+                    <p><strong>Département :</strong> {{ $fichePaie['department'] ?? 'N/A' }}</p>
                     <p><strong>Poste :</strong> {{ $fichePaie['designation'] ?? 'N/A' }}</p>
                     <p><strong>Structure salariale :</strong> {{ $fichePaie['salary_structure'] }}</p>
                     <p><strong>Devise :</strong> {{ $fichePaie['currency'] }}</p>

@@ -27,7 +27,7 @@
             <p><strong>Statut :</strong> {{ $employee['status'] }}</p>
             <p><strong>Entreprise :</strong> {{ $employee['company'] }}</p>
             <p><strong>Département :</strong> {{ $employee['department'] ?? 'null'}}</p>
-            <p><strong>Poste :</strong> {{ $employee['designation'] }}</p>
+            <p><strong>Poste :</strong> {{ $employee['designation'] ?? 'null'}}</p>
             <p><strong>Date d'embauche :</strong> {{ $employee['date_of_joining'] }}</p>
         </div>
     </div>

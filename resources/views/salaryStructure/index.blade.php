@@ -42,7 +42,7 @@
                                 </td>
                                 
                                 <td>
-                        <a href="#" class="btn btn-primary btn-sm">Voir</a>
+                        <a href="{{ route('salaraStr.show', ['name' => $structure['name']]) }}" class="btn btn-primary btn-sm">Voir</a>
                     </td>
                             </tr>
                         @endforeach

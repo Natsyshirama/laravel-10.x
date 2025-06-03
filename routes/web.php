@@ -17,6 +17,7 @@ use App\Http\Controllers\Livraison\LivraisonController;
    use App\Http\Controllers\Employee\EmployeeController;
    use App\Http\Controllers\Salary\SalaryController;
    use App\Http\Controllers\Import\ImportController;
+use App\Http\Controllers\SalaryStructure\SStructureController;
 use PHPUnit\Util\Exporter;
 
 ///
@@ -108,3 +109,8 @@ Route::post('/import/suppliers', [ImportController::class, 'importSuppliers'])->
 Route::post('/import/employees', [ImportController::class, 'importEmployees'])->name('import.employees');
 Route::post('/import/salary_structure', [ImportController::class, 'importSalaryStructure'])->name('import.salary_structure');
 Route::post('/import/salary_slip', [ImportController::class, 'importSalarySlip'])->name('import.salary_slip');
+
+
+//salary structur
+
+Route::get('/salary-structure',[SStructureController::class, 'index'])->name('salaraStr.index');

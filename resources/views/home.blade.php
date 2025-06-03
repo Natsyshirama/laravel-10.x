@@ -52,6 +52,9 @@
     <a href="{{ route('fichePaie.filtreParMois') }}" class="nav-item">
         <i class="fas fa-table"></i> tableau
     </a>
+    <a href="{{ route('salaraStr.index') }}" class="nav-item">
+        <i class="fas fa-salary"></i> Salary Structur
+    </a>
 </nav>
 
         </aside>

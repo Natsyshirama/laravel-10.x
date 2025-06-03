@@ -53,7 +53,7 @@
         <i class="fas fa-table"></i> tableau
     </a>
     <a href="{{ route('salaraStr.index') }}" class="nav-item">
-        <i class="fas fa-salary"></i> Salary Structur
+        <i class=""></i> Salary Structur
     </a>
 </nav>
 

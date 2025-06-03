@@ -19,7 +19,8 @@
                 </div>
             </div>
 
-           
+            <hr>
+
 
             <h4>Gains</h4>
             <div class="table-responsive">

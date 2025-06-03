@@ -107,3 +107,4 @@ Route::get('/import', [ImportController::class, 'index'])->name('import.index');
 Route::post('/import/suppliers', [ImportController::class, 'importSuppliers'])->name('import.suppliers');
 Route::post('/import/employees', [ImportController::class, 'importEmployees'])->name('import.employees');
 Route::post('/import/salary_structure', [ImportController::class, 'importSalaryStructure'])->name('import.salary_structure');
+Route::post('/import/salary_slip', [ImportController::class, 'importSalarySlip'])->name('import.salary_slip');

@@ -116,7 +116,6 @@ class SalaireAPI{
     }
 } 
 
-
 public function getSalaryByMonth($mois)
 {
     $sid = Session::get('sid');
@@ -131,8 +130,8 @@ public function getSalaryByMonth($mois)
         'Cookie' => 'sid=' . $sid
     ])->get($this->baseUrl . '/api/resource/Salary Slip', [
         'filters' => json_encode([
-            ['posting_date', '>=', $startDate],
-            ['posting_date', '<=', $endDate],
+            ['start_date', '>=', $startDate],
+            ['start_date', '<=', $endDate],
             ['docstatus', '=', 1]
         ]),
         'fields' => json_encode(['name', 'employee', 'employee_name', 'net_pay']),
@@ -152,10 +151,26 @@ public function getSalaryByMonth($mois)
         $deductions = collect($details['deductions'] ?? [])->sum('amount');
         $net = $details['net_pay'] ?? 0;
 
+        // Formatage des détails des gains
+        $gainDetails = collect($details['earnings'] ?? [])
+            ->map(function ($item) {
+                return $item['salary_component'] . ': ' . number_format($item['amount'], 2, ',', ' ') . ' €';
+            })
+            ->implode('<br>');
+
+        // Formatage des détails des déductions
+        $deductionDetails = collect($details['deductions'] ?? [])
+            ->map(function ($item) {
+                return $item['salary_component'] . ': ' . number_format($item['amount'], 2, ',', ' ') . ' €';
+            })
+            ->implode('<br>');
+
         $resultats[] = [
             'employee_name' => $slip['employee_name'],
             'gains' => $gains,
+            'gainDetails' => $gainDetails,
             'deductions' => $deductions,
+            'deductionDetails' => $deductionDetails,
             'net_pay' => $net
         ];
 

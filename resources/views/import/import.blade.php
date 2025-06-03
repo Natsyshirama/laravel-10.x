@@ -24,6 +24,12 @@
     <button type="submit">Importer</button>
 </form>
 
+<form method="POST" enctype="multipart/form-data" action="{{ route('import.salary_slip') }}">
+    @csrf
+    <label for="csv_file">Fichier CSV Salary Structure :</label>
+    <input type="file" name="csv_fileSalarySlip" required>
+    <button type="submit">Importer</button>
+</form>
 @if (session('status') && isset(session('status')['message']))
     @foreach (session('status')['message'] as $line)
         <div class="alert alert-danger">{{ is_array($line) ? implode(', ', $line) : $line }}</div>

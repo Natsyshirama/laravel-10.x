@@ -50,7 +50,7 @@
         <i class="fas fa-file-import"></i> import Donne
     </a>
     <a href="{{ route('fichePaie.filtreParMois') }}" class="nav-item">
-        <i class="fas fa-truck-loading"></i> tableau
+        <i class="fas fa-table"></i> tableau
     </a>
 </nav>
 

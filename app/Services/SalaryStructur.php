@@ -76,4 +76,77 @@ class SalaryStructur{
     }
 
 }
+
+public function getCompany(){
+    $sid = Session::get('sid');
+    
+
+    if(!$sid){
+        throw new \Exception('vous devriez connecter');
+    }
+
+    $response = Http::withHeaders([
+        'Cookie' => 'sid=' . $sid
+    ])->get($this->baseUrl . '/api/resource/Company', [
+         'fields' => json_encode(['name'])
+    ]);
+
+    if ($response->successful()) {
+        return $response->json('data');
+    } else {
+        Log::error('Erreur API Frappe', ['response' => $response->body()]);
+        throw new \Exception("Erreur lors de la récupération Company: " . $response->body());
+    }
+}
+
+public function getGain(){
+    $sid = Session::get('sid');
+    if (!$sid) {
+        throw new \Exception('Non connecté');
+    }
+
+        $response = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid
+        ])->get($this->baseUrl . '/api/resource/Salary Component', [
+             'fields' => json_encode(['name'])
+        ],['filters' => json_encode([['type', '=', 'Earning']])] );
+
+        if ($response->successful()) {
+            return $response->json('data');
+        } else {
+            Log::error('Erreur API Frappe', ['response' => $response->body()]);
+            throw new \Exception("Erreur lors de la récupération Component type Gains: " . $response->body());
+        }
+}
+
+
+
+public function getDeduction(){
+    $sid = Session::get('sid');
+    if (!$sid) {
+        throw new \Exception('Non connecté');
+    }
+
+        $response = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid
+        ])->get($this->baseUrl . '/api/resource/Salary Component', [
+             'fields' => json_encode(['name'])
+        ],['filters' => json_encode([['type', '=', 'Deduction']])] );
+
+        if ($response->successful()) {
+            return $response->json('data');
+        } else {
+            Log::error('Erreur API Frappe', ['response' => $response->body()]);
+            throw new \Exception("Erreur lors de la récupération Component type Deduction: " . $response->body());
+        }
+}
+
+public function getObjetSelection(){
+    return[
+        'gain' => $this->getGain(),
+        'deduction' => $this->getDeduction(),
+        'company' => $this->getCompany()
+    ];
+
+}
 }

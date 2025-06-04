@@ -51,4 +51,19 @@ class SStructureController extends Controller
             return redirect()->back()->withErrors(['message' => $e->getMessage()]);
         }
     }
+
+    public function addForm(){
+        $options = $this->sstructApi->getObjetSelection();
+        try{
+            return view('salaryStructure.createForm',[
+                'company' => $options['company'],
+                'gainComponent' => $options['gain'],
+                'deductionComponent' => $options['deduction'],
+            ]);
+        }catch (\Exception $e) {
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+          }
+    }
+
+
 }

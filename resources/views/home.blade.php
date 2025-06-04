@@ -7,6 +7,8 @@
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Ajoutez Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="app-container">
@@ -89,6 +91,13 @@
         </main>
     </div>
 
+ <!-- Charger jQuery en premier -->
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Puis Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</body>
+    
+    <!-- Scripts spécifiques à la vue -->
+    @yield('scripts')</body>
 </html>

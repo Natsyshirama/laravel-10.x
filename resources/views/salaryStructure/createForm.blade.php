@@ -30,6 +30,17 @@
             <form id="quotation-form" method="POST" action="#">
                 @csrf
 
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="customer_name">Company <span class="text-danger"></span></label>
+                            <input type="text" name="name" value=>
+                            </div>
+                        
+                    </div>
+                    
+                    
+                </div>
                 <!-- Section Client -->
                 <div class="row mb-4">
                     <div class="col-md-6">

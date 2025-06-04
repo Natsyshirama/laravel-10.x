@@ -149,4 +149,77 @@ public function getObjetSelection(){
     ];
 
 }
+public function ajoutStructure(array $data){
+    
+
+    $sid = Session::get('sid');
+    if (!$sid) {
+        throw new \Exception('Non connecté');
+    }
+
+    try {
+        $response = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid,
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json'
+        ])->post($this->baseUrl. '/api/resource/Salary Detail', [
+           'doctype' => 'Salary Structure',
+            'data' => $this->formatStructureData($data)
+        ]);
+        if ($response->successful()) {
+            return $response->json('data');
+        } else {
+            Log::error('Erreur API Frappe', ['response' => $response->body()]);
+            throw new \Exception("Erreur lors de l'ajout Salary structur: " . $response->body());
+        }
+        
+    }catch (\Exception $e) {
+        Log::error('Erreur création devis', [
+            'error' => $e->getMessage(),
+            'data' => $data,
+            'code' => $e->getCode(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        throw $e;
+    }
+}
+public function formatStructureData(array $data){
+    return[
+        'name' =>$data['name'],
+        'company' => $data['company'] ?? 'My Company',
+        'payroll_frequency' => $data['payroll_frequency'] ?? 'Monthly',
+        'is_active' => $data['is_active'] ?? 1,
+        'currency' => $data['currency'] ?? 'EUR',
+        'earnings' => $this->formatEarnings($data['earnings'] ?? []),
+        'deductions' => $this->formatDeductions($data['deductions'] ?? []),
+    ];
+}
+
+public function formatEarnings(array $earnings){
+    $formatted = [];
+    foreach ($earnings as $earning) {
+        $formatted[] = [
+            'salary_component' => $earning['salary_component'],
+            'amount' => $earning['amount'] ?? 0,
+            'rate' => $earning['rate'] ?? 0,
+            'type' => $earning['type'] ?? 'Fixed',
+            'is_taxable' => $earning['is_taxable'] ?? 1,
+            'formula' => $earning['formula'] ?? '',
+            
+        ];
+    }
+    return $formatted;
+}
+public function formatDeductions(array $deductions){
+    return array_map(function ($deduction) {
+        return [
+            'salary_component' => $deduction['salary_component'],
+            'amount' => $deduction['amount'] ?? 0,
+            'rate' => $deduction['rate'] ?? 0,
+            'type' => $deduction['type'] ?? 'Fixed',
+            'is_taxable' => $deduction['is_taxable'] ?? 1,
+            'formula' => $deduction['formula'] ?? '',
+        ];
+    }, $deductions);
+}
 }

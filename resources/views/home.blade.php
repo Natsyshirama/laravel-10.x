@@ -46,20 +46,23 @@
         <i class="fas fa-truck-loading"></i> Bon de livraison
     </a> -->
     <a href="{{ route('employee.index') }}" class="nav-item">
-        <i class="fas fa-user-tie"></i> employees
+        <i class="fas fa-user-tie"></i> Employees
     </a>
     <a href="{{ route('import.index') }}" class="nav-item">
-        <i class="fas fa-file-import"></i> import Donne
+        <i class="fas fa-file-import"></i> Import Donne
     </a>
     <a href="{{ route('fichePaie.filtreParMois') }}" class="nav-item">
-        <i class="fas fa-table"></i> tableau
+        <i class="fas fa-table"></i> Tableau Salary Slip Month
     </a>
 
     <a href="{{ route('fichePaie.resumeParAnnee') }}" class="nav-item">
-        <i class="fas fa-layer-group"></i> Salary Slip
+        <i class="fas fa-table"></i> Salary Slip
     </a>
     <a href="{{ route('salaraStr.index') }}" class="nav-item">
         <i class="fas fa-layer-group"></i> Salary Structur
+    </a>
+    <a href="{{ route('fichePaie.grapheSalaire') }}" class="nav-item">
+        <i class="fas fa-chart-line"></i> Dashboard
     </a>
 </nav>
 

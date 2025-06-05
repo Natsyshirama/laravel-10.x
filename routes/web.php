@@ -103,6 +103,7 @@ Route::get('/fiche-paie/view', [SalaryController::class, 'show'])->name('fichePa
 Route::get('/fiche-paie/view/exportpdf', [SalaryController::class, 'exportPdf'])->name('fichePaie.export');
 Route::get('/fiche-paie/mois', [SalaryController::class, 'filtreParMois'])->name('fichePaie.filtreParMois');
 Route::get('/fiche-paie/resume', [SalaryController::class, 'resumeParAnnee'])->name('fichePaie.resumeParAnnee');
+Route::get('[/fiche-paie/graphe', [SalaryController::class, 'grapheSalaire'])->name('fichePaie.grapheSalaire');
 
 
 //import

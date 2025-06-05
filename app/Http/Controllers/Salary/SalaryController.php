@@ -106,4 +106,41 @@ public function resumeParAnnee(Request $request)
     }
 }
 
+public function grapheSalaire(Request $request)
+{
+    $annee = $request->input('annee', date('Y'));
+
+    try {
+        $data = $this->salaire->getSalarySummaryByYear($annee);
+
+        // Formater les données pour Chart.js
+        $mois = array_keys($data['moisData']);
+        $netPays = [];
+        $composantsData = [];
+
+        // Initialiser les composants
+        foreach ($data['components'] as $comp) {
+            $composantsData[$comp] = [];
+        }
+
+        foreach ($mois as $m) {
+            $netPays[] = $data['moisData'][$m]['net_pay'];
+
+            foreach ($data['components'] as $comp) {
+                $composantsData[$comp][] = $data['moisData'][$m]['components'][$comp] ?? 0;
+            }
+        }
+
+        return view('salary.grapheSalaire', [
+            'annee' => $annee,
+            'mois' => $mois,
+            'netPays' => $netPays,
+            'composantsData' => $composantsData
+        ]);
+    } catch (\Exception $e) {
+        return back()->withErrors(['message' => $e->getMessage()]);
+    }
+}
+
+
 }

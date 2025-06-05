@@ -190,6 +190,7 @@ public function formatStructureData(array $data){
         'payroll_frequency' => $data['payroll_frequency'] ?? 'Monthly',
         'is_active' => $data['is_active'] ?? 'Yes',
         'currency' => $data['currency'] ?? 'EUR',
+        'docstatus'=> 1,
         'earnings' => $this->formatEarnings($data['earnings'] ?? []),
         'deductions' => $this->formatDeductions($data['deductions'] ?? []),
     ];
@@ -203,6 +204,8 @@ public function formatEarnings(array $earnings){
             'salary_component' => $earning['salary_component'],
             'amount' =>  0,
             'is_taxable' => 1,
+            'depends_on_payment_days'=> 0,
+            'amount_based_on_formula'=>1,
             'formula' => $earning['formula'] ?? '',
         ];
     }
@@ -215,6 +218,8 @@ public function formatDeductions(array $deductions){
             'salary_component' => $deduction['salary_component'],
             'amount' => 0,
             'is_taxable' => 1,
+            'depends_on_payment_days'=> 0,
+            'amount_based_on_formula'=>1,
             'formula' => $deduction['formula'] ?? '',
         ];
     }, $deductions);

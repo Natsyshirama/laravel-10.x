@@ -9,7 +9,7 @@
         <div class="d-flex justify-content-between align-items-center">
         <h2 class="card-title">New Salary structure</h2>
             <a href="{{ route('salaraStr.addForm') }}" class="btn btn-outline-primary">
-                <i class="fas fa-filter"></i> New Devis
+                <i class="fas fa-filter"></i> New Salary Structure
             </a>
             <h2 class="card-title">
                 <i class="fas fa-file-invoice-dollar"></i> Liste des salary structure

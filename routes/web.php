@@ -17,6 +17,7 @@ use App\Http\Controllers\Livraison\LivraisonController;
    use App\Http\Controllers\Employee\EmployeeController;
    use App\Http\Controllers\Salary\SalaryController;
    use App\Http\Controllers\Import\ImportController;
+use App\Http\Controllers\Salary\AssignmentController;
 use App\Http\Controllers\SalaryStructure\SStructureController;
 use PHPUnit\Util\Exporter;
 
@@ -117,3 +118,9 @@ Route::get('/salary-structure',[SStructureController::class, 'index'])->name('sa
 Route::get('/salary-structure/view',[SStructureController::class, 'show'])->name('salaraStr.show');
 Route::get('/salary-structure/add', [SStructureController::class, 'addForm'])->name('salaraStr.addForm');
 Route::post('/salary-structure', [SStructureController::class, 'store'])->name('salaraStr.store');
+
+
+//Assignment Salary sTructure
+
+Route::get('/assignment-salary/add', [AssignmentController::class, 'addAssignment'])->name('salaryAssg.addAssg');
+Route::post('/assignent-salary', [AssignmentController::class, 'assignment'])->name('salaryAssg.posteAssg');

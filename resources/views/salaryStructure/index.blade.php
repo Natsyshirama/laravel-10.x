@@ -11,6 +11,9 @@
             <a href="{{ route('salaraStr.addForm') }}" class="btn btn-outline-primary">
                 <i class="fas fa-filter"></i> New Salary Structure
             </a>
+            <a href="{{ route('salaryAssg.addAssg') }}" class="btn btn-outline-primary">
+                <i class="fas fa-filter"></i> Assignement
+            </a>
             <h2 class="card-title">
                 <i class="fas fa-file-invoice-dollar"></i> Liste des salary structure
                 

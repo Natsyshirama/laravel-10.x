@@ -57,13 +57,33 @@ class SStructureController extends Controller
         try{
             return view('salaryStructure.createForm',[
                 'company' => $options['company'],
-                'gainComponent' => $options['gain'],
-                'deductionComponent' => $options['deduction'],
+                'gain' => $options['gain'],
+                'deduction' => $options['deduction'],
             ]);
         }catch (\Exception $e) {
             return redirect()->back()->withErrors(['message' => $e->getMessage()]);
           }
     }
 
+    public function store(Request $request){
+      $donner =  $request->validate([
+            'company' => 'required|string',
+            'name' => 'required|string',
+            'earnings' => 'array', // Changé de 'gain' à 'earnings'
+            'deductions' => 'array', // Changé de 'deduction' à 'deductions'
+        ]);
+
+        try {
+            $this->sstructApi->ajoutStructure($donner);
+            return redirect()->route('salaraStr.addForm')->with('success', 'Structure enregistrée.');
+        } catch (\Exception $e) {
+            Log::error('Erreur lors de la récupération des listes Salary Structure', [
+                'error' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+        }
+    }
 
 }

@@ -162,10 +162,10 @@ public function ajoutStructure(array $data){
             'Cookie' => 'sid=' . $sid,
             'Content-Type' => 'application/json',
             'Accept' => 'application/json'
-        ])->post($this->baseUrl. '/api/resource/Salary Detail', [
-           'doctype' => 'Salary Structure',
+        ])->post($this->baseUrl. '/api/resource/Salary Structure', [
             'data' => $this->formatStructureData($data)
         ]);
+        Log::debug('Réponse de l\'API:', ['status' => $response->status(), 'body' => $response->body()]); // Log de la réponse
         if ($response->successful()) {
             return $response->json('data');
         } else {
@@ -188,7 +188,7 @@ public function formatStructureData(array $data){
         'name' =>$data['name'],
         'company' => $data['company'] ?? 'My Company',
         'payroll_frequency' => $data['payroll_frequency'] ?? 'Monthly',
-        'is_active' => $data['is_active'] ?? 1,
+        'is_active' => $data['is_active'] ?? 'Yes',
         'currency' => $data['currency'] ?? 'EUR',
         'earnings' => $this->formatEarnings($data['earnings'] ?? []),
         'deductions' => $this->formatDeductions($data['deductions'] ?? []),
@@ -199,13 +199,11 @@ public function formatEarnings(array $earnings){
     $formatted = [];
     foreach ($earnings as $earning) {
         $formatted[] = [
+            'doctype' => 'Salary Detail', // 🔥 AJOUTÉ
             'salary_component' => $earning['salary_component'],
-            'amount' => $earning['amount'] ?? 0,
-            'rate' => $earning['rate'] ?? 0,
-            'type' => $earning['type'] ?? 'Fixed',
-            'is_taxable' => $earning['is_taxable'] ?? 1,
+            'amount' =>  0,
+            'is_taxable' => 1,
             'formula' => $earning['formula'] ?? '',
-            
         ];
     }
     return $formatted;
@@ -213,13 +211,13 @@ public function formatEarnings(array $earnings){
 public function formatDeductions(array $deductions){
     return array_map(function ($deduction) {
         return [
+            'doctype' => 'Salary Detail', // 🔥 AJOUTÉ
             'salary_component' => $deduction['salary_component'],
-            'amount' => $deduction['amount'] ?? 0,
-            'rate' => $deduction['rate'] ?? 0,
-            'type' => $deduction['type'] ?? 'Fixed',
-            'is_taxable' => $deduction['is_taxable'] ?? 1,
+            'amount' => 0,
+            'is_taxable' => 1,
             'formula' => $deduction['formula'] ?? '',
         ];
     }, $deductions);
 }
+
 }

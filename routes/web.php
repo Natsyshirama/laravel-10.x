@@ -116,3 +116,4 @@ Route::post('/import/salary_slip', [ImportController::class, 'importSalarySlip']
 Route::get('/salary-structure',[SStructureController::class, 'index'])->name('salaraStr.index');
 Route::get('/salary-structure/view',[SStructureController::class, 'show'])->name('salaraStr.show');
 Route::get('/salary-structure/add', [SStructureController::class, 'addForm'])->name('salaraStr.addForm');
+Route::post('/salary-structure', [SStructureController::class, 'store'])->name('salaraStr.store');

@@ -28,7 +28,6 @@ const mois = @json($mois);
 const netPays = @json($netPays);
 const composantsData = @json($composantsData);
 
-// Graphe Net Pay
 const ctx1 = document.getElementById('netPayChart').getContext('2d');
 new Chart(ctx1, {
     type: 'line',
@@ -47,7 +46,6 @@ new Chart(ctx1, {
     }
 });
 
-// Graphe Composants
 const datasets = [];
 Object.entries(composantsData).forEach(([name, data], idx) => {
     datasets.push({

@@ -11,8 +11,15 @@
         </form>
     </div>
 
-    @if($mois && count($resultats) > 0)
+    @if( count($resultats) > 0)
         <div class="card-body">
+        <h5>
+            @if($mois)
+                Résultats pour le mois : {{ $mois }}
+            @else
+                Résultats pour tous les mois
+            @endif
+        </h5>
             <table class="table table-bordered">
                 <thead>
                     <tr>

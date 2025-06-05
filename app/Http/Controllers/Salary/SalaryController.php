@@ -79,17 +79,7 @@ class SalaryController extends Controller
 }
 public function filtreParMois(Request $request)
 {
-    $mois = $request->input('mois');
-
-    if (!$mois) {
-        return view('salary.tableauSalaire', [
-            'mois' => null,
-            'resultats' => [],
-            'total_gains' => 0,
-            'total_deductions' => 0,
-            'total_net' => 0
-        ]);
-    }
+    $mois = $request->input('mois'); // peut être vide ou non
 
     try {
         $data = $this->salaryApi->getSalaryByMonth($mois);
@@ -98,4 +88,5 @@ public function filtreParMois(Request $request)
         return back()->withErrors(['message' => $e->getMessage()]);
     }
 }
+
 }

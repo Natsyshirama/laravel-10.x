@@ -116,24 +116,28 @@ class SalaireAPI{
     }
 } 
 
-public function getSalaryByMonth($mois)
+
+public function getSalaryByMonth($mois = null)
 {
     $sid = Session::get('sid');
     if (!$sid) {
         throw new \Exception("Session non valide (sid manquant)");
     }
 
-    $startDate = $mois . '-01';
-    $endDate = Carbon::parse($startDate)->endOfMonth()->format('Y-m-d');
+    $filters = [['docstatus', '=', 1]];
+
+    if ($mois) {
+        $startDate = $mois . '-01';
+        $endDate = Carbon::parse($startDate)->endOfMonth()->format('Y-m-d');
+
+        $filters[] = ['start_date', '>=', $startDate];
+        $filters[] = ['start_date', '<=', $endDate];
+    }
 
     $response = Http::withHeaders([
         'Cookie' => 'sid=' . $sid
     ])->get($this->baseUrl . '/api/resource/Salary Slip', [
-        'filters' => json_encode([
-            ['start_date', '>=', $startDate],
-            ['start_date', '<=', $endDate],
-            ['docstatus', '=', 1]
-        ]),
+        'filters' => json_encode($filters),
         'fields' => json_encode(['name', 'employee', 'employee_name', 'net_pay']),
         'limit_page_length' => 1000
     ]);
@@ -151,18 +155,12 @@ public function getSalaryByMonth($mois)
         $deductions = collect($details['deductions'] ?? [])->sum('amount');
         $net = $details['net_pay'] ?? 0;
 
-        // Formatage des détails des gains
         $gainDetails = collect($details['earnings'] ?? [])
-            ->map(function ($item) {
-                return $item['salary_component'] . ': ' . number_format($item['amount'], 2, ',', ' ') . ' €';
-            })
+            ->map(fn($item) => $item['salary_component'] . ': ' . number_format($item['amount'], 2, ',', ' ') . ' €')
             ->implode('<br>');
 
-        // Formatage des détails des déductions
         $deductionDetails = collect($details['deductions'] ?? [])
-            ->map(function ($item) {
-                return $item['salary_component'] . ': ' . number_format($item['amount'], 2, ',', ' ') . ' €';
-            })
+            ->map(fn($item) => $item['salary_component'] . ': ' . number_format($item['amount'], 2, ',', ' ') . ' €')
             ->implode('<br>');
 
         $resultats[] = [

@@ -53,12 +53,16 @@ class SalarySlipService{
             if (!isset($moisData[$mois])) {
                 $moisData[$mois] = [
                     'net_pay' => 0,
+                    'total_gains' => 0,
+                    'total_deductions' => 0,
                     'components' => []
                 ];
             }
     
             $moisData[$mois]['net_pay'] += $net;
-    
+            $moisData[$mois]['total_gains'] += collect($details['earnings'] ?? [])->sum('amount');
+            $moisData[$mois]['total_deductions'] += collect($details['deductions'] ?? [])->sum('amount');
+           
             foreach ($details['earnings'] ?? [] as $earning) {
                 $comp = $earning['salary_component'];
                 $amount = $earning['amount'];

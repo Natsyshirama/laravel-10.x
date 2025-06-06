@@ -22,6 +22,8 @@
                     <tr>
                         <th>Mois</th>
                         <th>Net payé (€)</th>
+                        <th>Total Gains (€)</th>
+                        <th> Total Deduction (€)</th>
                         @foreach($components as $comp)
                             <th>{{ $comp }} (€)</th>
                         @endforeach
@@ -34,7 +36,9 @@
                             <td> <a href="{{ route('fichePaie.filtreParMois', ['mois' => date('Y', strtotime($annee . '-' . $mois . '-01')) . '-' . str_pad(date('m', strtotime($annee . '-' . $mois . '-01')), 2, '0', STR_PAD_LEFT)]) }}">
                                 {{ number_format($data['net_pay'], 2, ',', ' ') }}
                                 </a></td>
-                            @foreach($components as $comp)
+                                <td>{{ number_format($data['total_gains'], 2, ',', ' ') }}</td>
+                                <td>{{ number_format($data['total_deductions'], 2, ',', ' ') }}</td>
+                                @foreach($components as $comp)
                                 <td>{{ number_format($data['components'][$comp] ?? 0, 2, ',', ' ') }}</td>
                             @endforeach
                         </tr>

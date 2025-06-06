@@ -66,6 +66,12 @@ class SalarySlipService{
                 $moisData[$mois]['components'][$comp] = ($moisData[$mois]['components'][$comp] ?? 0) + $amount;
                 $componentsList[$comp] = true;
             }
+            foreach ($details['deductions'] ?? [] as $earning) {
+                $comp = $earning['salary_component'];
+                $amount = $earning['amount'];
+                $moisData[$mois]['components'][$comp] = ($moisData[$mois]['components'][$comp] ?? 0) + $amount;
+                $componentsList[$comp] = true;
+            }
         }
     
         return [

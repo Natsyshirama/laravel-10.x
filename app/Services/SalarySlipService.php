@@ -18,7 +18,6 @@ class SalarySlipService{
         $this->salaire = $salaire;  
         $this->baseUrl = env('FRAPPE_URL', 'http://erpnext.localhost:8000/');
     }
-
     public function getSalarySummaryByYear($annee)
     {
         $sid = Session::get('sid');
@@ -42,35 +41,29 @@ class SalarySlipService{
         ]);
     
         $slips = $response->json('data');
+    
+        // ✅ Initialiser les mois
         $moisData = [];
         $componentsList = [];
+    
+        foreach (range(1, 12) as $i) {
+            $mois = Carbon::createFromDate(null, $i, 1)->format('F');
+            $moisData[$mois] = [
+                'net_pay' => 0,
+                'components' => []
+            ];
+        }
     
         foreach ($slips as $slip) {
             $mois = Carbon::parse($slip['start_date'])->format('F');
             $details = $this->salaire->getFichePaieDetails($slip['name']);
-            $net = $details['net_pay'] ?? 0;
     
-            if (!isset($moisData[$mois])) {
-                $moisData[$mois] = [
-                    'net_pay' => 0,
-                    'components' => []
-                ];
-            }
-    
-            $moisData[$mois]['net_pay'] += $net;
+            $moisData[$mois]['net_pay'] += $details['net_pay'] ?? 0;
     
             foreach ($details['earnings'] ?? [] as $earning) {
                 $comp = $earning['salary_component'];
                 $amount = $earning['amount'];
-    
                 $moisData[$mois]['components'][$comp] = ($moisData[$mois]['components'][$comp] ?? 0) + $amount;
-                $componentsList[$comp] = true;
-            }
-            foreach ($details['deductions'] ?? [] as $deduction) {
-                $comp = $deduction['salary_component'];
-                $amount = $deduction['amount'];
-    
-                $moisData[$mois]['components'][$comp] = ($moisData[$mois]['components'][$comp] ?? 0) - $amount;
                 $componentsList[$comp] = true;
             }
         }
@@ -81,5 +74,6 @@ class SalarySlipService{
             'components' => array_keys($componentsList)
         ];
     }
+    
     
 }

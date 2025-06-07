@@ -31,11 +31,32 @@
     
     <button type="submit" class="btn btn-primary">Importer </button>
 </form>
-@if (session('status') && isset(session('status')['message']))
-    @foreach (session('status')['message'] as $line)
-        <div class="alert alert-danger">{{ is_array($line) ? implode(', ', $line) : $line }}</div>
+@if (session('results'))
+    @foreach (session('results') as $importType => $response)
+        <div class="alert {{ isset($response['error']) || (isset($response['exc_type']) && $response['exc_type']) ? 'alert-danger' : 'alert-success' }}">
+            <strong>{{ ucfirst(str_replace('_', ' ', $importType)) }} :</strong>
+
+            @if (isset($response['message']) && is_array($response['message']))
+                <ul>
+                    @foreach ($response['message'] as $line)
+                        <li>{{ is_array($line) ? implode(', ', $line) : $line }}</li>
+                    @endforeach
+                </ul>
+            @elseif(isset($response['message']))
+                <p>{{ $response['message'] }}</p>
+            @else
+                <p>Import terminé sans message explicite.</p>
+            @endif
+        </div>
     @endforeach
 @endif
+
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 
 
 @endsection

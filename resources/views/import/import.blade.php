@@ -26,7 +26,7 @@
 
 <form method="POST" enctype="multipart/form-data" action="{{ route('import.salary_slip') }}">
     @csrf
-    <label for="csv_file">Fichier CSV Salary Structure :</label>
+    <label for="csv_file">Fichier CSV Salary Slip :</label>
     <input type="file" name="csv_fileSalarySlip" required>
     <button type="submit">Importer</button>
 </form>

@@ -50,7 +50,7 @@ class EmployeeAPI{
             throw new \Exception('Non connecté');
         }
         $fields = [
-            "name", "first_name", "department","designation","company","status"        ];
+            "name", "first_name", "department","designation","company","status" ];
     
         $parametre = array_merge([
             'fields'=> json_encode($fields)

@@ -20,7 +20,6 @@
     </div>
 </div>
 @endsection
-
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -28,44 +27,47 @@ const mois = @json($mois);
 const netPays = @json($netPays);
 const composantsData = @json($composantsData);
 
-const ctx1 = document.getElementById('netPayChart').getContext('2d');
-new Chart(ctx1, {
-    type: 'line',
-    data: {
-        labels: mois,
-        datasets: [{
-            label: 'Net Pay Mensuel',
-            data: netPays,
-            borderColor: 'green',
-            fill: false,
-            tension: 0.1
-        }]
-    },
-    options: {
-        responsive: true
-    }
-});
+// Initialiser le dataset avec Net Pay
+const datasets = [{
+    label: 'Net Pay Mensuel',
+    data: netPays,
+    borderColor: 'green',
+    fill: false,
+    tension: 0.1,
+    borderWidth: 2,
+    pointRadius: 3
+}];
 
-const datasets = [];
+// Ajouter les composants au même graphique
 Object.entries(composantsData).forEach(([name, data], idx) => {
     datasets.push({
         label: name,
         data: data,
         fill: false,
-        borderColor: `hsl(${idx * 60}, 70%, 50%)`,
-        tension: 0.1
+        borderColor: `hsl(${(idx * 60 + 120) % 360}, 70%, 50%)`, // Couleurs différentes
+        tension: 0.1,
+        pointRadius: 2
     });
 });
 
-const ctx2 = document.getElementById('componentsChart').getContext('2d');
-new Chart(ctx2, {
+const ctx = document.getElementById('netPayChart').getContext('2d');
+new Chart(ctx, {
     type: 'line',
     data: {
         labels: mois,
         datasets: datasets
     },
     options: {
-        responsive: true
+        responsive: true,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Évolution des Salaires et Composants par Mois'
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
     }
 });
 </script>

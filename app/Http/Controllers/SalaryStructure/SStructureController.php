@@ -69,8 +69,8 @@ class SStructureController extends Controller
       $donner =  $request->validate([
             'company' => 'required|string',
             'name' => 'required|string',
-            'earnings' => 'array', // Changé de 'gain' à 'earnings'
-            'deductions' => 'array', // Changé de 'deduction' à 'deductions'
+            'earnings' => 'array', 
+            'deductions' => 'array', 
         ]);
 
         try {

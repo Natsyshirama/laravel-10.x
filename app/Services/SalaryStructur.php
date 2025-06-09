@@ -165,7 +165,7 @@ public function ajoutStructure(array $data){
         ])->post($this->baseUrl. '/api/resource/Salary Structure', [
             'data' => $this->formatStructureData($data)
         ]);
-        Log::debug('Réponse de l\'API:', ['status' => $response->status(), 'body' => $response->body()]); // Log de la réponse
+        Log::debug('Réponse de l\'API:', ['status' => $response->status(), 'body' => $response->body()]); 
         if ($response->successful()) {
             return $response->json('data');
         } else {
@@ -200,7 +200,7 @@ public function formatEarnings(array $earnings){
     $formatted = [];
     foreach ($earnings as $earning) {
         $formatted[] = [
-            'doctype' => 'Salary Detail', // 🔥 AJOUTÉ
+            'doctype' => 'Salary Detail', 
             'salary_component' => $earning['salary_component'],
             'amount' =>  0,
             'is_taxable' => 1,
@@ -214,7 +214,7 @@ public function formatEarnings(array $earnings){
 public function formatDeductions(array $deductions){
     return array_map(function ($deduction) {
         return [
-            'doctype' => 'Salary Detail', // 🔥 AJOUTÉ
+            'doctype' => 'Salary Detail', 
             'salary_component' => $deduction['salary_component'],
             'amount' => 0,
             'is_taxable' => 1,

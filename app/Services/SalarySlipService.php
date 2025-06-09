@@ -42,7 +42,6 @@ class SalarySlipService{
     
         $slips = $response->json('data');
     
-        // ✅ Initialiser les mois
         $moisData = [];
         $componentsList = [];
     

@@ -85,7 +85,7 @@ class SalaryController extends Controller
 }
 public function filtreParMois(Request $request)
 {
-    $mois = $request->input('mois'); // peut être vide ou non
+    $mois = $request->input('mois');
 
     try {
         $data = $this->salaryApi->getSalaryByMonth($mois);
@@ -113,12 +113,10 @@ public function grapheSalaire(Request $request)
     try {
         $data = $this->salaire->getSalarySummaryByYear($annee);
 
-        // Formater les données pour Chart.js
         $mois = array_keys($data['moisData']);
         $netPays = [];
         $composantsData = [];
 
-        // Initialiser les composants
         foreach ($data['components'] as $comp) {
             $composantsData[$comp] = [];
         }

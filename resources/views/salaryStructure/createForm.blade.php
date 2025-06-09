@@ -42,7 +42,6 @@
                     </div>
                 </div>
 
-                <!-- GAIN -->
                 <h5>Gains</h5>
                 <table class="table" id="gain-table">
                     <thead><tr><th>Component</th><th>Formule</th><th>Action</th></tr></thead>
@@ -63,7 +62,6 @@
                 </table>
                 <button type="button" id="add-gain-row" class="btn btn-sm btn-primary">Ajouter gain</button>
 
-                <!-- DEDUCTION -->
                 <h5 class="mt-4">Déductions</h5>
                 <table class="table" id="deduction-table">
                     <thead><tr><th>Component</th><th>Formule</th><th>Action</th></tr></thead>

@@ -25,12 +25,20 @@
     </div>
     
     <div class="form-group">
-        <label for="csv_salary_slip">Fichier CSV Bulletins de Paie :</label>
+        <label for="csv_salary_slip">Fichier CSV FIche de Paie :</label>
         <input type="file" class="form-control-file" name="csv_salary_slip" required>
     </div>
     
     <button type="submit" class="btn btn-primary">Importer </button>
 </form>
+
+<div class="card-header">
+    <h4>Reset</h4>
+    <form method="GET" action="{{ route('reset.all') }}" class="form-inline" color="red" onsubmit="return confirmReset()">
+        <button type="submit" class="btn btn-danger">Reset</button>
+    </form>
+</div>
+
 @if (session('results'))
     @foreach (session('results') as $importType => $response)
         <div class="alert {{ isset($response['error']) || (isset($response['exc_type']) && $response['exc_type']) ? 'alert-danger' : 'alert-success' }}">
@@ -57,6 +65,15 @@
     </div>
 @endif
 
+
+
+@endsection
+@section('scripts')
+<script>
+    function confirmReset() {
+        return confirm("⚠️ Êtes-vous sûr de vouloir réinitialiser toutes les données ? Cette action est irréversible.");
+    }
+</script>
 
 
 @endsection

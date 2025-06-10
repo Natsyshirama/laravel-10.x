@@ -27,7 +27,6 @@ const mois = @json($mois);
 const netPays = @json($netPays);
 const composantsData = @json($composantsData);
 
-// Initialiser le dataset avec Net Pay
 const datasets = [{
     label: 'Net Pay Mensuel',
     data: netPays,
@@ -38,7 +37,6 @@ const datasets = [{
     pointRadius: 3
 }];
 
-// Ajouter les composants au même graphique
 Object.entries(composantsData).forEach(([name, data], idx) => {
     datasets.push({
         label: name,

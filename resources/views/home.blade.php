@@ -18,9 +18,9 @@
                 <h2>ERP PRO</h2>
             </div>
             <nav class="sidebar-nav">
-    <a href="{{ route('dashboard.achats') }}" class="nav-item">
+    <!-- <a href="{{ route('dashboard.achats') }}" class="nav-item">
         <i class="fas fa-chart-line"></i> Dashboard
-    </a>
+    </a> -->
     <!-- <a href="{{ route('devis.filtre') }}" class="nav-item">
         <i class="fas fa-file-signature"></i> Devis
     </a>
@@ -47,6 +47,9 @@
     </a> -->
     <a href="{{ route('employee.index') }}" class="nav-item">
         <i class="fas fa-user-tie"></i> Employees
+    </a>
+    <a href="{{ route('fiche-paie.liste') }}" class="nav-item">
+        <i class="fas fa-file"></i> Fiche Paie
     </a>
     <a href="{{ route('import.index') }}" class="nav-item">
         <i class="fas fa-file-import"></i> Import Donne

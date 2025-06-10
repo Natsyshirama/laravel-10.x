@@ -43,6 +43,26 @@ class SalaryController extends Controller
         }
     }
 
+
+    public function fichePaie()
+    {
+        
+        try {
+            
+            $slips = $this->salaryApi->getListeFichePaie();
+            return view('salary.listefichePaie', [
+                'slips' => $slips
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Erreur lors de la récupération des listes de fiche de paie', [
+                'error' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+        }
+    }
+
     public function show(Request $request){
         $name = $request->input('name');
         try{

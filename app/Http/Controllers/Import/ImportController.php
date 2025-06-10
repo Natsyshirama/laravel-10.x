@@ -119,19 +119,16 @@ public function importAll(Request $request)
     $hasError = false;
 
     try {
-        // Vérification des fichiers
         if (!$request->hasFile('csv_employees') || !$request->hasFile('csv_salary_structure') || !$request->hasFile('csv_salary_slip')) {
             throw new \Exception('Tous les fichiers doivent être fournis');
         }
 
-        // Configuration HTTP commune
         $httpClient = Http::timeout(600) // 10 minutes timeout
             ->withHeaders([
                 'Cookie' => 'sid=' . $sid,
                 'Content-Type' => 'application/json',
             ]);
 
-        // Import des employés
         $employeeContent = file_get_contents($request->file('csv_employees')->getRealPath());
         $response = $httpClient->post($this->baseUrl.'/api/method/erpnext.importation.page.importdata.importEmployee.importEmployee', [
             'data' => $employeeContent
@@ -139,7 +136,6 @@ public function importAll(Request $request)
         $results['employees'] = $response->json();
         if ($response->failed()) $hasError = true;
 
-        // Import des structures salariales
         $structureContent = file_get_contents($request->file('csv_salary_structure')->getRealPath());
         $response = $httpClient->post($this->baseUrl.'/api/method/erpnext.importation.page.importdata.importSalaryStructure.import_salary_structure', [
             'data' => $structureContent
@@ -147,7 +143,6 @@ public function importAll(Request $request)
         $results['salary_structure'] = $response->json();
         if ($response->failed()) $hasError = true;
 
-        // Import des bulletins de paie
         $slipContent = file_get_contents($request->file('csv_salary_slip')->getRealPath());
         $response = $httpClient->post($this->baseUrl.'/api/method/erpnext.importation.page.importdata.importSalarySlip.import_salary_slip', [
             'data' => $slipContent

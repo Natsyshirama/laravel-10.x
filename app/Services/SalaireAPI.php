@@ -59,6 +59,34 @@ class SalaireAPI{
     }
  }
 
+ public function getListeFichePaie(){
+    $sid = Session::get('sid');
+    if (!$sid) {
+        throw new \Exception('Non connecté');
+    }
+    $fields = ['name','employee','employee_name','status','department','company','posting_date','salary_structure'];
+    try{
+        $response = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid
+        ])->get($this->baseUrl . '/api/resource/Salary Slip', [
+            
+            'fields' => json_encode($fields)
+        ]);
+        if ($response->successful()) {
+            return $response->json('data') ?? [];
+        } else {
+            Log::error('Erreur API Frappe', ['response' => $response->body()]);
+            return [];
+        }
+            }catch (\Exception $e) {
+        Log::error('Erreur lors de la récupération liste fiche de paie', [
+            'error' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        throw $e;
+    }
+ }
  public function getListeFichePaieEmployee($name){
     $sid = Session::get('sid');
     if (!$sid) {

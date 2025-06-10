@@ -17,6 +17,7 @@ use App\Http\Controllers\Livraison\LivraisonController;
    use App\Http\Controllers\Employee\EmployeeController;
    use App\Http\Controllers\Salary\SalaryController;
    use App\Http\Controllers\Import\ImportController;
+use App\Http\Controllers\Reset\ResetController;
 use App\Http\Controllers\Salary\AssignmentController;
 use App\Http\Controllers\SalaryStructure\SStructureController;
 use PHPUnit\Util\Exporter;
@@ -98,6 +99,8 @@ Route::get('/livraison/{name}', [LivraisonController::class, 'show'])->name('liv
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employee.index');
 Route::get('/employees/{name}', [EmployeeController::class, 'show'])->name('employee.show');
+Route::get('/fiche-paie/liste', [SalaryController::class, 'fichePaie'])->name('fiche-paie.liste');
+
 Route::get('/fiche-paie', [SalaryController::class, 'index'])->name('fiche-paie.index');
 Route::get('/fiche-paie/view', [SalaryController::class, 'show'])->name('fichePaie.show');
 Route::get('/fiche-paie/view/exportpdf', [SalaryController::class, 'exportPdf'])->name('fichePaie.export');
@@ -113,6 +116,9 @@ Route::post('/import/employees', [ImportController::class, 'importEmployees'])->
 Route::post('/import/salary_structure', [ImportController::class, 'importSalaryStructure'])->name('import.salary_structure');
 Route::post('/import/salary_slip', [ImportController::class, 'importSalarySlip'])->name('import.salary_slip');
 Route::post('/import/all', [ImportController::class, 'importAll'])->name('import.all');
+
+//reset
+Route::get('/reset-all-doctypes', [ResetController::class, 'resetAll'])->name('reset.all');
 
 //salary structur
 

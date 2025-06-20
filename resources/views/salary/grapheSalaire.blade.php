@@ -42,7 +42,7 @@ Object.entries(composantsData).forEach(([name, data], idx) => {
         label: name,
         data: data,
         fill: false,
-        borderColor: `hsl(${(idx * 60 + 120) % 360}, 70%, 50%)`, // Couleurs différentes
+        borderColor: `hsl(${(idx * 60 + 120) % 360}, 80%, 50%)`, 
         tension: 0.1,
         pointRadius: 2
     });

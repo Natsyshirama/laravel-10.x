@@ -67,6 +67,15 @@
     <a href="{{ route('fichePaie.grapheSalaire') }}" class="nav-item">
         <i class="fas fa-chart-line"></i> Dashboard
     </a>
+
+    <a href="{{route('salary.modifForm')}}" class="nav-item">
+        <i class="fas fa-"></i> modif salaire
+    </a>
+    
+    
+    <a href="{{ route('genere.genForm') }}" class="nav-item">
+        <i class="fas fa-add"></i> generer salaire
+    </a>
 </nav>
 
         </aside>

@@ -132,3 +132,11 @@ Route::post('/salary-structure', [SStructureController::class, 'store'])->name('
 
 Route::get('/assignment-salary/add', [AssignmentController::class, 'addAssignment'])->name('salaryAssg.addAssg');
 Route::post('/assignent-salary', [AssignmentController::class, 'assignment'])->name('salaryAssg.posteAssg');
+
+//
+Route::post('/salary/modif', [AssignmentController::class, 'modif'])->name('salaryStr.modif');
+//genere
+Route::get('/genere-salaire', [AssignmentController::class, 'genereForm'])->name('genere.genForm');
+Route::post('/genere-salaire', [AssignmentController::class, 'genereSSA'])->name('genere.genereSSA');
+Route::get('/modif-salaire', [AssignmentController::class, 'modifForm'])->name('salary.modifForm');
+Route::post('/salaire/modification-masse', [AssignmentController::class, 'modifSalaire'])->name('modif.salary.mass');

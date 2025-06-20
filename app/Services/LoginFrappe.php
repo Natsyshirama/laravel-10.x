@@ -26,7 +26,7 @@ public function login(string $email, string $password)
         if ($setCookie && is_array($setCookie)) {
             foreach ($setCookie as $cookie) {
                 if (Str::startsWith($cookie, 'sid=')) {
-                    $sid = explode(';', substr($cookie, 4))[0]; // Extrait valuer sid
+                    $sid = explode(';', substr($cookie, 4))[0]; 
                     break;
                 }
             }

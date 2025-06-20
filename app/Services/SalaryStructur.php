@@ -6,6 +6,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Expr\FuncCall;
 
 class SalaryStructur{
 
@@ -224,5 +225,7 @@ public function formatDeductions(array $deductions){
         ];
     }, $deductions);
 }
+
+
 
 }

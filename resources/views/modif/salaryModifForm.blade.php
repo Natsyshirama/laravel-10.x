@@ -60,7 +60,7 @@
 <input type="number" name="pourcentage" class="form-control" placeholder="pourcentage">
 
    
-    <button type="submit">Modifier les salaires > 100</button>
+    <button type="submit">Modifier </button>
 </form>
 
 </div>

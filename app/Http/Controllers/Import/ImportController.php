@@ -123,7 +123,7 @@ public function importAll(Request $request)
             throw new \Exception('Tous les fichiers doivent être fournis');
         }
 
-        $httpClient = Http::timeout(600) // 10 minutes timeout
+        $httpClient = Http::timeout(600) // 10 min
             ->withHeaders([
                 'Cookie' => 'sid=' . $sid,
                 'Content-Type' => 'application/json',

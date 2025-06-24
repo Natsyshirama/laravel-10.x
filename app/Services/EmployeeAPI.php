@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
+use App\Models\Employee;
 
 class EmployeeAPI{
 
@@ -102,4 +103,17 @@ public function getEmployeeDetails($name){
         throw $e;
     }
 }
+
+    public function getAllEmployees()
+    {
+        return $employes = Employee::fromQuery("SELECT * FROM tabEmployee ORDER BY employee_name ASC");
+
+    }
+
+    public function getEmployeeDetail($employeeId)
+    {
+        return  $employee = Employee::fromQuery("SELECT * FROM tabEmployee WHERE name = ?", [$employeeId])[0] ?? null;
+    }
+
+
 }

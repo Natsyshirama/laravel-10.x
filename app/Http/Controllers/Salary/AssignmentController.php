@@ -139,7 +139,7 @@ public function modifSalaire(Request $request)
 
 
     try {
-        $nb = $this->salaryStr->updateBaseSalaryForFilteredEmployees($component,$operator,$amount, $methode,$pourcentage);
+        $nb = $this->salaryStr->updateSalaire($component,$operator,$amount, $methode,$pourcentage);
         return back()->with('success', "$nb employés mis à jour.");
     } catch (\Exception $e) {
         return back()->withErrors('Erreur : ' . $e->getMessage());

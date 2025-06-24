@@ -106,7 +106,7 @@ Route::get('/fiche-paie/view', [SalaryController::class, 'show'])->name('fichePa
 Route::get('/fiche-paie/view/exportpdf', [SalaryController::class, 'exportPdf'])->name('fichePaie.export');
 Route::get('/fiche-paie/mois', [SalaryController::class, 'filtreParMois'])->name('fichePaie.filtreParMois');
 Route::get('/fiche-paie/resume', [SalaryController::class, 'resumeParAnnee'])->name('fichePaie.resumeParAnnee');
-Route::get('[/fiche-paie/graphe', [SalaryController::class, 'grapheSalaire'])->name('fichePaie.grapheSalaire');
+Route::get('/fiche-paie/graphe', [SalaryController::class, 'grapheSalaire'])->name('fichePaie.grapheSalaire');
 
 
 //import
@@ -140,3 +140,11 @@ Route::get('/genere-salaire', [AssignmentController::class, 'genereForm'])->name
 Route::post('/genere-salaire', [AssignmentController::class, 'genereSSA'])->name('genere.genereSSA');
 Route::get('/modif-salaire', [AssignmentController::class, 'modifForm'])->name('salary.modifForm');
 Route::post('/salaire/modification-masse', [AssignmentController::class, 'modifSalaire'])->name('modif.salary.mass');
+
+
+//test direct Base
+
+use App\Http\Controllers\EmployerController;
+
+Route::get('/employeer', [EmployerController::class, 'index'])->name('employees.index');
+Route::get('/employeer/{id}', [EmployerController::class, 'show'])->name('employees.show');

@@ -15,7 +15,7 @@ class SalaryEmployeeService{
         $this->baseUrl = env('FRAPPE_URL', 'http://erpnext.localhost:8000/');
     }
 
-//component
+//component modifier
 public function getComponent(){
     $sid = Session::get('sid');
     if (!$sid) {
@@ -35,6 +35,7 @@ public function getComponent(){
             throw new \Exception("Erreur lors de la récupération Component type Gains: " . $response->body());
         }
 }
+//update
 public function getEmployees($component, $operator, $amount)
 {
     $sid = Session::get('sid');
@@ -89,8 +90,8 @@ public function getEmployees($component, $operator, $amount)
 
     return $listeEmployees;
 }
-
-public function getSalaryStructureAssg($name,$employe){
+//update
+public function getSalaryStructureAssg($employe){
     $sid = Session::get('sid');
     if (!$sid) {
         throw new \Exception('Non connecté');
@@ -100,7 +101,6 @@ public function getSalaryStructureAssg($name,$employe){
             'Cookie' => 'sid=' . $sid
             ])->get(env('FRAPPE_URL') . '/api/resource/Salary Structure Assignment',  [
                 'filters' => json_encode([
-                    ['name', '=', $name],
                     ['employee', '=', $employe],
                     ['docstatus', '<', 2],
                     ['from_date', '<', now()->toDateString()]
@@ -145,7 +145,7 @@ public function updateSalaire($component,$operator,$amount, $methode,$pourcentag
     $url = $this->baseUrl . '/api/resource/';
 
     foreach ($employes as $employe) {
-        $ssas = $this->getSalaryStructureAssg($employe['name'],$employe['employee']);
+        $ssas = $this->getSalaryStructureAssg($employe['employee']);
         foreach($ssas as $ssa){
 
         
@@ -197,7 +197,7 @@ public function updateSalaire($component,$operator,$amount, $methode,$pourcentag
             //delete
             Http::withHeaders($headers)
             ->delete($this->baseUrl . '/api/resource/Salary Slip/' . $salarSlips);
-            Log::info('Salary Slip annulé pour employee : ' . $employe['employee']);
+            Log::info('Salary Slip annule pour employee : ' . $employe['employee']);
 
             //cree
             $startDate = $employe['start_date'];
@@ -328,9 +328,41 @@ public function getSalaireBase($employee)
     throw new \Exception("Erreur lors de la vérification des SSA existants.");
 }
 
+public function getMoyenneSalaireBase()
+{
+    $sid = Session::get('sid');
+    if (!$sid) {
+        throw new \Exception("Non connecté");
+    }
+
+    $response = Http::withHeaders([
+        'Cookie' => 'sid=' . $sid
+    ])->get($this->baseUrl . '/api/resource/Salary Structure Assignment', [
+        'fields' => json_encode(['base']),
+        'filters' => json_encode([
+            ['docstatus', '=', 1]
+        ]),
+        'limit_page_length' => 1000 
+    ]);
+
+    if (!$response->successful()) {
+        throw new \Exception("Erreur récupération salaires de base : " . $response->body());
+    }
+
+    $data = $response->json('data');
+
+    if (empty($data)) {
+        throw new \Exception("Aucun salaire de base trouvé pour le calcul.");
+    }
+
+    $total = array_sum(array_column($data, 'base'));
+    $moyenne = $total / count($data);
+
+    return round($moyenne, 2);
+}
 
 
-public function genereSalarySA($employee, $base_salary, $from_date, $to_date)
+public function genereSalarySA($employee, $base_salary, $from_date, $to_date, $force=false)
 {
     $sid = Session::get('sid');
     if (!$sid) {
@@ -364,10 +396,60 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date)
 
         $existing = $this->verifieMois($employee, $from, $to);
         if ($existing){
+            if(!$force){
             Log::info("SSA déjà existant pour $employee au mois de $month, saut...");
             $current->addMonth();
             continue;
+        }else{
+            Log::info("SSA déjà existant pour $employee au mois de $month, mais sera ecraser");
+            $ssa = Http::withHeaders([
+                'Cookie' => 'sid=' . $sid,
+                
+            ])->get($this->baseUrl . '/api/resource/Salary Structure Assignment',[
+                'filters' => json_encode([
+                    ['employee', '=', $employee],
+                    ['from_date', '=', $from],
+                    ['docstatus', '<', 2]
+                ]),
+                'fields' => json_encode(['name']),
+                'limit_page_length' => 1
+            ]);
+            
+            if ($ssa->successful() && count($ssa->json('data')) > 0){
+                $ssaName = $ssa->json('data')[0]['name'];
+            }
+            $annulerPayload = [
+                'docstatus' => 2 
+            ];
+
+            $newPaypload = [
+                'base' => $base_salary,
+                'salary_structure' => $salary_structure,
+                'from_date' => $from,
+                'to_date' =>$to
+            ];
+
+            //cancel [
+            $cancelResponce = Http::withHeaders( [
+            'Cookie' => 'sid=' . $sid,
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json'])
+            ->put($this->baseUrl . '/api/resource/Salary Structure Assignment/' . $ssaName, ['data' => $annulerPayload]);
+        
+            //create
+            $createdRespons = Http::withHeaders( [
+                'Cookie' => 'sid=' . $sid,
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json'])
+                ->post($this->baseUrl . '/api/resource/Salary Structure Assignment', ['data' => $newPaypload]);
+            
+                //
+            if(!$createdRespons->successful())
+            {
+                Log::error("Échec de mise à jour SSA forcé : " . $createdRespons->body());
+            }
         }
+    }
 
         $payload = [
             'docstatus' => 1,
@@ -384,6 +466,30 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date)
         ])->post($this->baseUrl . '/api/resource/Salary Structure Assignment', [
             'data' => $payload
         ]);
+
+        $slipPayload = [
+                'employee' => $employee,
+                'salary_structure' => $salary_structure,
+                'start_date' => $from,
+                'end_date' => $to,
+                'creation' => now()->toDateTimeString(),
+                'docstatus' => 1
+        ];
+        $slipCreation = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid,
+            'Content-Type' => 'application/json'
+        ])->post($this->baseUrl . '/api/resource/Salary Slip', ['data' => $slipPayload]);
+
+            if (!$slipCreation->successful()) {
+                Log::error('Erreur lors de la creation du Salary Slip', [
+                    'employe' => $employee,
+                    'response' => $slipCreation->body()
+                ]);
+            } else {
+                Log::info('Salary Slip cree avec succsse : ' . $employee);
+            }
+
+            
 
         if ($response->successful()) {
             $created[] = $response->json('data.name');

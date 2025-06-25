@@ -79,19 +79,26 @@ class AssignmentController extends Controller
 
 public function genereSSA(Request $request)
 {
+    $force = $request->has('forcer') ? true : false ;
+    $moyenne = $request->has('moyenne') ? true : false ;
     $validated = $request->validate([
         'employee' => 'required|string',
         'base_salary' => 'nullable|numeric',
         'from_date' => 'required|date',
         'end_date' => 'required|date|after_or_equal:from_date',
     ]);
+    if($moyenne){
+        $base_salary = $this->salaryStr->getMoyenneSalaireBase();
+    }
 
     try {
         $this->salaryStr->genereSalarySA(
             $validated['employee'],
-            $validated['base_salary'],
+            $base_salary,
             $validated['from_date'],
-            $validated['end_date']
+            $validated['end_date'],
+            $force,
+           // $moyenne
         );
         return redirect()->back()->with('success', 'SSA générés avec succès.');
     } catch (\Exception $e) {

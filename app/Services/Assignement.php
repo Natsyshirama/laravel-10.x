@@ -71,5 +71,38 @@ public function formatAssignmentData(array $data){
     
     ];
 }
+public function getMoyenneSalaireBase()
+{
+    $sid = Session::get('sid');
+    if (!$sid) {
+        throw new \Exception("Non connecté");
+    }
+
+    $response = Http::withHeaders([
+        'Cookie' => 'sid=' . $sid
+    ])->get($this->baseUrl . '/api/resource/Salary Structure Assignment', [
+        'fields' => json_encode(['base']),
+        'filters' => json_encode([
+            ['docstatus', '=', 1]
+        ]),
+        'limit_page_length' => 1000 // adapte si beaucoup d’employés
+    ]);
+
+    if (!$response->successful()) {
+        throw new \Exception("Erreur récupération salaires de base : " . $response->body());
+    }
+
+    $data = $response->json('data');
+
+    if (empty($data)) {
+        throw new \Exception("Aucun salaire de base trouvé pour le calcul.");
+    }
+
+    $total = array_sum(array_column($data, 'base'));
+    $moyenne = $total / count($data);
+
+    return round($moyenne, 2);
+}
+
 
 }

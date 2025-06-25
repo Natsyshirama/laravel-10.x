@@ -13,6 +13,7 @@
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
+            
 
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -50,6 +51,17 @@
                         <input type="date" name="end_date"  class="form-control" required>
                     </div>
                 </div>
+
+                <div>
+                    <input type="checkbox" name="forcer" value="1">
+                    <label>ecraser</label>
+                </div>
+               
+                <div>
+                    <input type="checkbox" name="moyenne" value="1">
+                    <label>moyenne</label>
+                </div>
+               
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <label> Salaire de base</label>

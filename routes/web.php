@@ -141,6 +141,10 @@ Route::post('/genere-salaire', [AssignmentController::class, 'genereSSA'])->name
 Route::get('/modif-salaire', [AssignmentController::class, 'modifForm'])->name('salary.modifForm');
 Route::post('/salaire/modification-masse', [AssignmentController::class, 'modifSalaire'])->name('modif.salary.mass');
 
+//recherche
+Route::get('/recherche-salaire', [AssignmentController::class, 'rechercheForm'])->name('recherche.rechercheForm');
+Route::post('/recherche-salaireResultat', [AssignmentController::class, 'recherche'])->name('recherche.moteur');
+
 
 //test direct Base
 

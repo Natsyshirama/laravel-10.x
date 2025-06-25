@@ -38,6 +38,7 @@ class EmployeeController extends Controller
                 'employees' => $employees,
                 'selectDepartment' => $selectDepartment
             ]);
+            
         } catch (\Exception $e) {
             Log::error('Erreur lors de la récupération des employés', [
                 'error' => $e->getMessage(),
@@ -47,6 +48,7 @@ class EmployeeController extends Controller
             return redirect()->back()->withErrors(['message' => $e->getMessage()]);
         }
     }   
+    
     public function show($name){
         try {
             $employee = $this->employeeApi->getEmployeeDetails($name);

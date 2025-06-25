@@ -23,7 +23,7 @@
                 </div>
             @endif
 
-             <form method="POST" action="{{ route('modif.salary.mass') }}">
+             <form method="POST" action="{{route('recherche.moteur')}}">
                 @csrf
 
                 <div class="row mb-4">
@@ -49,21 +49,45 @@
     </div>
                
         </div>
-    </div> 
-    @csrf
-
-<select class="form-control select2" name="methode" required>
-    <option value="">methode </option>
-    <option value="moins">deduction </option>
-    <option value="plus">augmentation </option>
-</select>
-<input type="number" name="pourcentage" class="form-control" placeholder="pourcentage">
-
+  
    
-    <button type="submit">Modifier </button>
+    <button type="submit">rechercher </button>
 </form>
 
 </div>
+@if(isset($employees) && count($employees) > 0)
+    <hr>
+    <h5>Résultats :</h5>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>salary slip</th>
+                    <th>Nom</th>
+                    <th>Structure Salaire</th>
+                    <th>Date Début</th>
+                    <th>detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($employees as $emp)
+                    <tr>
+                        <td>{{ $emp['name']}}</td>
+                        <td>{{ $emp['employee_name'] }}</td>
+                        <td>{{ $emp['salary_structure'] }}</td>
+                        <td>{{ $emp['start_date'] }}</td>
+                        @foreach($emp['details'] as $line)
+                        <td>    {{$line['salary_component']}}= {{$line['amount']}}</td>
+                        @endforeach
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+@elseif(isset($employees))
+    <div class="alert alert-warning">Aucun employé trouvé.</div>
+@endif
+
 @endsection
 
 @section('scripts')

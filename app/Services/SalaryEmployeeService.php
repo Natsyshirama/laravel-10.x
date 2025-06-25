@@ -81,6 +81,7 @@ public function getEmployees($component, $operator, $amount)
                         'employee_name' => $detail['employee_name'],
                         'salary_structure' => $detail['salary_structure'],
                         'start_date' => $detail['start_date'],
+                        'details' => $details
                     ];
                     break;
                 }
@@ -423,6 +424,7 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date, $f
             ];
 
             $newPaypload = [
+                'employee'=>$employee,
                 'base' => $base_salary,
                 'salary_structure' => $salary_structure,
                 'from_date' => $from,

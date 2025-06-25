@@ -38,6 +38,8 @@ class AssignmentController extends Controller
         }
     }
 
+    
+
     public function assignment(Request $request){
         $donner = $request->validate([
             'employee' => 'required|string',
@@ -111,6 +113,54 @@ public function genereSSA(Request $request)
     }
 }
 
+ public function rechercheForm(){
+        
+    $components =  $this->salaryStr->getComponent();
+    try{
+        return view('recherche.recherche', [
+            'components' =>$components
+        ]);
+    }catch (\Exception $e) {
+        Log::error('Erreur lors de la récupération objet a selectionner', [
+            'error' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+    }
+    }
+
+    public function recherche( Request $request){
+        $validated = $request->validate([
+            'component' => 'required|string',
+            'signe' => 'required|in:>,<',
+            'montant' => 'required|numeric',
+        ]);
+    
+        try {
+            $components =  $this->salaryStr->getComponent(); 
+            $employees = $this->salaryStr->getEmployees(
+                $validated['component'],
+                $validated['signe'],
+                $validated['montant']
+            );
+    
+            return view('recherche.recherche', [
+                'components' => $components,
+                'employees' => $employees,
+                'selected_component' => $validated['component'],
+                'selected_operator' => $validated['signe'],
+                'montant' => $validated['montant'],
+            ]);
+    }catch (\Exception $e) {
+        Log::error('Erreur lors de la récupération salaire', [
+            'error' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        return redirect()->back()->withErrors(['message' => $e->getMessage()]);
+    }
+}
 
 public function modifForm(){
     $components =  $this->salaryStr->getComponent();

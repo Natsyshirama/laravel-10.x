@@ -75,6 +75,9 @@
     <a href="{{ route('genere.genForm') }}" class="nav-item">
         <i class="fas fa-add"></i> generer salaire
     </a>
+    <a href="{{ route('recherche.rechercheForm') }}" class="nav-item">
+        <i class="fas fa-add"></i> recherche salaire
+    </a>
 
     <a href="{{ route('employees.index') }}" class="nav-item">
         <i class="fas fa-add"></i> Liste Employeeee

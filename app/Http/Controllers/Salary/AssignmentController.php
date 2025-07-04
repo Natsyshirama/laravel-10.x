@@ -91,6 +91,12 @@ public function genereSSA(Request $request)
     ]);
     if($moyenne){
         $base_salary = $this->salaryStr->getMoyenneSalaireBase();
+    }else{
+        $validatedBase = $request->validate([
+            'base_salary' => 'nullable|numeric',
+        ]);
+        $base_salary = $validatedBase['base_salary'] ?? null;
+
     }
 
     try {
@@ -100,6 +106,7 @@ public function genereSSA(Request $request)
             $validated['from_date'],
             $validated['end_date'],
             $force,
+            
            // $moyenne
         );
         return redirect()->back()->with('success', 'SSA générés avec succès.');

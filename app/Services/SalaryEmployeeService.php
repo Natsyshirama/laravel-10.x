@@ -298,7 +298,7 @@ public function verifieMois($employee, $start_date, $end_date)
     throw new \Exception("Erreur lors de la vérification des SSA existants.");
 }
 
-public function getSalaireBase($employee)
+public function getSalaireBase($employee)   
 {
     $sid = Session::get('sid');
     if (!$sid) {
@@ -419,6 +419,25 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date, $f
             if ($ssa->successful() && count($ssa->json('data')) > 0){
                 $ssaName = $ssa->json('data')[0]['name'];
             }
+
+            $oldSalarySlip = Http::withHeaders([
+                'Cookie' => 'sid=' . $sid,
+                
+            ])->get($this->baseUrl . '/api/resource/Salary Slip',[
+                'filters' => json_encode([
+                    ['employee', '=', $employee],
+                    ['start_date', '=', $from],
+                    ['docstatus', '<', 2]
+                ]),
+                'fields' => json_encode(['name']),
+                'limit_page_length' => 1
+            ]);
+
+            if ($oldSalarySlip->successful() && count($oldSalarySlip->json('data')) > 0){
+                $salarySlipName = $oldSalarySlip->json('data')[0]['name'];
+            }
+
+
             $annulerPayload = [
                 'docstatus' => 2 
             ];
@@ -431,7 +450,7 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date, $f
                 'to_date' =>$to
             ];
 
-            //cancel [
+            //cancel 
             $cancelResponce = Http::withHeaders( [
             'Cookie' => 'sid=' . $sid,
             'Content-Type' => 'application/json',
@@ -445,11 +464,46 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date, $f
                 'Accept' => 'application/json'])
                 ->post($this->baseUrl . '/api/resource/Salary Structure Assignment', ['data' => $newPaypload]);
             
-                //
+            
             if(!$createdRespons->successful())
             {
                 Log::error("Échec de mise à jour SSA forcé : " . $createdRespons->body());
+            }else {
+                Log::info('Salary Salary Assignment cree avec success : ' . $employee, ['mois' => $from]);
             }
+
+
+            $slipPayload = [
+                'employee' => $employee,
+                'salary_structure' => $salary_structure,
+                'start_date' => $from,
+                'end_date' => $to,
+                'creation' => now()->toDateTimeString(),
+                'docstatus' => 1
+             ];
+
+        //cancel slip
+        $cancelResponce = Http::withHeaders( [
+            'Cookie' => 'sid=' . $sid,
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json'])
+            ->put($this->baseUrl . '/api/resource/Salary Slip/' . $salarySlipName, ['data' => $annulerPayload]);
+        
+        //creation slip
+        $slipCreation = Http::withHeaders([
+            'Cookie' => 'sid=' . $sid,
+            'Content-Type' => 'application/json'
+        ])->post($this->baseUrl . '/api/resource/Salary Slip', ['data' => $slipPayload]);
+
+            if (!$slipCreation->successful()) {
+                Log::error('Erreur lors de la creation du Salary Slip', [
+                    'employe' => $employee,
+                    'response' => $slipCreation->body()
+                ]);
+            } else {
+                Log::info('Salary Slip cree avec succsse : ' . $employee, [ 'mois' => $from]);
+            }
+            
         }
     }
 
@@ -488,7 +542,7 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date, $f
                     'response' => $slipCreation->body()
                 ]);
             } else {
-                Log::info('Salary Slip cree avec succsse : ' . $employee);
+                Log::info('Salary Slip cree avec succsse : ' . $employee, [ 'mois' => $from]);
             }
 
             

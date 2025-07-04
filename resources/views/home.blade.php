@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="FR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,26 +61,29 @@
     <a href="{{ route('fichePaie.resumeParAnnee') }}" class="nav-item">
         <i class="fas fa-table"></i> Salary Slip
     </a>
-    <a href="{{ route('salaraStr.index') }}" class="nav-item">
+    <!-- <a href="{{ route('salaraStr.index') }}" class="nav-item">
         <i class="fas fa-layer-group"></i> Salary Structur
-    </a>
+    </a> -->
     <a href="{{ route('fichePaie.grapheSalaire') }}" class="nav-item">
         <i class="fas fa-chart-line"></i> Dashboard
     </a>
 
     <a href="{{route('salary.modifForm')}}" class="nav-item">
-        <i class="fas fa-"></i> modif salaire
+        <i class="fas fa-write"></i> Modif salaire
     </a>
     
     <a href="{{ route('genere.genForm') }}" class="nav-item">
-        <i class="fas fa-add"></i> generer salaire
+        <i class="fas fa-add"></i> Generer salaire
     </a>
     <a href="{{ route('recherche.rechercheForm') }}" class="nav-item">
-        <i class="fas fa-add"></i> recherche salaire
+        <i class="fas fa-loop"></i> Recherche salaire
     </a>
 
-    <a href="{{ route('employees.index') }}" class="nav-item">
+    <!-- <a href="{{ route('employees.index') }}" class="nav-item">
         <i class="fas fa-add"></i> Liste Employeeee
+    </a> -->
+    <a href="{{ route('reduction.create') }}" class="nav-item">
+        <i class="fas fa-add"></i>Ajout Reduction
     </a>
     
 </nav>

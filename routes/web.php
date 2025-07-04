@@ -152,3 +152,9 @@ use App\Http\Controllers\EmployerController;
 
 Route::get('/employeer', [EmployerController::class, 'index'])->name('employees.index');
 Route::get('/employeer/{id}', [EmployerController::class, 'show'])->name('employees.show');
+
+
+use App\Http\Controllers\Reduction\ReductionController;
+
+Route::get('/reduction/create', [ReductionController::class, 'createForm'])->name('reduction.create');
+Route::post('/reduction', [ReductionController::class, 'insertReduction'])->name('reduction.insert');

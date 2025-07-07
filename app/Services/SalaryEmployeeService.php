@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Expr\FuncCall;
+use App\Models\Reduction\ReductionModel;
+
 use Carbon\Carbon;
 class SalaryEmployeeService{
     protected $baseUrl;
@@ -242,6 +244,8 @@ public function updateSalaire($component,$operator,$amount, $methode,$pourcentag
     return count($employes);
 }
 
+//generer
+
 public function getSalaryStr($employee)
 {
     $sid = Session::get('sid');
@@ -269,6 +273,15 @@ public function getSalaryStr($employee)
         throw new \Exception("Impossible de récupérer la Salary Structure actuelle.");
     }
 }
+
+
+public function getReductionMois(string $mois): ?float
+{
+    $reduction = ReductionModel::where('mois', $mois)->first();
+    return $reduction ? (float) $reduction->valeur : null;
+}
+
+
 
 public function verifieMois($employee, $start_date, $end_date)
 {
@@ -394,6 +407,16 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date, $f
         $month = $current->format('Y-m'); 
         $from = $current->copy()->startOfMonth()->toDateString();
         $to = $current->copy()->endOfMonth()->toDateString();
+        //appliquer le reduction sur salaire base
+        $mois = $current->copy()->startOfMonth()->format('Y-m-d');
+
+        $reduction = $this->getReductionMois($mois);
+        $salary_reduit = $base_salary;
+
+        if ($reduction !== null) {
+            $salary_reduit = round($base_salary * (1 - $reduction / 100), 2);
+            Log::info("Réduction appliquée pour le mois {$month}: -{$reduction}% (salaire ajusté: {$salary_reduit})");
+        }
 
         $existing = $this->verifieMois($employee, $from, $to);
         if ($existing){
@@ -401,8 +424,10 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date, $f
             Log::info("SSA déjà existant pour $employee au mois de $month, saut...");
             $current->addMonth();
             continue;
+            
         }else{
             Log::info("SSA déjà existant pour $employee au mois de $month, mais sera ecraser");
+
             $ssa = Http::withHeaders([
                 'Cookie' => 'sid=' . $sid,
                 
@@ -444,7 +469,7 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date, $f
 
             $newPaypload = [
                 'employee'=>$employee,
-                'base' => $base_salary,
+                'base' => $salary_reduit,
                 'salary_structure' => $salary_structure,
                 'from_date' => $from,
                 'to_date' =>$to
@@ -502,16 +527,16 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date, $f
                 ]);
             } else {
                 Log::info('Salary Slip cree avec succsse : ' . $employee, [ 'mois' => $from]);
-            }
+                }
             
+            }
         }
-    }
 
         $payload = [
             'docstatus' => 1,
             'employee' => $employee,
             'salary_structure' => $salary_structure,
-            'base' => $base_salary,
+            'base' => $salary_reduit,
             'from_date' => $from,
             'to_date' => $to
         ];

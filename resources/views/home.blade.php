@@ -69,22 +69,23 @@
     </a>
 
     <a href="{{route('salary.modifForm')}}" class="nav-item">
-        <i class="fas fa-write"></i> Modif salaire
+        <i class="fas fa-edit"></i> Modif salaire
     </a>
     
     <a href="{{ route('genere.genForm') }}" class="nav-item">
         <i class="fas fa-add"></i> Generer salaire
     </a>
     <a href="{{ route('recherche.rechercheForm') }}" class="nav-item">
-        <i class="fas fa-loop"></i> Recherche salaire
+        <i class="fas fa-search"></i> Recherche salaire
     </a>
 
     <!-- <a href="{{ route('employees.index') }}" class="nav-item">
         <i class="fas fa-add"></i> Liste Employeeee
     </a> -->
-    <a href="{{ route('reduction.create') }}" class="nav-item">
-        <i class="fas fa-add"></i>Ajout Reduction
+    <a href="{{ route('reduction.liste') }}" class="nav-item">
+        <i class="fas fa-chart-line fa-rotate-180"></i> Liste Reduction
     </a>
+   
     
 </nav>
 

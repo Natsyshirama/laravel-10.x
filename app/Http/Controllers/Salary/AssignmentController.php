@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\Assignement;
 use App\Services\SalaryEmployeeService;
+use App\Services\UpdateService;
 use Illuminate\Support\Facades\Log;
 
 class AssignmentController extends Controller
@@ -13,10 +14,12 @@ class AssignmentController extends Controller
     //
     protected $assign;
     protected $salaryStr;
+    protected $updateSrv;
 
-    public function __construct(Assignement $assign,SalaryEmployeeService $salaryStr)
+    public function __construct(Assignement $assign,UpdateService $updateSrv,SalaryEmployeeService $salaryStr)
     {
         $this->assign = $assign;
+        $this->updateSrv = $updateSrv;
         $this->salaryStr = $salaryStr;
     }
 
@@ -122,7 +125,7 @@ public function genereSSA(Request $request)
 
  public function rechercheForm(){
         
-    $components =  $this->salaryStr->getComponent();
+    $components =  $this->updateSrv->getComponent();
     try{
         return view('recherche.recherche', [
             'components' =>$components
@@ -145,8 +148,8 @@ public function genereSSA(Request $request)
         ]);
     
         try {
-            $components =  $this->salaryStr->getComponent(); 
-            $employees = $this->salaryStr->getEmployees(
+            $components =  $this->updateSrv->getComponent(); 
+            $employees = $this->updateSrv->getEmployees(
                 $validated['component'],
                 $validated['signe'],
                 $validated['montant']
@@ -170,7 +173,7 @@ public function genereSSA(Request $request)
 }
 
 public function modifForm(){
-    $components =  $this->salaryStr->getComponent();
+    $components =  $this->updateSrv->getComponent();
     try{
         return view('modif.salaryModifForm', [
             'components' =>$components
@@ -203,7 +206,7 @@ public function modifSalaire(Request $request)
 
 
     try {
-        $nb = $this->salaryStr->updateSalaire($component,$operator,$amount, $methode,$pourcentage);
+        $nb = $this->updateSrv->updateSalaire($component,$operator,$amount, $methode,$pourcentage);
         return back()->with('success', "$nb employés mis à jour.");
     } catch (\Exception $e) {
         return back()->withErrors('Erreur : ' . $e->getMessage());

@@ -155,6 +155,10 @@ Route::get('/employeer/{id}', [EmployerController::class, 'show'])->name('employ
 
 
 use App\Http\Controllers\Reduction\ReductionController;
-
+//Reduction
+Route::get('/reductions', [ReductionController::class, 'listeReduction'])->name('reduction.liste');
 Route::get('/reduction/create', [ReductionController::class, 'createForm'])->name('reduction.create');
 Route::post('/reduction', [ReductionController::class, 'insertReduction'])->name('reduction.insert');
+Route::delete('/reduction/delete/{id}', [ReductionController::class, 'delete'])->name('reduction.delete');
+Route::get('/reduction/edit/{id}', [ReductionController::class, 'edit'])->name('reduction.edit');
+Route::put('/reduction/update/{id}', [ReductionController::class, 'update'])->name('reduction.update');

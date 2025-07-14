@@ -17,6 +17,8 @@ class UpdateService{
         $this->baseUrl = env('FRAPPE_URL', 'http://erpnext.localhost:8000/');
     }
 
+    //**MODIFIER SALAIRE */
+
 //component modifier
 public function getComponent(){
     $sid = Session::get('sid');

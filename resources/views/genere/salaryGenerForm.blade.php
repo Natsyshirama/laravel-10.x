@@ -27,9 +27,9 @@
             <form method="POST" action="{{route('genere.genereSSA')}}">
                 @csrf
 
-                <div class="row mb-4">
+<div class="row mb-4">
                     
-                <div class="col-md-6">
+    <div class="col-md-6">
         <label>Employee</label>
         <select class="form-control select2" name="employee" required id="employee_select">
             <option value="">Sélectionner</option>

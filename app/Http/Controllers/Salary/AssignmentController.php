@@ -23,6 +23,8 @@ class AssignmentController extends Controller
         $this->salaryStr = $salaryStr;
     }
 
+    ///**ASSIGNEMENT */
+
     public function addAssignment(){
         $employee = $this->assign->getEmployee();
         $salaryStr = $this->assign->getSalaryStr();
@@ -64,6 +66,10 @@ class AssignmentController extends Controller
         }
         
     }
+
+
+
+    //**GeNERERER SALAIRE */
 
     public function genereForm(){
         $employee = $this->assign->getEmployee();
@@ -123,6 +129,10 @@ public function genereSSA(Request $request)
     }
 }
 
+
+
+//**RECHERCHE SALAIRE */
+
  public function rechercheForm(){
         
     $components =  $this->updateSrv->getComponent();
@@ -172,6 +182,9 @@ public function genereSSA(Request $request)
     }
 }
 
+
+//**MODIFICATION */
+
 public function modifForm(){
     $components =  $this->updateSrv->getComponent();
     try{
@@ -187,6 +200,7 @@ public function modifForm(){
         return redirect()->back()->withErrors(['message' => $e->getMessage()]);
     }
 }
+
 public function modifSalaire(Request $request)
 {
     $validated = $request->validate([

@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">modification salaire</h6>
+            <h5 class="m-0 font-weight-bold text-primary">Modification salaire</h5>
         </div>
         <div class="card-body">
 
@@ -26,38 +26,38 @@
              <form method="POST" action="{{ route('modif.salary.mass') }}">
                 @csrf
 
-                <div class="row mb-4">
+            <div class="row mb-4">
                     
                 <div class="col-md-6">
         <label>Composent</label>
         <select class="form-control select2" name="component" >
-    <option value="">Sélectionner Composant</option>
-    @foreach($components as $comp)
-        <option value="{{ $comp['name'] }}">
-            {{ $comp['name'] }}
-        </option>
-    @endforeach
-</select>
+            <option value="">Sélectionner Composant</option>
+                @foreach($components as $comp)
+            <option value="{{ $comp['name'] }}">
+                {{ $comp['name'] }}
+             </option>
+        @endforeach
+        </select>
 
-<select class="form-control select2" name="signe" required>
-    <option value="">Sélectionner Opérateur</option>
-    <option value=">">Supérieur à</option>
-    <option value="<">Inférieur à</option>
-</select>
+        <select class="form-control select2" name="signe" required>
+            <option value="">Sélectionner Opérateur</option>
+            <option value=">">Supérieur à</option>
+            <option value="<">Inférieur à</option>
+        </select>
 
-<input type="number" name="montant" class="form-control" placeholder="Montant">
-    </div>
+        <input type="number" name="montant" class="form-control" placeholder="Montant">
+        </div>
                
         </div>
     </div> 
     @csrf
 
-<select class="form-control select2" name="methode" required>
-    <option value="">methode </option>
-    <option value="moins">deduction </option>
-    <option value="plus">augmentation </option>
-</select>
-<input type="number" name="pourcentage" class="form-control" placeholder="pourcentage">
+        <select class="form-control select2" name="methode" required>
+            <option value="">methode </option>
+            <option value="moins">deduction </option>
+            <option value="plus">augmentation </option>
+        </select>
+    <input type="number" name="pourcentage" class="form-control" placeholder="pourcentage">
 
    
     <button type="submit">Modifier </button>

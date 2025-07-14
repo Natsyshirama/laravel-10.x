@@ -15,6 +15,7 @@ class ReductionController extends Controller
         $this->reduction = $reduction;
     }
 
+    //Liste Reductiom
     public function listeReduction(Request $request){
 
         try{
@@ -35,6 +36,7 @@ class ReductionController extends Controller
         }
     }
 
+    //**CREATION REDUCTION(Insert) */
     public function createForm(){
         return view('reduction.create');
     }
@@ -49,6 +51,9 @@ class ReductionController extends Controller
 
         return redirect()->route('reduction.create')->with('success', 'Réduction ajoutée avec succès');
     }
+
+
+    //**MODIFICATION REDUCTION(update) */
 
     public function edit($id)
 {
@@ -71,6 +76,8 @@ public function update(Request $request, $id)
         return redirect()->back()->withErrors(['message' => 'Erreur lors de la mise à jour.']);
     }
 }
+
+//**DELETE (id) */
 
     public function delete($id)
 {

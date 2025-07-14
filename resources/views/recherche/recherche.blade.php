@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">modification salaire</h6>
+            <h5 class="m-0 font-weight-bold text-primary">Recherche salaire</h5>
         </div>
         <div class="card-body">
 
@@ -23,33 +23,31 @@
                 </div>
             @endif
 
-             <form method="POST" action="{{route('recherche.moteur')}}">
+    <form method="POST" action="{{route('recherche.moteur')}}">
                 @csrf
 
-                <div class="row mb-4">
+    <div class="row mb-4">
                     
-                <div class="col-md-6">
+        <div class="col-md-6">
         <label>Composent</label>
         <select class="form-control select2" name="component" >
-    <option value="">Sélectionner Composant</option>
-    @foreach($components as $comp)
-        <option value="{{ $comp['name'] }}">
+            <option value="">Sélectionner Composant</option>
+        @foreach($components as $comp)
+            <option value="{{ $comp['name'] }}">
             {{ $comp['name'] }}
-        </option>
-    @endforeach
-</select>
+            </option>
+        @endforeach
+        </select>
 
-<select class="form-control select2" name="signe" required>
-    <option value="">Sélectionner Opérateur</option>
-    <option value=">">Supérieur à</option>
-    <option value="<">Inférieur à</option>
-</select>
+        <select class="form-control select2" name="signe" required>
+            <option value="">Sélectionner Opérateur</option>
+            <option value=">">Supérieur à</option>
+            <option value="<">Inférieur à</option>
+        </select>
 
-<input type="number" name="montant" class="form-control" placeholder="Montant">
-    </div>
-               
+        <input type="number" name="montant" class="form-control" placeholder="Montant">
+    </div> 
         </div>
-  
    
     <button type="submit">rechercher </button>
 </form>

@@ -16,8 +16,7 @@ class SalaryEmployeeService{
     {
         $this->baseUrl = env('FRAPPE_URL', 'http://erpnext.localhost:8000/');
     }
-//generer
-
+//**GENERER SALAIRE */
 public function getSalaryStr($employee)
 {
     $sid = Session::get('sid');
@@ -186,9 +185,15 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date, $f
         $salary_reduit = $base_salary;
 
         if ($reduction !== null) {
-            $salary_reduit = round($base_salary * (1 - $reduction / 100), 2);
-            Log::info("Réduction appliquée pour le mois {$month}: -{$reduction}% (salaire ajusté: {$salary_reduit})");
-        }
+            $salary_reduit = round($base_salary * (1 + $reduction / 100), 2);
+            if ($reduction >= 0) {
+                $variation = "augmentation";
+            } else {
+                $variation = "réduction";
+            }
+            
+            Log::info("{$variation} appliquée pour le mois {$month}: {$reduction}% (salaire ajusté: {$salary_reduit})");
+                    }
 
         $existing = $this->verifieMois($employee, $from, $to);
         if ($existing){

@@ -63,10 +63,10 @@
                             </form>
                         </td>
                         <td>
-    <a href="{{ route('reduction.edit', $reduction->id) }}" class="btn btn-sm btn-warning">
-        <i class="fas fa-edit"></i>
-    </a>
-</td>
+                            <a href="{{ route('reduction.edit', $reduction->id) }}" class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
 
 
 

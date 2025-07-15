@@ -103,6 +103,8 @@ class SalaryController extends Controller
         return redirect()->back()->withErrors(['message' => $e->getMessage()]);
     }
 }
+
+//**PAR MOIS */
 public function filtreParMois(Request $request)
 {
     $mois = $request->input('mois');
@@ -114,6 +116,8 @@ public function filtreParMois(Request $request)
         return back()->withErrors(['message' => $e->getMessage()]);
     }
 }
+
+//**PAR ANNEE */
 public function resumeParAnnee(Request $request)
 {
     $annee = $request->input('annee', date('Y')); // par défaut année en cours

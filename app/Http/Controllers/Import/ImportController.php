@@ -107,7 +107,93 @@ public function importSalarySlip(Request $request){
     throw $e;
 }
 
+
 }
+
+public function prepareImport(Request $request)
+{
+    $request->validate([
+        'csv_employees' => 'required|file|mimes:csv,txt',
+        'csv_salary_structure' => 'required|file|mimes:csv,txt',
+        'csv_salary_slip' => 'required|file|mimes:csv,txt',
+    ]);
+
+    $datasets = [];
+
+    foreach ([
+        'csv_employees',
+        'csv_salary_structure',
+        'csv_salary_slip'
+    ] as $field) {
+        $file = $request->file($field);
+        $rows = array_map('str_getcsv', file($file->getRealPath()));
+
+        if (empty($rows)) {
+            return back()->with('error', "Le fichier $field est vide.");
+        }
+
+        $header = array_shift($rows); 
+        $datasets[$field] = [
+            'headers' => $header,
+            'rows' => $rows,
+            'count' => count($rows),
+        ];
+    }
+
+    session(['import_data' => $datasets]); 
+    return view('import.fill_form', compact('datasets'));
+}
+
+public function confirmImport(Request $request)
+{
+    $sid = Session::get('sid');
+    if (!$sid) {
+        return back()->with('error', 'Non connecté');
+    }
+
+    $httpClient = Http::timeout(600)->withHeaders([
+        'Cookie' => 'sid=' . $sid,
+        'Content-Type' => 'application/json',
+    ]);
+
+    $datasets = session('import_data');
+    if (!$datasets) {
+        return back()->with('error', 'Aucune donnée à importer.');
+    }
+
+    $linesRequested = $request->input('lines');
+    $results = [];
+    $hasError = false;
+
+    foreach ($datasets as $key => $dataset) {
+        if (!isset($linesRequested[$key])) continue;
+
+        $lineCount = (int) $linesRequested[$key];
+        $rows = array_slice($dataset['rows'], 0, $lineCount);
+        array_unshift($rows, $dataset['headers']); // Remet les headers en haut
+
+        $csvContent = implode("\n", array_map(fn($r) => implode(',', $r), $rows));
+
+        $endpoint = match($key) {
+            'csv_employees' => '/api/method/erpnext.importation.page.importdata.importEmployee.importEmployee',
+            'csv_salary_structure' => '/api/method/erpnext.importation.page.importdata.importSalaryStructure.import_salary_structure',
+            'csv_salary_slip' => '/api/method/erpnext.importation.page.importdata.importSalarySlip.import_salary_slip',
+        };
+
+        $response = $httpClient->post($this->baseUrl . $endpoint, [
+            'data' => $csvContent
+        ]);
+
+        $results[$key] = $response->json();
+        if ($response->failed()) $hasError = true;
+    }
+
+    session()->forget('import_data'); // Nettoyage
+    return redirect()->route('import.index')
+        ->with('results', $results)
+        ->with('status', $hasError ? 'partial' : 'success');
+}
+
 public function importAll(Request $request)
 {
     $sid = Session::get('sid');
@@ -164,4 +250,43 @@ public function importAll(Request $request)
             ->with('results', $results ?? []);
     }
 }
+
+public function preparation_Import(Request $request){
+    $request->validate([
+        'csv_emplouyees'=> 'required|file|mimes:csv,txt',
+        'csv_salary_structure' => 'required|file|mimes:csv,txt',
+        'csv_salary_slip' => 'required|file|mimes:csv,txt',
+    ]);
+
+    $datasets = [];
+
+    foreach([
+        'csv_employees',
+        'csv_salary_structure',
+        'csv_salary_slip'
+    ] as $field){
+        $file = $request->file($field);
+        $row = array_map('str_getcsv', file($file->getRealPath()));
+
+        if (empty($row)){
+            return back()->with('error', "$field est vide");
+        }
+        $header = array($row);
+        $datasets[$field] = [
+            'headers' => $header,
+            'rows' => $row,
+            'count'=> count($row),
+        ];
+    }
+
+    session(['import_data' => $datasets]);
+
+    return view('import.form_prepa', compact('datasets'));
+}
+
+
+public function confirmationtImport(Request $request){
+    
+}
+
 }

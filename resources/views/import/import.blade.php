@@ -10,10 +10,8 @@
     <button type="submit">Importer Fournisseurs</button>
 </form> -->
 
-
-<form method="POST" enctype="multipart/form-data" action="{{ route('import.all') }}">
+<form method="POST" enctype="multipart/form-data" action="{{ route('import.prepare') }}">
     @csrf
-    
     <div class="form-group">
         <label for="csv_employees">Fichier CSV Employés :</label>
         <input type="file" class="form-control-file" name="csv_employees" required>
@@ -25,13 +23,12 @@
     </div>
     
     <div class="form-group">
-        <label for="csv_salary_slip">Fichier CSV FIche de Paie :</label>
+        <label for="csv_salary_slip">Fichier CSV Fiche de Paie :</label>
         <input type="file" class="form-control-file" name="csv_salary_slip" required>
     </div>
     
-    <button type="submit" class="btn btn-primary">Importer </button>
+    <button type="submit" class="btn btn-primary">Suivant</button>
 </form>
-
 <div class="card-header">
     <h4>Reset</h4>
     <form method="GET" action="{{ route('reset.all') }}" class="form-inline" color="red" onsubmit="return confirmReset()">

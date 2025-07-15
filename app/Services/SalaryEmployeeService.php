@@ -8,13 +8,17 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Expr\FuncCall;
 use App\Models\Reduction\ReductionModel;
+use App\Services\HistoriqueService;
+
 
 use Carbon\Carbon;
 class SalaryEmployeeService{
     protected $baseUrl;
-    public function __construct()
+    protected $histoService;
+    public function __construct(HistoriqueService $histoService)
     {
         $this->baseUrl = env('FRAPPE_URL', 'http://erpnext.localhost:8000/');
+        $this->histoService =$histoService;
     }
 //**GENERER SALAIRE */
 public function getSalaryStr($employee)
@@ -214,12 +218,17 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date, $f
                     ['from_date', '=', $from],
                     ['docstatus', '<', 2]
                 ]),
-                'fields' => json_encode(['name']),
+                'fields' => json_encode(['name','employee_name','base','from_date']),
                 'limit_page_length' => 1
             ]);
             
             if ($ssa->successful() && count($ssa->json('data')) > 0){
                 $ssaName = $ssa->json('data')[0]['name'];
+                $ssaEmployee = $ssa->json('data')[0]['employee_name'];
+                $ssaBase = $ssa->json('data')[0]['base'];
+               
+
+                $insert = $this->histoService->insertHistorique($ssaEmployee, $ssaBase);
             }
 
             $oldSalarySlip = Http::withHeaders([

@@ -117,6 +117,10 @@ Route::post('/import/salary_structure', [ImportController::class, 'importSalaryS
 Route::post('/import/salary_slip', [ImportController::class, 'importSalarySlip'])->name('import.salary_slip');
 Route::post('/import/all', [ImportController::class, 'importAll'])->name('import.all');
 
+Route::post('/import/prepare', [ImportController::class, 'prepareImport'])->name('import.prepare');
+Route::post('/import/confirm', [ImportController::class, 'confirmImport'])->name('import.confirm');
+
+
 //reset
 Route::get('/reset-all-doctypes', [ResetController::class, 'resetAll'])->name('reset.all');
 
@@ -156,7 +160,7 @@ Route::get('/employeer/{id}', [EmployerController::class, 'show'])->name('employ
 
 
 use App\Http\Controllers\Reduction\ReductionController;
-//Reduction
+//**REDUCTION */
 Route::get('/reductions', [ReductionController::class, 'listeReduction'])->name('reduction.liste');
 Route::get('/reduction/create', [ReductionController::class, 'createForm'])->name('reduction.create');
 Route::post('/reduction', [ReductionController::class, 'insertReduction'])->name('reduction.insert');

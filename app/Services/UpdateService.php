@@ -8,12 +8,16 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Expr\FuncCall;
 use Carbon\Carbon;
+use App\Services\HistoriqueService;
+
 
 class UpdateService{
 
     protected $baseUrl;
-    public function __construct()
+    protected $histoService;
+    public function __construct(HistoriqueService $histoService)
     {
+        $this->histoService = $histoService;
         $this->baseUrl = env('FRAPPE_URL', 'http://erpnext.localhost:8000/');
     }
 
@@ -55,6 +59,10 @@ public function getEmployees($component, $operator, $amount)
         'fields' => json_encode([
             'name', 'employee', 'employee_name', 'salary_structure', 'start_date'
         ]),
+        'filters' => json_encode([
+            ['docstatus', '=', 1] 
+        ]),
+
         'limit_page_length' => 1000
     ]);
 
@@ -113,7 +121,7 @@ public function getSalaryStructureAssg($employe){
                     ['from_date', '<', now()->toDateString()]
                 ]),
                 'fields' => json_encode([
-                'name', 'employee', 'salary_structure', 'base', 'from_date'
+                'name', 'employee','employee_name' ,'salary_structure', 'base', 'from_date'
             ]),
             
             ]); 
@@ -161,9 +169,13 @@ public function updateSalaire($component,$operator,$amount, $methode,$pourcentag
         foreach($ssas as $ssa){
 
         try {
+            $employesAn = $ssa['employee_name'];
             $ancienSSA = $ssa['name']; 
             $from_date = $ssa['from_date'];
             $oldBase= $ssa['base'];
+            $insert = $this->histoService->insertHistorique($employesAn, $oldBase);
+
+
             if($methode === 'plus'){
                 $newBase = $oldBase + ($oldBase * $pourcentage/100);
             }elseif($methode === 'moins'){

@@ -173,7 +173,7 @@ public function updateSalaire($component,$operator,$amount, $methode,$pourcentag
             $ancienSSA = $ssa['name']; 
             $from_date = $ssa['from_date'];
             $oldBase= $ssa['base'];
-            $insert = $this->histoService->insertHistorique($employesAn, $oldBase);
+            $insert = $this->histoService->insertHistorique($employesAn, $oldBase, $from_date);
 
 
             if($methode === 'plus'){

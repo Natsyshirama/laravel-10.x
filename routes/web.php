@@ -154,9 +154,12 @@ Route::post('/recherche-salaireResultat', [AssignmentController::class, 'recherc
 //test direct Base
 
 use App\Http\Controllers\EmployerController;
+use App\Http\Controllers\Historique\HistoriqueController;
 
 Route::get('/employeer', [EmployerController::class, 'index'])->name('employees.index');
 Route::get('/employeer/{id}', [EmployerController::class, 'show'])->name('employees.show');
+
+Route::get('/historiques', [HistoriqueController::class, 'getListeHisto'])->name('historique.liste');
 
 
 use App\Http\Controllers\Reduction\ReductionController;

@@ -226,9 +226,10 @@ public function genereSalarySA($employee, $base_salary, $from_date, $to_date, $f
                 $ssaName = $ssa->json('data')[0]['name'];
                 $ssaEmployee = $ssa->json('data')[0]['employee_name'];
                 $ssaBase = $ssa->json('data')[0]['base'];
+                $dateAncien = $ssa->json('data')[0]['from_date'];
                
 
-                $insert = $this->histoService->insertHistorique($ssaEmployee, $ssaBase);
+                $insert = $this->histoService->insertHistorique($ssaEmployee, $ssaBase, $dateAncien);
             }
 
             $oldSalarySlip = Http::withHeaders([

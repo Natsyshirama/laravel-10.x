@@ -85,6 +85,9 @@
     <a href="{{ route('reduction.liste') }}" class="nav-item">
         <i class="fas fa-chart-line fa-rotate-180"></i> Liste Reduction
     </a>
+    <a href="{{ route('historique.liste') }}" class="nav-item">
+        <i class="fas fa-history"></i> Liste Historique
+    </a>
    
     
 </nav>

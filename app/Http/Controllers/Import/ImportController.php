@@ -170,7 +170,7 @@ public function confirmImport(Request $request)
 
         $lineCount = (int) $linesRequested[$key];
         $rows = array_slice($dataset['rows'], 0, $lineCount);
-        array_unshift($rows, $dataset['headers']); // Remet les headers en haut
+        array_unshift($rows, $dataset['headers']); 
 
         $csvContent = implode("\n", array_map(fn($r) => implode(',', $r), $rows));
 
@@ -188,7 +188,7 @@ public function confirmImport(Request $request)
         if ($response->failed()) $hasError = true;
     }
 
-    session()->forget('import_data'); // Nettoyage
+    session()->forget('import_data'); 
     return redirect()->route('import.index')
         ->with('results', $results)
         ->with('status', $hasError ? 'partial' : 'success');
@@ -209,7 +209,7 @@ public function importAll(Request $request)
             throw new \Exception('Tous les fichiers doivent être fournis');
         }
 
-        $httpClient = Http::timeout(600) // 10 min
+        $httpClient = Http::timeout(600) 
             ->withHeaders([
                 'Cookie' => 'sid=' . $sid,
                 'Content-Type' => 'application/json',
@@ -246,47 +246,9 @@ public function importAll(Request $request)
             'trace' => $e->getTraceAsString()
         ]);
         return back()
-            ->with('error', 'Erreur lors de l\'import global: '.$e->getMessage())
+            ->with('error', 'Erreur import global: '.$e->getMessage())
             ->with('results', $results ?? []);
     }
-}
-
-public function preparation_Import(Request $request){
-    $request->validate([
-        'csv_emplouyees'=> 'required|file|mimes:csv,txt',
-        'csv_salary_structure' => 'required|file|mimes:csv,txt',
-        'csv_salary_slip' => 'required|file|mimes:csv,txt',
-    ]);
-
-    $datasets = [];
-
-    foreach([
-        'csv_employees',
-        'csv_salary_structure',
-        'csv_salary_slip'
-    ] as $field){
-        $file = $request->file($field);
-        $row = array_map('str_getcsv', file($file->getRealPath()));
-
-        if (empty($row)){
-            return back()->with('error', "$field est vide");
-        }
-        $header = array($row);
-        $datasets[$field] = [
-            'headers' => $header,
-            'rows' => $row,
-            'count'=> count($row),
-        ];
-    }
-
-    session(['import_data' => $datasets]);
-
-    return view('import.form_prepa', compact('datasets'));
-}
-
-
-public function confirmationtImport(Request $request){
-    
 }
 
 }

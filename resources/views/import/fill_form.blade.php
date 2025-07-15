@@ -13,16 +13,16 @@
             <li class="list-group-item">
                 <strong>{{ ucfirst(str_replace('csv_', '', $key)) }}</strong>
                 <div class="form-group mt-2">
-                    <label>Nombre de lignes à importer :</label>
+                    <label>nombre de ligne  :</label>
                     <input type="number" name="lines[{{ $key }}]" class="form-control" min="1" max="{{ $dataset['count'] }}" required>
-                    <small class="form-text text-muted">Max disponible : {{ $dataset['count'] }} ligne(s)</small>
+                    <small class="form-text text-muted">Ligne disponible : {{ $dataset['count'] }} ligne(s)</small>
                 </div>
             </li>
         @endforeach
     </ul>
 
-    <button type="submit" class="btn btn-success">✅ Confirmer l'importation</button>
-    <a href="{{ route('import.index') }}" class="btn btn-secondary">⬅️ Annuler</a>
+    <button type="submit" class="btn btn-success"> Confirme importation</button>
+    <a href="{{ route('import.index') }}" class="btn btn-secondary"> Annuler</a>
 </form>
 
 @endsection
